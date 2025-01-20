@@ -1,7 +1,92 @@
+'use client'
+
+import { useForm } from 'react-hook-form'
+
+type SignInFormType = {
+  email: string
+  password: string
+}
+
 const Page = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<SignInFormType>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  const onSubmit = handleSubmit((data: SignInFormType) => {
+    console.log(data)
+  })
   return (
-    <div>
-      <div></div>
+    <div className='p-2 w-full min-h-screen justify-center items-center flex'>
+      <div className='w-full lg:w-1/4 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
+        <form onSubmit={onSubmit} className='w-full space-y-4'>
+          <section className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-2'>
+              <label htmlFor='email'>
+                メールアドレス<span className='text-red-500'>*</span>
+              </label>
+              <input
+                type='email'
+                {...register('email', {
+                  required: 'メールアドレスを入力してください',
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    message: '正しいメールアドレスを入力してください',
+                  },
+                })}
+                className='border-2 border-gray-300 rounded-md p-2'
+              />
+              {errors.email && (
+                <span className='pl-2 text-red-500 text-xs'>
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+            <div className='flex flex-col gap-2'>
+              <label htmlFor='password'>
+                パスワード<span className='text-red-500'>*</span>
+              </label>
+              <input
+                type='password'
+                {...register('password', {
+                  required: 'パスワードを入力してください',
+                  minLength: {
+                    value: 8,
+                    message: 'パスワードは8文字以上で入力してください',
+                  },
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+                    message:
+                      '大文字、小文字、数字を1文字以上含むパスワードを入力してください',
+                  },
+                })}
+                className='border-2 border-gray-300 rounded-md p-2'
+              />
+              {errors.password && (
+                <span className='pl-2 text-red-500 text-xs'>
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+          </section>
+          <section className='flex justify-center'>
+            <button
+              type='submit'
+              className='px-4 py-2 rounded-full bg-green-400 text-white font-semibold shadow-md hover:bg-green-500 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
+            >
+              ログイン
+            </button>
+          </section>
+        </form>
+      </div>
     </div>
   )
 }
