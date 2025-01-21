@@ -1,19 +1,38 @@
 'use client'
 
+import { useState } from 'react'
+
 import { products, tasks } from '@/data'
 import { Product } from '@/domains/Product'
 import { Task } from '@/domains/Task'
 import { TaskStatus } from '@/types/TaskStatus'
 
 const Page = () => {
+  const [todos, setTodos] = useState<Task[]>(tasks)
   const handleColorChange = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.NOTSTARTED:
-        return 'bg-red-100'
+        return 'bg-red-50'
       case TaskStatus.DOING:
-        return 'bg-yellow-100'
+        return 'bg-yellow-50'
       case TaskStatus.DONE:
-        return 'bg-gray-100'
+        return 'bg-gray-50'
+    }
+  }
+  const handleTaskStatusChanged = (status: TaskStatus) => {
+    switch (status) {
+      case TaskStatus.NOTSTARTED:
+        setTodos(tasks.filter((todo) => todo.status === TaskStatus.NOTSTARTED))
+        break
+      case TaskStatus.DOING:
+        setTodos(tasks.filter((todo) => todo.status === TaskStatus.DOING))
+        break
+      case TaskStatus.DONE:
+        setTodos(tasks.filter((todo) => todo.status === TaskStatus.DONE))
+        break
+      case 'all':
+        setTodos(tasks)
+        break
     }
   }
   return (
@@ -25,7 +44,9 @@ const Page = () => {
             <select
               name='task-select'
               id='task-select'
-              onChange={(e) => console.log(e.target.value)}
+              onChange={(e) =>
+                handleTaskStatusChanged(e.target.value as TaskStatus)
+              }
               className='focus:outline-none'
             >
               <option value='all'>全て</option>
@@ -42,19 +63,20 @@ const Page = () => {
           </div>
         </div>
         <div className='grid grid-cols-2 gap-2'>
-          {tasks.map((task: Task) => (
+          {todos.map((todo: Task) => (
             <div
-              key={task.id}
+              key={todo.id}
               className={`p-4 aspect-2/1 rounded-lg shadow-md flex flex-col justify-between ${handleColorChange(
-                task.status
+                todo.status
               )}`}
             >
               <div className='space-y-2'>
                 <div className='flex flex-row justify-between'>
-                  <h2 className='text-lg font-semibold'>{task.title}</h2>
+                  <h2 className='text-lg font-semibold'>{todo.title}</h2>
                   <input
                     type='checkbox'
-                    disabled={task.status === TaskStatus.DONE}
+                    disabled={todo.status === TaskStatus.DONE}
+                    defaultChecked={todo.status === TaskStatus.DONE}
                     className={`
                     h-4 w-4 text-blue-500 border border-gray-100 rounded-full cursor-pointer
                     checked:bg-purple-500 checked:border-transparent checked:text-white
@@ -63,11 +85,11 @@ const Page = () => {
                   `}
                   />
                 </div>
-                <p className='overflow-hidden'>{task.content}</p>
+                <p className='overflow-hidden'>{todo.content}</p>
               </div>
               <div>
-                {task.startDate.toLocaleDateString()} 〜{' '}
-                {task.endDate?.toLocaleDateString()}
+                {todo.startDate.toLocaleDateString()} 〜{' '}
+                {todo.endDate?.toLocaleDateString()}
               </div>
             </div>
           ))}

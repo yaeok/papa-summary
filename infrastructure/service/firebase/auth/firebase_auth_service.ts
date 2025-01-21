@@ -1,3 +1,4 @@
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { UserNotFoundException } from '@/infrastructure/exception/UserNotFoundException'
 import {
   createUserWithEmailAndPassword,
@@ -28,9 +29,13 @@ export class FirebaseAuthService {
       )
 
       return userCredential
-    } catch (error) {
-      const result = this.handleFirebaseAuthError(error)
-      throw new FirebaseAuthException(result.message, result.code)
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
@@ -48,53 +53,102 @@ export class FirebaseAuthService {
       )
 
       return userCredential
-    } catch (error) {
-      const result = this.handleFirebaseAuthError(error)
-      throw new FirebaseAuthException(result.message, result.code)
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
   async signOut(): Promise<void> {
-    await auth.signOut()
+    try {
+      await auth.signOut()
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
+    }
   }
 
   async sendPasswordResetEmail(email: string): Promise<void> {
-    await this.sendPasswordResetEmail(email)
+    try {
+      await this.sendPasswordResetEmail(email)
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
+    }
   }
 
   async sendEmailVerification(): Promise<void> {
-    const currentUser = auth.currentUser
+    try {
+      const currentUser = auth.currentUser
 
-    if (!currentUser) {
-      throw new UserNotFoundException()
-    } else {
-      await sendEmailVerification(currentUser)
+      if (!currentUser) {
+        throw new UserNotFoundException()
+      } else {
+        await sendEmailVerification(currentUser)
+      }
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
   async getCurrentUser(): Promise<User> {
-    const currentUser = auth.currentUser
+    try {
+      const currentUser = auth.currentUser
 
-    if (!currentUser) {
-      throw new UserNotFoundException()
-    } else {
-      await auth.currentUser?.reload()
+      if (!currentUser) {
+        throw new UserNotFoundException()
+      } else {
+        await currentUser.reload()
 
-      return auth.currentUser!
+        return currentUser
+      }
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
   async checkEmailVerification(): Promise<boolean> {
-    const currentUser = auth.currentUser
+    try {
+      const currentUser = auth.currentUser
 
-    if (!currentUser) {
-      throw new UserNotFoundException()
-    } else {
-      await auth.currentUser?.reload()
+      if (!currentUser) {
+        throw new UserNotFoundException()
+      } else {
+        await currentUser.reload()
 
-      const isEmailVerified = auth.currentUser?.emailVerified
+        const isEmailVerified = currentUser.emailVerified
 
-      return isEmailVerified!
+        return isEmailVerified
+      }
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
@@ -106,40 +160,33 @@ export class FirebaseAuthService {
     message: string
     code: string
   } {
-    if (isFirebaseError(error)) {
-      let message
-      switch (error.code) {
-        case 'auth/user-not-found':
-          message = '認証情報が見つかりません'
-          break
-        case 'auth/wrong-password':
-          message = 'パスワードが違います'
-          break
-        case 'auth/user-disabled':
-          message = '無効なアカウントです'
-          break
-        case 'auth/too-many-requests':
-          message = 'リクエストが多すぎます。後ほど再試行してください'
-          break
-        case 'auth/invalid-email':
-          message = '無効なメールアドレスです'
-          break
-        case 'auth/email-already-in-use':
-          message = '既に登録されたメールアドレスです'
-          break
-        default:
-          message = 'ログインに失敗しました'
-          break
-      }
-      return {
-        message,
-        code: error.code,
-      }
-    } else {
-      return {
-        message: 'ログインに失敗しました',
-        code: 'auth/unknown-error',
-      }
+    let message
+    switch (error.code) {
+      case 'auth/user-not-found':
+        message = '認証情報が見つかりません'
+        break
+      case 'auth/wrong-password':
+        message = 'パスワードが違います'
+        break
+      case 'auth/user-disabled':
+        message = '無効なアカウントです'
+        break
+      case 'auth/too-many-requests':
+        message = 'リクエストが多すぎます。後ほど再試行してください'
+        break
+      case 'auth/invalid-email':
+        message = '無効なメールアドレスです'
+        break
+      case 'auth/email-already-in-use':
+        message = '既に登録されたメールアドレスです'
+        break
+      default:
+        message = 'ログインに失敗しました'
+        break
+    }
+    return {
+      message,
+      code: error.code,
     }
   }
 }
