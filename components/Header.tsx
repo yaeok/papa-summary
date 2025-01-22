@@ -11,9 +11,7 @@ type HeaderProps = {
 export default function Header({ isSignInPage }: HeaderProps) {
   const currentUser = useAuthContext()
   return (
-    <header
-      className={`absolute top-0 left-0 w-full px-4 lg:px-16 py-4 bg-white shadow-md}`}
-    >
+    <header className='top-0 left-0 w-full px-4 lg:px-16 py-4 bg-white shadow-md sticky z-10'>
       <div className='max-w-screen-lg mx-auto flex flex-row justify-between items-center'>
         <div>
           <h1 className='text-3xl font-semibold text-black'>

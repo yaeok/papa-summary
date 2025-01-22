@@ -18,4 +18,14 @@ export class UserRepository {
 
     return user
   }
+
+  async create(args: {
+    id: string
+    email: string
+    name: string
+    parentType: string
+  }): Promise<void> {
+    const service = new FirestoreUserService()
+    await service.create(args)
+  }
 }

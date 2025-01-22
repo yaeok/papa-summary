@@ -3,10 +3,9 @@
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
-import { AuthRepository } from '@/infrastructure/repository/auth_repository'
+import { SignUpUseCase } from '@/usecase/SignUpUseCase/SignUpUseCase'
 
 type SignUpFormType = {
-  username: string
   email: string
   password: string
   confirmPassword: string
@@ -18,11 +17,9 @@ const Page = () => {
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm<SignUpFormType>({
     defaultValues: {
-      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -31,9 +28,14 @@ const Page = () => {
 
   const onSubmit = handleSubmit(async (data: SignUpFormType) => {
     try {
-      const repository = new AuthRepository()
-      await repository.signUp(data)
-      router.push('/email_verify')
+      const usecase = new SignUpUseCase()
+      const response = await usecase.execute({
+        email: data.email,
+        password: data.password,
+      })
+      if (response.result) {
+        router.push('/email_verify')
+      }
     } catch (error) {
       console.error(error)
     }
@@ -43,27 +45,6 @@ const Page = () => {
       <div className='w-full lg:w-1/4 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
         <form onSubmit={onSubmit} className='w-full space-y-4'>
           <section className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-2'>
-              <label htmlFor='username'>
-                ユーザ名<span className='text-red-500'>*</span>
-              </label>
-              <input
-                type='text'
-                {...register('username', {
-                  required: 'ユーザ名を入力してください',
-                  maxLength: {
-                    value: 20,
-                    message: 'ユーザ名は20文字以内で入力してください',
-                  },
-                })}
-                className='border-2 border-gray-300 rounded-md p-2'
-              />
-              {errors.username && (
-                <span className='pl-2 text-red-500 text-xs'>
-                  {errors.username.message}
-                </span>
-              )}
-            </div>
             <div className='flex flex-col gap-2'>
               <label htmlFor='email'>
                 メールアドレス<span className='text-red-500'>*</span>

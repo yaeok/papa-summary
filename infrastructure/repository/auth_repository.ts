@@ -41,6 +41,14 @@ export class AuthRepository {
   async getCurrentUser(): Promise<User> {
     const response = await this.service.getCurrentUser()
 
-    return response
+    const user = new User({
+      id: response.uid,
+      name: '',
+      email: response.email!,
+      parentType: '',
+      createdAt: new Date(),
+    })
+
+    return user
   }
 }

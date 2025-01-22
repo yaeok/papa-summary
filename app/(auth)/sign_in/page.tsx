@@ -1,6 +1,11 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
+import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
+import { SignInUseCase } from '@/usecase/SignInUseCase/SignInUseCase'
 
 type SignInFormType = {
   email: string
@@ -8,6 +13,7 @@ type SignInFormType = {
 }
 
 const Page = () => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -19,8 +25,21 @@ const Page = () => {
     },
   })
 
-  const onSubmit = handleSubmit((data: SignInFormType) => {
-    console.log(data)
+  const onSubmit = handleSubmit(async (data: SignInFormType) => {
+    try {
+      const usecase = new SignInUseCase()
+      const response = await usecase.execute({
+        email: data.email,
+        password: data.password,
+      })
+      if (response.result) {
+        router.push('/tasks')
+      }
+    } catch (error) {
+      if (error instanceof FirebaseAuthException) {
+        console.error(error.message)
+      }
+    }
   })
   return (
     <div className='px-2 py-20 w-full min-h-screen justify-center items-center flex'>

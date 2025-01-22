@@ -1,6 +1,4 @@
 import Header from '@/components/Header'
-import Main from '@/components/Main'
-import NavBar from '@/components/NavBar'
 
 export default function RootLayout({
   children,
@@ -9,9 +7,8 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Header />
-      <Main>{children}</Main>
-      <NavBar />
+      <Header isSignInPage={false} />
+      <div className='p-2'>{children}</div>
     </>
   )
 }
