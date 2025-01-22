@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import './globals.css'
 
-import { Shippori_Mincho } from 'next/font/google'
+import { Kiwi_Maru } from 'next/font/google'
 
-const shippori_mincho = Shippori_Mincho({
+import Header from '@/components/Header'
+import Main from '@/components/Main'
+
+const kiwi_maru = Kiwi_Maru({
   subsets: ['latin'],
-  weight: '400',
-  variable: '--mincho',
+  weight: '300',
   display: 'swap',
 })
 
@@ -22,9 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ja'>
-      <body className={`${shippori_mincho.className} antialiased`}>
-        {children}
-      </body>
+      <body className={`${kiwi_maru.className} antialiased`}>{children}</body>
     </html>
   )
 }
