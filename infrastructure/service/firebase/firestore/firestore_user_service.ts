@@ -12,9 +12,10 @@ import {
 import { db } from '../config/firebaseConfig'
 
 export class FirestoreUserService {
+  private path = 'users'
   async findById(args: { id: string }): Promise<UserOutput> {
     const { id } = args
-    const ref = collection(db, 'users')
+    const ref = collection(db, this.path)
 
     const q = query(ref, where('id', '==', id))
 
@@ -49,7 +50,7 @@ export class FirestoreUserService {
   }): Promise<void> {
     const { id, name, email, parentType } = args
 
-    const ref = doc(db, 'users', id)
+    const ref = doc(db, this.path, id)
 
     const document = {
       id: id,

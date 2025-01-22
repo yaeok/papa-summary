@@ -1,14 +1,30 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { products, tasks } from '@/data'
-import { Product } from '@/domains/Product'
+import { tasks } from '@/data'
 import { Task } from '@/domains/Task'
 import { TaskStatus } from '@/types/TaskStatus'
 
+import TaskCreateButton from './_components/TaskCreate/TaskCreateButton'
+
 const Page = () => {
   const [todos, setTodos] = useState<Task[]>(tasks)
+  useEffect(() => {
+    initialFilterByTaskStatus()
+    sortTaskByStartDate()
+  }, [])
+  const initialFilterByTaskStatus = () => {
+    setTodos(tasks.filter((todo) => todo.status != TaskStatus.DONE))
+  }
+  const sortTaskByStartDate = () => {
+    const sortTodos = todos.sort((a, b) => {
+      if (a.startDate < b.startDate) return -1
+      if (a.startDate > b.startDate) return 1
+      return 0
+    })
+    setTodos(sortTodos)
+  }
   const handleColorChange = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.NOTSTARTED:
@@ -19,7 +35,7 @@ const Page = () => {
         return 'bg-gray-50'
     }
   }
-  const handleTaskStatusChanged = (status: TaskStatus) => {
+  const filterTaskStatusChanged = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.NOTSTARTED:
         setTodos(tasks.filter((todo) => todo.status === TaskStatus.NOTSTARTED))
@@ -37,14 +53,14 @@ const Page = () => {
   }
   return (
     <div className='space-y-4'>
-      <div className='flex flex-row justify-between'>
+      <div className='flex flex-row justify-between items-center'>
         <h1 className='text-lg'>やることリスト</h1>
-        <div className='space-x-4'>
+        <div className='flex flex-row gap-2'>
           <select
             name='task-select'
             id='task-select'
             onChange={(e) =>
-              handleTaskStatusChanged(e.target.value as TaskStatus)
+              filterTaskStatusChanged(e.target.value as TaskStatus)
             }
             className='focus:outline-none'
           >
@@ -53,15 +69,10 @@ const Page = () => {
             <option value={TaskStatus.DOING}>進行中</option>
             <option value={TaskStatus.DONE}>完了</option>
           </select>
-          <button
-            className='bg-blue-500 text-white rounded-full px-4 py-1 shadow-md
-            hover:bg-blue-600 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
-          >
-            登録
-          </button>
+          <TaskCreateButton />
         </div>
       </div>
-      <div className='grid grid-cols-2 gap-2'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
         {todos.map((todo: Task) => (
           <div
             key={todo.id}

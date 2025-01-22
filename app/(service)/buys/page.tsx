@@ -13,11 +13,11 @@ const Page = () => {
           登録
         </button>
       </div>
-      <div className='grid grid-cols-3 gap-2'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2'>
         {products.map((product: Product) => (
           <div
             key={product.id}
-            className='p-4 aspect-3/4 border-2 bg-white rounded-lg shadow-md flex flex-col justify-between'
+            className='p-4 aspect-3/4 bg-white rounded-lg shadow-md flex flex-col justify-between'
           >
             <div className='space-y-2'>
               <h2 className='text-lg font-semibold'>{product.name}</h2>
