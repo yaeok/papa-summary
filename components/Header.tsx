@@ -5,17 +5,17 @@ import Link from 'next/link'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 
 type HeaderProps = {
-  isSignInPage?: boolean
+  isSignIn?: boolean
 }
 
-export default function Header({ isSignInPage }: HeaderProps) {
+export default function Header({ isSignIn }: HeaderProps) {
   const currentUser = useAuthContext()
   return (
     <header className='top-0 left-0 w-full px-4 lg:px-16 py-4 bg-white shadow-md sticky z-10'>
       <div className='max-w-screen-lg mx-auto flex flex-row justify-between items-center'>
         <div>
           <h1 className='text-3xl font-semibold text-black'>
-            <Link href='/'>
+            <Link href={currentUser?.currentUser ? '/tasks' : '/'}>
               <span className='hover:text-blue-500'>パパ準備</span>
             </Link>
           </h1>
@@ -46,13 +46,13 @@ export default function Header({ isSignInPage }: HeaderProps) {
               </li>
             ) : (
               <li>
-                <Link href={isSignInPage ? 'sign_up' : 'sign_in'}>
+                <Link href={isSignIn ? 'sign_up' : 'sign_in'}>
                   <span
                     className={`px-8 py-2 text-base rounded-full text-white shadow-lg font-semibold ${
-                      isSignInPage ? 'bg-blue-500' : 'bg-green-500'
+                      isSignIn ? 'bg-blue-500' : 'bg-green-500'
                     }`}
                   >
-                    {isSignInPage ? '新規登録' : 'ログイン'}
+                    {isSignIn ? '新規登録' : 'ログイン'}
                   </span>
                 </Link>
               </li>

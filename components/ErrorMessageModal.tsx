@@ -1,19 +1,17 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-import TaskCreateForm from './TaskCreateForm'
-
-type TaskCreateModalProps = {
+type ErrorMessageModalProps = {
   isOpen: boolean
   onClose: () => void
-  onTaskCreate: () => void
+  message: string
 }
 
-const TaskCreateModal = ({
+const ErrorMessageModal = ({
   isOpen,
   onClose,
-  onTaskCreate,
-}: TaskCreateModalProps) => {
+  message,
+}: ErrorMessageModalProps) => {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>
@@ -21,8 +19,8 @@ const TaskCreateModal = ({
         <div className='h-screen flex items-center justify-center'>
           <div className='relative p-4 mx-2 bg-white flex flex-col gap-4 rounded-lg shadow-lg w-full md:w-2/5'>
             <div className='w-full flex flex-row justify-between items-center'>
-              <h1 className='text-xl font-semibold text-black border-b-2 border-blue-500'>
-                やること登録
+              <h1 className='text-xl font-semibold text-red-500 border-b-2 border-red-500'>
+                エラー
               </h1>
               <button onClick={onClose}>
                 <IconContext.Provider value={{ size: '2em', color: 'black' }}>
@@ -30,7 +28,7 @@ const TaskCreateModal = ({
                 </IconContext.Provider>
               </button>
             </div>
-            <TaskCreateForm />
+            <div className='p-4 text-black text-lg'>{message}</div>
           </div>
         </div>
       </div>
@@ -40,4 +38,4 @@ const TaskCreateModal = ({
   }
 }
 
-export default TaskCreateModal
+export default ErrorMessageModal

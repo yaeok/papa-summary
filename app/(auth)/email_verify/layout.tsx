@@ -6,9 +6,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <>
-      <Header isSignedIn={true} />
+    <div className='w-full min-h-screen'>
+      <Header isSignIn={true} />
       {children}
-    </>
+    </div>
   )
 }

@@ -1,42 +1,65 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+
 import { products } from '@/data'
 import { Product } from '@/domains/Product'
 
+import AddProductButton from './_components/AddProduct/AddProductButton'
+import { useProductContext } from './_hooks/ProductProvider'
+
 const Page = () => {
+  const productContext = useProductContext()
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      setLoading(true)
+      productContext.setProducts(products)
+      setLoading(false)
+    }
+    fetch()
+  }, [])
   return (
     <div className='space-y-4'>
       <div className='flex flex-row justify-between'>
         <h1 className='text-lg'>かうものリスト</h1>
-        <button
-          className='bg-blue-500 text-white rounded-full px-4 py-1 shadow-md 
-            hover:bg-blue-600 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
-        >
-          登録
-        </button>
+        <AddProductButton />
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2'>
-        {products.map((product: Product) => (
-          <div
-            key={product.id}
-            className='p-4 aspect-3/4 bg-white rounded-lg shadow-md flex flex-col justify-between'
-          >
-            <div className='space-y-2'>
-              <h2 className='text-lg font-semibold'>{product.name}</h2>
-              <p>{product.content}</p>
-            </div>
-            <div className='flex flex-wrap gap-2'>
-              {product.categories.map((category) => (
-                <span
-                  key={category.id}
-                  className='text-xs bg-gray-200 rounded-full px-2 py-1'
+      {(() => {
+        if (loading) {
+          return <div>読み込み中...</div>
+        } else {
+          return (
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2'>
+              {productContext.products.map((product: Product) => (
+                <div
+                  key={product.id}
+                  className='p-4 aspect-square bg-white rounded-lg shadow-md flex flex-col justify-between'
                 >
-                  {category.name}
-                </span>
+                  <div className='space-y-2'>
+                    <h2 className='text-lg font-semibold'>{product.name}</h2>
+                    <p>{product.content}</p>
+                  </div>
+                  <div>
+                    <div className='flex flex-wrap gap-2'>
+                      {product.categories.map((category) => (
+                        <span
+                          key={category.id}
+                          className='text-xs bg-gray-200 rounded-full px-2 py-1'
+                        >
+                          {category.name}
+                        </span>
+                      ))}
+                    </div>
+                    <div className='w-full text-end'>{product.price}円</div>
+                  </div>
+                </div>
               ))}
             </div>
-            <div className='w-full text-end'>{product.price}円</div>
-          </div>
-        ))}
-      </div>
+          )
+        }
+      })()}
     </div>
   )
 }

@@ -1,20 +1,28 @@
 import { useForm } from 'react-hook-form'
 
-type TaskCreateFormType = {
+import { AddTaskUseCase } from '@/usecase/AddTaskUseCase/AddTaskUseCase'
+
+import { useTaskContext } from '../../_hooks/TaskProvider'
+
+type AddTaskFormType = {
   title: string
   content: string
   startDate: string
   endDate: string
 }
 
-const TaskCreateForm = () => {
+type AddTaskFormProps = {
+  onClose: () => void
+}
+
+const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
   const today = new Date().toISOString().split('T')[0]
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<TaskCreateFormType>({
+  } = useForm<AddTaskFormType>({
     mode: 'onChange',
     defaultValues: {
       title: '',
@@ -23,12 +31,26 @@ const TaskCreateForm = () => {
       endDate: today,
     },
   })
+  const taskContext = useTaskContext()
 
   const startDate = watch('startDate')
   const endDate = watch('endDate')
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
+  const onSubmit = handleSubmit(async (data: AddTaskFormType) => {
+    const { title, content, startDate, endDate } = data
+
+    const service = new AddTaskUseCase()
+
+    const result = await service.execute({
+      title,
+      content,
+      startDate: new Date(startDate),
+      endDate: endDate === '' ? null : new Date(endDate),
+    })
+
+    taskContext.addTask(result.result)
+
+    onClose()
   })
 
   return (
@@ -53,21 +75,14 @@ const TaskCreateForm = () => {
             )}
           </div>
           <div className='flex flex-col gap-2'>
-            <label htmlFor='content'>
-              内容<span className='text-red-500'>*</span>
-            </label>
+            <label htmlFor='content'>内容</label>
             <textarea
               {...register('content')}
-              className='border-2 border-gray-300 rounded-md p-2 max-h-40'
+              className='border-2 border-gray-300 rounded-md p-2 h-40 max-h-48'
             />
-            {errors.content && (
-              <span className='pl-2 text-xs text-red-500'>
-                {errors.content.message}
-              </span>
-            )}
           </div>
-          <div className='flex flex-row gap-4'>
-            <div className='flex flex-col gap-2'>
+          <div className='w-full flex flex-row gap-4'>
+            <div className='w-full flex flex-col gap-2'>
               <label htmlFor='startDate'>
                 開始日<span className='text-red-500'>*</span>
               </label>
@@ -75,9 +90,15 @@ const TaskCreateForm = () => {
                 type='date'
                 {...register('startDate', {
                   required: '開始日は必須です',
-                  validate: (value) =>
-                    new Date(value) < new Date(endDate) ||
-                    '終了日より前に設定してください',
+                  validate: (value) => {
+                    console.log('startDate', value)
+                    console.log('endDate', endDate)
+                    if (endDate === '') return true
+                    return (
+                      new Date(value) <= new Date(endDate) ||
+                      '終了日より前に設定してください'
+                    )
+                  },
                 })}
                 className='border-2 border-gray-300 rounded-md p-2'
               />
@@ -87,17 +108,18 @@ const TaskCreateForm = () => {
                 </span>
               )}
             </div>
-            <div className='flex flex-col gap-2'>
-              <label htmlFor='endDate'>
-                終了日<span className='text-red-500'>*</span>
-              </label>
+            <div className='w-full flex flex-col gap-2'>
+              <label htmlFor='endDate'>終了日</label>
               <input
                 type='date'
                 {...register('endDate', {
-                  required: '終了日は必須です',
-                  validate: (value) =>
-                    new Date(value) > new Date(startDate) ||
-                    '開始日より後に設定してください',
+                  validate: (value) => {
+                    if (value === '') return true
+                    return (
+                      new Date(value) >= new Date(startDate) ||
+                      '開始日より後に設定してください'
+                    )
+                  },
                 })}
                 className='border-2 border-gray-300 rounded-md p-2'
               />
@@ -123,4 +145,4 @@ const TaskCreateForm = () => {
   )
 }
 
-export default TaskCreateForm
+export default AddTaskForm

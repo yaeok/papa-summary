@@ -1,12 +1,13 @@
+'use client'
+
 import { useState } from 'react'
 
-import TaskCreateModal from './TaskCreateModal'
+import AddProductModal from './AddProductModal'
 
-const TaskCreateButton = () => {
+const AddProductButton = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
-
   const handleClose = () => setIsOpen(false)
 
   return (
@@ -18,13 +19,9 @@ const TaskCreateButton = () => {
       >
         登録
       </button>
-      <TaskCreateModal
-        isOpen={isOpen}
-        onClose={handleClose}
-        onTaskCreate={() => console.log('onTaskCreate')}
-      />
+      <AddProductModal isOpen={isOpen} onClose={handleClose} />
     </div>
   )
 }
 
-export default TaskCreateButton
+export default AddProductButton
