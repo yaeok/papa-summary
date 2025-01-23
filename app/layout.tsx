@@ -3,9 +3,6 @@ import './globals.css'
 
 import { Kiwi_Maru } from 'next/font/google'
 
-import Header from '@/components/Header'
-import Main from '@/components/Main'
-
 const kiwi_maru = Kiwi_Maru({
   subsets: ['latin'],
   weight: '300',
