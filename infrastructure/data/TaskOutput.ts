@@ -1,14 +1,15 @@
 import { TaskStatus } from '@/types/TaskStatus'
 
-export class Task {
+export class TaskOutput {
   id: string
   title: string
   content: string
   startDate: Date
   endDate: Date | null
-  owner: string
   status: TaskStatus
+  ownerId: string
   createdAt: Date
+  updatedAt: Date | null
 
   constructor(args: {
     id: string
@@ -16,17 +17,19 @@ export class Task {
     content: string
     startDate: Date
     endDate: Date | null
-    owner: string
     status: TaskStatus
+    ownerId: string
     createdAt: Date
+    updatedAt: Date | null
   }) {
     this.id = args.id
     this.title = args.title
     this.content = args.content
     this.startDate = args.startDate
     this.endDate = args.endDate
-    this.owner = args.owner
     this.status = args.status
+    this.ownerId = args.ownerId
     this.createdAt = args.createdAt
+    this.updatedAt = args.updatedAt
   }
 }

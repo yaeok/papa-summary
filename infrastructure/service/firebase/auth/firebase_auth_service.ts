@@ -28,6 +28,8 @@ export class FirebaseAuthService {
         password
       )
 
+      await this.sendEmailVerification()
+
       return userCredential
     } catch (error: any) {
       if (isFirebaseError(error)) {

@@ -4,9 +4,13 @@ import { UserOutput } from '../data/UserOutput'
 import { FirestoreUserService } from '../service/firebase/firestore/firestore_user_service'
 
 export class UserRepository {
+  private service: FirestoreUserService
+
+  constructor() {
+    this.service = new FirestoreUserService()
+  }
   async findById(args: { id: string }): Promise<User> {
-    const service = new FirestoreUserService()
-    const response: UserOutput = await service.findById(args)
+    const response: UserOutput = await this.service.findById(args)
 
     const user = new User({
       id: response.id,
@@ -25,7 +29,6 @@ export class UserRepository {
     name: string
     parentType: string
   }): Promise<void> {
-    const service = new FirestoreUserService()
-    await service.create(args)
+    await this.service.create(args)
   }
 }

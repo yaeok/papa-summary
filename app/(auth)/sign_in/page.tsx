@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
-import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { SignInUseCase } from '@/usecase/SignInUseCase/SignInUseCase'
 
@@ -42,7 +41,7 @@ const Page = () => {
     }
   })
   return (
-    <div className='px-2 py-20 w-full min-h-screen justify-center items-center flex'>
+    <div className='px-2 py-20 justify-center items-center flex'>
       <div className='w-full lg:w-1/4 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
         <form onSubmit={onSubmit} className='w-full space-y-4'>
           <section className='flex flex-col gap-4'>
@@ -97,8 +96,8 @@ const Page = () => {
           <section className='flex justify-center'>
             <button
               type='submit'
-              className='px-4 py-2 rounded-full bg-green-400 text-white font-semibold shadow-md
-              hover:bg-green-500 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
+              className='px-4 py-2 rounded-full bg-green-500 text-white font-semibold shadow-md
+              hover:bg-green-600 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
             >
               ログイン
             </button>

@@ -1,50 +1,61 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { products, tasks } from '@/data'
-import { Product } from '@/domains/Product'
 import { Task } from '@/domains/Task'
 import { TaskStatus } from '@/types/TaskStatus'
+import { GetAllTaskUseCase } from '@/usecase/GetAllTaskUseCase/GetAllTaskUseCase'
+
+import AddTaskButton from './_components/AddTask/AddTaskButton'
+import { useTaskContext } from './_hooks/TaskProvider'
 
 const Page = () => {
-  const [todos, setTodos] = useState<Task[]>(tasks)
-  const handleColorChange = (status: TaskStatus) => {
+  const taskContext = useTaskContext()
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetch = async () => {
+      setLoading(true)
+      const usecase = new GetAllTaskUseCase()
+      const response = await usecase.execute()
+      taskContext.setTasks(response.tasks)
+      setLoading(false)
+    }
+    fetch()
+  }, [])
+
+  const handleTagColorByStatus = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.NOTSTARTED:
-        return 'bg-red-50'
+        return 'bg-red-400'
       case TaskStatus.DOING:
-        return 'bg-yellow-50'
+        return 'bg-green-400'
       case TaskStatus.DONE:
-        return 'bg-gray-50'
+        return 'bg-gray-400'
     }
   }
-  const handleTaskStatusChanged = (status: TaskStatus) => {
+
+  const handleTagNameByStatus = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.NOTSTARTED:
-        setTodos(tasks.filter((todo) => todo.status === TaskStatus.NOTSTARTED))
-        break
+        return '未着手'
       case TaskStatus.DOING:
-        setTodos(tasks.filter((todo) => todo.status === TaskStatus.DOING))
-        break
+        return '進行中'
       case TaskStatus.DONE:
-        setTodos(tasks.filter((todo) => todo.status === TaskStatus.DONE))
-        break
-      case 'all':
-        setTodos(tasks)
-        break
+        return '完了'
     }
   }
+
   return (
     <div className='space-y-4'>
-      <div className='flex flex-row justify-between'>
+      <div className='flex flex-row justify-between items-center'>
         <h1 className='text-lg'>やることリスト</h1>
-        <div className='space-x-4'>
+        <div className='flex flex-row gap-2'>
           <select
             name='task-select'
             id='task-select'
             onChange={(e) =>
-              handleTaskStatusChanged(e.target.value as TaskStatus)
+              taskContext.filterTaskStatusChanged(e.target.value as TaskStatus)
             }
             className='focus:outline-none'
           >
@@ -53,46 +64,47 @@ const Page = () => {
             <option value={TaskStatus.DOING}>進行中</option>
             <option value={TaskStatus.DONE}>完了</option>
           </select>
-          <button
-            className='bg-blue-500 text-white rounded-full px-4 py-1 shadow-md
-            hover:bg-blue-600 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
-          >
-            登録
-          </button>
+          <AddTaskButton />
         </div>
       </div>
-      <div className='grid grid-cols-2 gap-2'>
-        {todos.map((todo: Task) => (
-          <div
-            key={todo.id}
-            className={`p-4 aspect-2/1 rounded-lg shadow-md flex flex-col justify-between ${handleColorChange(
-              todo.status
-            )}`}
-          >
-            <div className='space-y-2'>
-              <div className='flex flex-row justify-between'>
-                <h2 className='text-lg font-semibold'>{todo.title}</h2>
-                <input
-                  type='checkbox'
-                  disabled={todo.status === TaskStatus.DONE}
-                  defaultChecked={todo.status === TaskStatus.DONE}
-                  className={`
-                    h-4 w-4 text-blue-500 border border-gray-100 rounded-full cursor-pointer
-                    checked:bg-purple-500 checked:border-transparent checked:text-white
-                    focus:ring-blue-500 focus:ring-2 focus:outline-none
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                  `}
-                />
-              </div>
-              <p className='overflow-hidden'>{todo.content}</p>
+
+      {(() => {
+        if (loading) {
+          return <div>読み込み中...</div>
+        } else {
+          return (
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+              {taskContext.tasks.map((task: Task) => (
+                <div
+                  key={task.id}
+                  onClick={() => console.log(task)}
+                  className='p-4 rounded-md shadow-md flex flex-col justify-between gap-4'
+                >
+                  <div className='flex flex-row justify-between items-center gap-2'>
+                    <h2 className='text-lg font-semibold flex-1'>
+                      {task.title}
+                    </h2>
+                    {
+                      <span
+                        className={`px-4 py-2 rounded-full text-xs ${handleTagColorByStatus(
+                          task.status
+                        )}`}
+                      >
+                        {handleTagNameByStatus(task.status)}
+                      </span>
+                    }
+                  </div>
+                  <p className='px-2 text-sm break-words'>{task.content}</p>
+                  <div className='text-end text-sm'>
+                    {task.startDate.toLocaleDateString()} 〜{' '}
+                    {task.endDate?.toLocaleDateString()}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div>
-              {todo.startDate.toLocaleDateString()} 〜{' '}
-              {todo.endDate?.toLocaleDateString()}
-            </div>
-          </div>
-        ))}
-      </div>
+          )
+        }
+      })()}
     </div>
   )
 }
