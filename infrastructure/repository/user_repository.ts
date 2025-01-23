@@ -17,6 +17,7 @@ export class UserRepository {
       email: response.email,
       name: response.name,
       parentType: response.parentType,
+      babyId: '',
       createdAt: response.createdAt,
     })
 

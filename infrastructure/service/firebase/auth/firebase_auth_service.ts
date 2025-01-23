@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { UserNotFoundException } from '@/infrastructure/exception/UserNotFoundException'
 import {

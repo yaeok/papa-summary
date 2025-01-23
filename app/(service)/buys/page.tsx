@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react'
 
-import { products } from '@/data'
 import { Product } from '@/domains/Product'
 
 import AddProductButton from './_components/AddProduct/AddProductButton'
 import { useProductContext } from './_hooks/ProductProvider'
+import { GetAllProductUseCase } from '@/usecase/GetAllProductUseCase/GetAllProductUseCase'
 
 const Page = () => {
   const productContext = useProductContext()
@@ -15,7 +15,9 @@ const Page = () => {
   useEffect(() => {
     const fetch = async () => {
       setLoading(true)
-      productContext.setProducts(products)
+      const usecase = new GetAllProductUseCase()
+      const response = await usecase.execute()
+      productContext.setProducts(response.products)
       setLoading(false)
     }
     fetch()

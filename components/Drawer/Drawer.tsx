@@ -1,43 +1,49 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 
+import DrawerButton from '@/components/Drawer/DrawerButton/DrawerButton'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import Drawer from './Drawer/Drawer'
 
-type HeaderProps = {
+type DrawerProps = {
   isSignIn?: boolean
 }
 
-export default function Header({ isSignIn }: HeaderProps) {
+export default function Drawer({ isSignIn }: DrawerProps) {
   const currentUser = useAuthContext()
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleDrawer = () => {
+    setIsOpen(!isOpen)
+  }
+
   const handleLogout = async () => {}
+
   return (
-    <header className='top-0 left-0 w-full px-4 lg:px-16 py-4 bg-white shadow-md sticky z-10'>
-      <div className='max-w-screen-lg mx-auto flex flex-row justify-between items-center'>
-        <div>
-          <h1 className='text-3xl font-semibold text-black'>
-            <Link href={currentUser?.currentUser ? '/tasks' : '/'}>
-              <span className='hover:text-blue-500'>パパ準備</span>
-            </Link>
-          </h1>
-        </div>
-
-        <Drawer isSignIn={isSignIn} />
-
-        <nav className='hidden lg:block'>
-          <ul className='flex flex-row items-center gap-6'>
+    <div>
+      <div
+        id='drawer-example'
+        className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } bg-white w-60 sm:w-80`}
+        tabIndex={-1}
+        aria-labelledby='drawer-label'
+      >
+        <button
+          type='button'
+          className='text-slate-800 bg-transparent rounded-lg text-sm w-8 h-8 absolute top-4 right-4 flex items-center justify-center'
+          onClick={toggleDrawer}
+        >
+          ✕
+        </button>
+        <nav className='pl-4 pt-8'>
+          <ul className='flex flex-col gap-8'>
             <li>
               <Link href='/'>
-                <span className='hover:border-b-2 hover:border-blue-500 hover:text-blue-500'>
-                  TOP
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link href='/'>
-                <span className='hover:border-b-2 hover:border-blue-500 hover:text-blue-500'>
-                  CONTACT
+                <span className='text-lg font-mono font-semibold border-blue-500 hover:text-blue-500 hover:border-b-2'>
+                  HOME
                 </span>
               </Link>
             </li>
@@ -67,6 +73,7 @@ export default function Header({ isSignIn }: HeaderProps) {
           </ul>
         </nav>
       </div>
-    </header>
+      <DrawerButton toggleDrawer={toggleDrawer} />
+    </div>
   )
 }

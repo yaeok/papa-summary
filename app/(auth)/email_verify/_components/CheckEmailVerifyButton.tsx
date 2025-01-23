@@ -20,7 +20,7 @@ const CheckEmailVerifyButton = () => {
       const usecase = new CheckEmailVerifyUseCase()
       const result = await usecase.execute()
       if (result.result) {
-        router.push('/tasks')
+        router.push('/new')
       }
     } catch (error) {
       if (error instanceof FirebaseAuthException) {
