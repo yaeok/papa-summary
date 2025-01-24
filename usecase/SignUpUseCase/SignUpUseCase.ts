@@ -37,7 +37,8 @@ export class SignUpUseCase
         id: response,
         email: email,
         name: '',
-        parentType: '',
+        babyId: '',
+        parentType: 0,
         createdAt: new Date(),
       })
 

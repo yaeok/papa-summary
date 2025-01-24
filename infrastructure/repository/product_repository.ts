@@ -9,10 +9,30 @@ export class ProductRepository {
     this.service = new FirestoreProductService()
   }
 
+  async findAll(args: { ownerId: string }): Promise<Product[]> {
+    const { ownerId } = args
+
+    const result = await this.service.findAll({ ownerId })
+
+    const response = result.map((product) => {
+      return new Product({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        content: product.content,
+        categories: [],
+        createdAt: product.createdAt,
+      })
+    })
+
+    return response
+  }
+
   async create(args: {
     name: string
     price: number
     content: string
+    babyId: string
   }): Promise<Product> {
     const result = await this.service.create(args)
 

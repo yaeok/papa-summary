@@ -1,6 +1,6 @@
 import { User } from '@/domains/User'
 
-import { UserOutput } from '../data/UserOutput'
+import { UserDTO } from '../data/UserDTO'
 import { FirestoreUserService } from '../service/firebase/firestore/firestore_user_service'
 
 export class UserRepository {
@@ -10,15 +10,9 @@ export class UserRepository {
     this.service = new FirestoreUserService()
   }
   async findById(args: { id: string }): Promise<User> {
-    const response: UserOutput = await this.service.findById(args)
+    const response: UserDTO = await this.service.findById(args)
 
-    const user = new User({
-      id: response.id,
-      email: response.email,
-      name: response.name,
-      parentType: response.parentType,
-      createdAt: response.createdAt,
-    })
+    const user = User.fromUserDTO(response)
 
     return user
   }
@@ -27,8 +21,16 @@ export class UserRepository {
     id: string
     email: string
     name: string
-    parentType: string
+    parentType: number
   }): Promise<void> {
     await this.service.create(args)
+  }
+
+  async updateFromNameParentType(args: {
+    id: string
+    name: string
+    parentType: number
+  }): Promise<void> {
+    await this.service.updateFromNameParentType(args)
   }
 }

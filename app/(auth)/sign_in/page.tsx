@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
+import { RoutePath } from '@/constants/RoutePath'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { SignInUseCase } from '@/usecase/SignInUseCase/SignInUseCase'
 
@@ -32,7 +33,7 @@ const Page = () => {
         password: data.password,
       })
       if (response.result) {
-        router.push('/tasks')
+        router.push(RoutePath.getTaskPage())
       }
     } catch (error) {
       if (error instanceof FirebaseAuthException) {

@@ -1,5 +1,4 @@
-import { TaskOutput } from '@/infrastructure/data/TaskOutput'
-import { TaskStatus } from '@/types/TaskStatus'
+import { TaskDTO } from '@/infrastructure/data/TaskDTO'
 import {
   addDoc,
   collection,
@@ -14,27 +13,17 @@ import { db } from '../config/firebaseConfig'
 export class FirestoreTaskService {
   private path = 'tasks'
 
-  async findAll(args: { ownerId: string }): Promise<TaskOutput[]> {
-    const { ownerId } = args
+  async findAll(args: { babyId: string }): Promise<TaskDTO[]> {
+    const { babyId } = args
     const ref = collection(db, this.path)
 
-    const q = query(ref, where('ownerId', '==', ownerId))
+    const q = query(ref, where('babyId', '==', babyId))
 
     const snapshot = await getDocs(q)
 
     const response = snapshot.docs.map((doc) => {
       const data = doc.data()
-      return new TaskOutput({
-        id: doc.id,
-        title: data.name,
-        content: data.content,
-        startDate: data.startDate.toDate(),
-        endDate: data.endDate?.toDate() ?? null,
-        status: data.status,
-        ownerId: data.ownerId,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt?.toDate() ?? null,
-      })
+      return TaskDTO.fromDocumentData(data, doc.id)
     })
 
     return response
@@ -45,38 +34,32 @@ export class FirestoreTaskService {
     content: string
     startDate: Date
     endDate: Date | null
-    ownerId: string
-  }): Promise<TaskOutput> {
-    const { name, content, startDate, endDate, ownerId } = args
+    timing: number
+    babyId: string
+  }): Promise<TaskDTO> {
+    const { name, content, startDate, endDate, timing, babyId } = args
 
     const ref = collection(db, this.path)
 
-    const document = {
-      name: name,
+    const response = TaskDTO.fromTask({
+      id: '',
+      title: name,
       content: content,
       startDate: startDate,
       endDate: endDate,
-      status: TaskStatus.NOTSTARTED,
-      ownerId: ownerId,
+      timing: timing,
+      babyId: babyId,
+      completedAt: null,
       createdAt: new Date(),
-      updatedAt: null,
-    }
+    })
+
+    const document = response.toDocumentData()
 
     const docRef = await addDoc(ref, document)
 
     await updateDoc(docRef, { id: docRef.id })
 
-    const response = new TaskOutput({
-      id: docRef.id,
-      title: name,
-      content: content,
-      startDate: startDate,
-      endDate: endDate,
-      status: TaskStatus.NOTSTARTED,
-      ownerId: ownerId,
-      createdAt: new Date(),
-      updatedAt: null,
-    })
+    response.id = docRef.id
 
     return response
   }

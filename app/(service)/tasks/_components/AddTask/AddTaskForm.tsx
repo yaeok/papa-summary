@@ -1,5 +1,8 @@
 import { useForm } from 'react-hook-form'
 
+import { Label } from '@/constants/Label'
+import { Status } from '@/constants/Status'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { AddTaskUseCase } from '@/usecase/AddTaskUseCase/AddTaskUseCase'
 
 import { useTaskContext } from '../../_hooks/TaskProvider'
@@ -7,6 +10,7 @@ import { useTaskContext } from '../../_hooks/TaskProvider'
 type AddTaskFormType = {
   title: string
   content: string
+  timing: number
   startDate: string
   endDate: string
 }
@@ -27,11 +31,13 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
     defaultValues: {
       title: '',
       content: '',
+      timing: 0,
       startDate: today,
-      endDate: today,
+      endDate: '',
     },
   })
   const taskContext = useTaskContext()
+  const currentUser = useAuthContext().currentUser
 
   const startDate = watch('startDate')
   const endDate = watch('endDate')
@@ -46,6 +52,8 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
       content,
       startDate: new Date(startDate),
       endDate: endDate === '' ? null : new Date(endDate),
+      timing: parseInt(data.timing.toString()),
+      babyId: currentUser!.babyId,
     })
 
     taskContext.addTask(result.result)
@@ -58,7 +66,7 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
       <form onSubmit={onSubmit} className='w-full space-y-4'>
         <section className='flex flex-col gap-4'>
           <div className='flex flex-col gap-2'>
-            <label htmlFor='title'>
+            <label htmlFor='title' className='text-sm'>
               タイトル<span className='text-red-500'>*</span>
             </label>
             <input
@@ -75,15 +83,39 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
             )}
           </div>
           <div className='flex flex-col gap-2'>
-            <label htmlFor='content'>内容</label>
+            <label htmlFor='content' className='text-sm'>
+              内容
+            </label>
             <textarea
               {...register('content')}
-              className='border-2 border-gray-300 rounded-md p-2 h-40 max-h-48'
+              className='border-2 border-gray-300 rounded-md p-2 h-24 max-h-32'
             />
+          </div>
+          <div className='flex flex-col gap-2'>
+            <label htmlFor='timing' className='text-sm'>
+              タイミング
+            </label>
+            <select
+              {...register('timing')}
+              className='border-2 border-gray-300 rounded-md p-2'
+            >
+              <option value={Status.getTaskTimingEarly()}>
+                {Label.getTaskTimingEarly()}
+              </option>
+              <option value={Status.getTaskTimingMiddle()}>
+                {Label.getTaskTimingMiddle()}
+              </option>
+              <option value={Status.getTaskTimingLate()}>
+                {Label.getTaskTimingLate()}
+              </option>
+              <option value={Status.getTaskTimingAfter()}>
+                {Label.getTaskTimingAfter()}
+              </option>
+            </select>
           </div>
           <div className='w-full flex flex-row gap-4'>
             <div className='w-full flex flex-col gap-2'>
-              <label htmlFor='startDate'>
+              <label htmlFor='startDate' className='text-sm'>
                 開始日<span className='text-red-500'>*</span>
               </label>
               <input
@@ -109,7 +141,9 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
               )}
             </div>
             <div className='w-full flex flex-col gap-2'>
-              <label htmlFor='endDate'>終了日</label>
+              <label htmlFor='endDate' className='text-sm'>
+                終了日
+              </label>
               <input
                 type='date'
                 {...register('endDate', {

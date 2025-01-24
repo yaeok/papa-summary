@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react'
 
+import { Label } from '@/constants/Label'
+import { Status } from '@/constants/Status'
 import { Task } from '@/domains/Task'
-import { TaskStatus } from '@/types/TaskStatus'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetAllTaskUseCase } from '@/usecase/GetAllTaskUseCase/GetAllTaskUseCase'
 
 import AddTaskButton from './_components/AddTask/AddTaskButton'
@@ -11,38 +13,47 @@ import { useTaskContext } from './_hooks/TaskProvider'
 
 const Page = () => {
   const taskContext = useTaskContext()
+  const currentUser = useAuthContext().currentUser
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true)
       const usecase = new GetAllTaskUseCase()
-      const response = await usecase.execute()
+      const response = await usecase.execute({ babyId: currentUser!.babyId })
       taskContext.setTasks(response.tasks)
       setLoading(false)
     }
     fetch()
   }, [])
 
-  const handleTagColorByStatus = (status: TaskStatus) => {
-    switch (status) {
-      case TaskStatus.NOTSTARTED:
-        return 'bg-red-400'
-      case TaskStatus.DOING:
-        return 'bg-green-400'
-      case TaskStatus.DONE:
-        return 'bg-gray-400'
+  const handleTagColorByTiming = (timing: number) => {
+    switch (timing) {
+      case Status.getTaskTimingEarly():
+        return 'bg-blue-500 text-white'
+      case Status.getTaskTimingMiddle():
+        return 'bg-yellow-500 text-white'
+      case Status.getTaskTimingLate():
+        return 'bg-red-500 text-white'
+      case Status.getTaskTimingAfter():
+        return 'bg-green-500 text-white'
+      default:
+        return 'bg-gray-500 text-white'
     }
   }
 
-  const handleTagNameByStatus = (status: TaskStatus) => {
-    switch (status) {
-      case TaskStatus.NOTSTARTED:
-        return '未着手'
-      case TaskStatus.DOING:
-        return '進行中'
-      case TaskStatus.DONE:
-        return '完了'
+  const handleTagNameByTiming = (timing: number) => {
+    switch (timing) {
+      case Status.getTaskTimingEarly():
+        return Label.getTaskTimingEarly()
+      case Status.getTaskTimingMiddle():
+        return Label.getTaskTimingMiddle()
+      case Status.getTaskTimingLate():
+        return Label.getTaskTimingLate()
+      case Status.getTaskTimingAfter():
+        return Label.getTaskTimingAfter()
+      default:
+        return '未設定'
     }
   }
 
@@ -54,15 +65,22 @@ const Page = () => {
           <select
             name='task-select'
             id='task-select'
-            onChange={(e) =>
-              taskContext.filterTaskStatusChanged(e.target.value as TaskStatus)
-            }
+            onChange={(e) => console.log(e.target.value)}
             className='focus:outline-none'
           >
-            <option value='all'>全て</option>
-            <option value={TaskStatus.NOTSTARTED}>未着手</option>
-            <option value={TaskStatus.DOING}>進行中</option>
-            <option value={TaskStatus.DONE}>完了</option>
+            <option value={Status.getTaskTimingAll()}>全て</option>
+            <option value={Status.getTaskTimingEarly()}>
+              {Label.getTaskTimingEarly()}
+            </option>
+            <option value={Status.getTaskTimingMiddle()}>
+              {Label.getTaskTimingMiddle()}
+            </option>
+            <option value={Status.getTaskTimingLate()}>
+              {Label.getTaskTimingLate()}
+            </option>
+            <option value={Status.getTaskTimingAfter()}>
+              {Label.getTaskTimingAfter()}
+            </option>
           </select>
           <AddTaskButton />
         </div>
@@ -86,11 +104,11 @@ const Page = () => {
                     </h2>
                     {
                       <span
-                        className={`px-4 py-2 rounded-full text-xs ${handleTagColorByStatus(
-                          task.status
+                        className={`px-4 py-2 rounded-full text-xs ${handleTagColorByTiming(
+                          task.timing
                         )}`}
                       >
-                        {handleTagNameByStatus(task.status)}
+                        {handleTagNameByTiming(task.timing)}
                       </span>
                     }
                   </div>

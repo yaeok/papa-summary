@@ -1,4 +1,4 @@
-import { TaskStatus } from '@/types/TaskStatus'
+import { TaskDTO } from '@/infrastructure/data/TaskDTO'
 
 export class Task {
   id: string
@@ -6,8 +6,9 @@ export class Task {
   content: string
   startDate: Date
   endDate: Date | null
-  owner: string
-  status: TaskStatus
+  babyId: string
+  timing: number
+  completedAt: Date | null
   createdAt: Date
 
   constructor(args: {
@@ -16,8 +17,9 @@ export class Task {
     content: string
     startDate: Date
     endDate: Date | null
-    owner: string
-    status: TaskStatus
+    babyId: string
+    timing: number
+    completedAt: Date | null
     createdAt: Date
   }) {
     this.id = args.id
@@ -25,8 +27,23 @@ export class Task {
     this.content = args.content
     this.startDate = args.startDate
     this.endDate = args.endDate
-    this.owner = args.owner
-    this.status = args.status
+    this.babyId = args.babyId
+    this.timing = args.timing
+    this.completedAt = args.completedAt
     this.createdAt = args.createdAt
+  }
+
+  static fromTaskDTO(taskDTO: TaskDTO): Task {
+    return new Task({
+      id: taskDTO.id,
+      title: taskDTO.title,
+      content: taskDTO.content,
+      startDate: taskDTO.startDate,
+      endDate: taskDTO.endDate,
+      babyId: taskDTO.babyId,
+      timing: taskDTO.timing,
+      completedAt: taskDTO.completedAt,
+      createdAt: taskDTO.createdAt,
+    })
   }
 }

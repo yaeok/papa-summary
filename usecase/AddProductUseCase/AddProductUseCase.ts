@@ -7,6 +7,7 @@ interface AddProductUseCaseInput extends UseCaseInput {
   name: string
   price: number
   content: string
+  babyId: string
 }
 
 interface AddProductUseCaseOutput extends UseCaseOutput {
@@ -25,12 +26,13 @@ export class AddProductUseCase
   async execute(
     input: AddProductUseCaseInput
   ): Promise<AddProductUseCaseOutput> {
-    const { name, price, content } = input
+    const { name, price, content, babyId } = input
 
     const result = await this.productRepository.create({
       name,
       price,
       content,
+      babyId,
     })
 
     return { result }

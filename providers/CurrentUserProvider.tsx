@@ -10,6 +10,7 @@ import React, {
 } from 'react'
 
 import { User } from '@/domains/User'
+import { ParentRepository } from '@/infrastructure/repository/parent_repository'
 import { UserRepository } from '@/infrastructure/repository/user_repository'
 import { auth } from '@/infrastructure/service/firebase/config/firebaseConfig'
 
@@ -19,7 +20,11 @@ type AuthContextType = {
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType>({
+  currentUser: null,
+  isEmailVerified: false,
+  setCurrentUser: () => null,
+})
 
 export const useAuthContext = () => useContext(AuthContext)
 
@@ -31,8 +36,11 @@ export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const repository = new UserRepository()
-        const response = await repository.findById({ id: user.uid })
+        const userRepository = new UserRepository()
+        const response = await userRepository.findById({ id: user.uid })
+        const parentRepository = new ParentRepository()
+        const parent = await parentRepository.findByUserId({ userId: user.uid })
+        response.babyId = parent.babyId
         setCurrentUser(response)
 
         if (user.emailVerified) {
