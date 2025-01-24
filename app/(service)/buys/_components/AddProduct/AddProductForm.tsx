@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 
+import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { AddProductUseCase } from '@/usecase/AddProductUseCase/AddProductUseCase'
 
 import { useProductContext } from '../../_hooks/ProductProvider'
@@ -29,6 +30,7 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
   })
 
   const productContext = useProductContext()
+  const currentUser = useAuthContext().currentUser
 
   const onSubmit = handleSubmit(async (data: AddProductFormType) => {
     const { title, content, price } = data
@@ -39,6 +41,7 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
       name: title,
       price,
       content,
+      babyId: currentUser!.babyId,
     })
 
     productContext.addProduct(result.result)
