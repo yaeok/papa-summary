@@ -1,8 +1,6 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-import { Baby } from '@/domains/Baby'
-
 import UpdateProfileForm from './UpdateProfileForm'
 
 type UpdateProfileModalProps = {
