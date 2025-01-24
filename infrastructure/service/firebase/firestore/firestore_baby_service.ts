@@ -30,7 +30,7 @@ export class FirestoreBabyService {
     return docRef.id
   }
 
-  async findById(args: { id: string }): Promise<BabyDTO> {
+  async findById(args: { id: string }): Promise<BabyDTO | null> {
     const { id } = args
 
     const ref = collection(db, this.path)
@@ -38,6 +38,10 @@ export class FirestoreBabyService {
     const q = query(ref, where('id', '==', id))
 
     const snapshot = await getDocs(q)
+
+    if (snapshot.empty) {
+      return null
+    }
 
     const document = snapshot.docs[0].data()
 

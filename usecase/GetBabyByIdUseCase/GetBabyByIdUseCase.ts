@@ -9,7 +9,7 @@ interface GetBabyByIdUseCaseInput extends UseCaseInput {
 }
 
 interface GetBabyByIdUseCaseOutput extends UseCaseOutput {
-  baby: Baby
+  baby: Baby | null
 }
 
 export class GetBabyByIdUseCase

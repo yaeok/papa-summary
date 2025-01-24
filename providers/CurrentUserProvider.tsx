@@ -40,7 +40,9 @@ export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
         const response = await userRepository.findById({ id: user.uid })
         const parentRepository = new ParentRepository()
         const parent = await parentRepository.findByUserId({ userId: user.uid })
-        response.babyId = parent.babyId
+        if (parent !== null) {
+          response.babyId = parent.babyId
+        }
         setCurrentUser(response)
 
         if (user.emailVerified) {

@@ -28,7 +28,7 @@ const BabySection = () => {
       <div className='w-full'>
         <div className='flex flex-row justify-between'>
           <p>呼び名</p>
-          <p>{babyInfo?.name}</p>
+          <p>{babyInfo !== null ? babyInfo.name : '未設定'}</p>
         </div>
         <div className='flex flex-row justify-between'>
           <p>予定日</p>
