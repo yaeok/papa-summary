@@ -27,7 +27,7 @@ export class FirestoreUserService {
     }
 
     const response = querySnapshot.docs.map((doc) => {
-      const data = doc.data() as DocumentData
+      const data = doc.data()
       const user = UserDTO.fromDocumentData(data, doc.id)
 
       return user

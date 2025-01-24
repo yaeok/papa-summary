@@ -17,11 +17,15 @@ export class ParentRepository {
     return response
   }
 
-  async findByUserId(args: { userId: string }): Promise<Parent> {
+  async findByUserId(args: { userId: string }): Promise<Parent | null> {
     const result = await this.service.findByUserId(args)
 
-    const response = Parent.fromParentDTO(result)
+    if (result != null) {
+      const response = Parent.fromParentDTO(result)
 
-    return response
+      return response
+    } else {
+      return null
+    }
   }
 }

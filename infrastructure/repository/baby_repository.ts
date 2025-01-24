@@ -26,13 +26,17 @@ export class BabyRepository {
     }
   }
 
-  async findById(args: { id: string }): Promise<Baby> {
+  async findById(args: { id: string }): Promise<Baby | null> {
     try {
       const baby = await this.service.findById(args)
 
-      const response = Baby.fromBabyDTO(baby)
+      if (baby != null) {
+        const response = Baby.fromBabyDTO(baby)
 
-      return response
+        return response
+      } else {
+        return null
+      }
     } catch (error) {
       console.error(error)
       throw new Error('Failed to find baby')

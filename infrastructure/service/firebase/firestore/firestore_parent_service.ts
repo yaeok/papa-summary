@@ -17,7 +17,7 @@ export class FirestoreParentService {
     return ParentDTO.fromDocumentData(document)
   }
 
-  async findByUserId(args: { userId: string }): Promise<ParentDTO> {
+  async findByUserId(args: { userId: string }): Promise<ParentDTO | null> {
     const { userId } = args
 
     const ref = collection(db, this.path)
@@ -25,6 +25,10 @@ export class FirestoreParentService {
     const q = query(ref, where('userId', '==', userId))
 
     const snapshot = await getDocs(q)
+
+    if (snapshot.empty) {
+      return null
+    }
 
     const document = snapshot.docs[0].data()
 
