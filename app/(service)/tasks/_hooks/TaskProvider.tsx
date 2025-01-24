@@ -3,7 +3,6 @@
 import { createContext, useContext, useState } from 'react'
 
 import { Task } from '@/domains/Task'
-import { TaskStatus } from '@/types/TaskStatus'
 
 type TaskContextType = {
   tasks: Task[]
@@ -11,7 +10,6 @@ type TaskContextType = {
   updateTask: (task: Task) => void
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>
   sortTaskByStartDate: () => Task[]
-  filterTaskStatusChanged: (status: TaskStatus) => Task[]
 }
 
 const TaskContext = createContext<TaskContextType>({
@@ -20,7 +18,6 @@ const TaskContext = createContext<TaskContextType>({
   updateTask: () => {},
   setTasks: () => {},
   sortTaskByStartDate: () => [],
-  filterTaskStatusChanged: () => [],
 })
 
 export const useTaskContext = () => useContext(TaskContext)
@@ -51,25 +48,6 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     return sortTodos
   }
 
-  const filterTaskStatusChanged = (status: TaskStatus): Task[] => {
-    switch (status) {
-      case TaskStatus.NOTSTARTED:
-        return tasks.filter((todo) => todo.status === TaskStatus.NOTSTARTED)
-
-      case TaskStatus.DOING:
-        return tasks.filter((todo) => todo.status === TaskStatus.DOING)
-
-      case TaskStatus.DONE:
-        return tasks.filter((todo) => todo.status === TaskStatus.DONE)
-
-      case 'all':
-        return tasks
-
-      default:
-        return tasks
-    }
-  }
-
   return (
     <TaskContext.Provider
       value={{
@@ -78,7 +56,6 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
         updateTask,
         setTasks,
         sortTaskByStartDate,
-        filterTaskStatusChanged,
       }}
     >
       {children}

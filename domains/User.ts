@@ -1,8 +1,10 @@
+import { UserDTO } from '@/infrastructure/data/UserDTO'
+
 export class User {
   id: string
   name: string
   email: string
-  parentType: string
+  parentType: number
   babyId: string
   createdAt: Date
 
@@ -10,7 +12,7 @@ export class User {
     id: string
     name: string
     email: string
-    parentType: string
+    parentType: number
     babyId: string
     createdAt: Date
   }) {
@@ -21,5 +23,16 @@ export class User {
     this.parentType = parentType
     this.babyId = babyId
     this.createdAt = createdAt
+  }
+
+  static fromUserDTO(userDTO: UserDTO): User {
+    return new User({
+      id: userDTO.id,
+      name: userDTO.name,
+      email: userDTO.email,
+      parentType: userDTO.parentType,
+      babyId: '',
+      createdAt: userDTO.createdAt,
+    })
   }
 }

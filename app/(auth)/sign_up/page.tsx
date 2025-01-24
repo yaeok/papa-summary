@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import ErrorMessageModal from '@/components/ErrorMessageModal'
+import { RoutePath } from '@/constants/RoutePath'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { SignUpUseCase } from '@/usecase/SignUpUseCase/SignUpUseCase'
 
@@ -42,7 +43,7 @@ const Page = () => {
         password: data.password,
       })
       if (response.result) {
-        router.push('/email_verify')
+        router.push(RoutePath.getEmailVerificationPage())
       }
     } catch (error) {
       if (error instanceof FirebaseAuthException) {

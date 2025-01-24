@@ -1,4 +1,4 @@
-import { UserOutput } from '@/infrastructure/data/UserOutput'
+import { UserDTO } from '@/infrastructure/data/UserDTO'
 import {
   collection,
   doc,
@@ -13,7 +13,7 @@ import { db } from '../config/firebaseConfig'
 
 export class FirestoreUserService {
   private path = 'users'
-  async findById(args: { id: string }): Promise<UserOutput> {
+  async findById(args: { id: string }): Promise<UserDTO> {
     const { id } = args
     const ref = collection(db, this.path)
 
@@ -27,14 +27,7 @@ export class FirestoreUserService {
 
     const response = querySnapshot.docs.map((doc) => {
       const data = doc.data() as DocumentData
-      const user = new UserOutput({
-        id: data.id,
-        email: data.email,
-        name: data.name,
-        parentType: data.parentType,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt ? data.updatedAt.toDate() : null,
-      })
+      const user = UserDTO.fromDocumentData(data, doc.id)
 
       return user
     })[0]
@@ -46,21 +39,38 @@ export class FirestoreUserService {
     id: string
     name: string
     email: string
-    parentType: string
+    parentType: number
   }): Promise<void> {
     const { id, name, email, parentType } = args
 
     const ref = doc(db, this.path, id)
 
-    const document = {
+    const document = UserDTO.fromUser({
       id: id,
       name: name,
       email: email,
       parentType: parentType,
+      babyId: '',
       createdAt: new Date(),
-      updatedAt: null,
-    }
+    }).toDocumentData()
 
     await setDoc(ref, document)
+  }
+
+  async updateFromNameParentType(args: {
+    id: string
+    name: string
+    parentType: number
+  }): Promise<void> {
+    const { id, name, parentType } = args
+
+    const ref = doc(db, this.path, id)
+
+    const document = {
+      name: name,
+      parentType: parentType,
+    }
+
+    await setDoc(ref, document, { merge: true })
   }
 }

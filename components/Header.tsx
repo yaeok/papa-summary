@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 
+import { RoutePath } from '@/constants/RoutePath'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
+
 import Drawer from './Drawer/Drawer'
 
 type HeaderProps = {
@@ -17,7 +19,13 @@ export default function Header({ isSignIn }: HeaderProps) {
       <div className='max-w-screen-lg mx-auto flex flex-row justify-between items-center'>
         <div>
           <h1 className='text-3xl font-semibold text-black'>
-            <Link href={currentUser?.currentUser ? '/tasks' : '/'}>
+            <Link
+              href={
+                currentUser?.currentUser
+                  ? RoutePath.getTaskPage()
+                  : RoutePath.getLandingPage()
+              }
+            >
               <span className='hover:text-blue-500'>パパ準備</span>
             </Link>
           </h1>
@@ -28,14 +36,14 @@ export default function Header({ isSignIn }: HeaderProps) {
         <nav className='hidden lg:block'>
           <ul className='flex flex-row items-center gap-6'>
             <li>
-              <Link href='/'>
+              <Link href={RoutePath.getLandingPage()}>
                 <span className='hover:border-b-2 hover:border-blue-500 hover:text-blue-500'>
                   TOP
                 </span>
               </Link>
             </li>
             <li>
-              <Link href='/'>
+              <Link href={RoutePath.getLandingPage()}>
                 <span className='hover:border-b-2 hover:border-blue-500 hover:text-blue-500'>
                   CONTACT
                 </span>

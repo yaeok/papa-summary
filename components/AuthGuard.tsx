@@ -1,8 +1,10 @@
 'use client'
 
-import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
+
+import { RoutePath } from '@/constants/RoutePath'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const currentUser = useAuthContext()
@@ -25,12 +27,12 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     ) {
       // 認証情報有かつメール未認証
       setTimeout(() => {
-        router.replace('/email_verify')
+        router.replace(RoutePath.getEmailVerificationPage())
       }, 2000)
     } else {
       // 認証情報無
       setTimeout(() => {
-        router.replace('/')
+        router.replace(RoutePath.getLandingPage())
       }, 2000)
     }
   }, [currentUser, router])

@@ -9,20 +9,11 @@ export class TaskRepository {
     this.service = new FirestoreTaskService()
   }
 
-  async findAll(args: { ownerId: string }): Promise<Task[]> {
+  async findAll(args: { babyId: string }): Promise<Task[]> {
     const result = await this.service.findAll(args)
 
     const response = result.map((task) => {
-      return new Task({
-        id: task.id,
-        title: task.title,
-        content: task.content,
-        startDate: task.startDate,
-        endDate: task.endDate,
-        status: task.status,
-        owner: task.ownerId,
-        createdAt: task.createdAt,
-      })
+      return Task.fromTaskDTO(task)
     })
 
     return response
@@ -33,20 +24,11 @@ export class TaskRepository {
     content: string
     startDate: Date
     endDate: Date | null
-    ownerId: string
+    babyId: string
   }): Promise<Task> {
     const result = await this.service.create(args)
 
-    const response = new Task({
-      id: result.id,
-      title: result.title,
-      content: result.content,
-      startDate: result.startDate,
-      endDate: result.endDate,
-      status: result.status,
-      owner: result.ownerId,
-      createdAt: result.createdAt,
-    })
+    const response = Task.fromTaskDTO(result)
 
     return response
   }

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import ErrorMessageModal from '@/components/ErrorMessageModal'
+import { RoutePath } from '@/constants/RoutePath'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { CheckEmailVerifyUseCase } from '@/usecase/CheckEmailVerifyUseCase/CheckEmailVerifyUseCase'
 
@@ -20,7 +21,7 @@ const CheckEmailVerifyButton = () => {
       const usecase = new CheckEmailVerifyUseCase()
       const result = await usecase.execute()
       if (result.result) {
-        router.push('/new')
+        router.push(RoutePath.getNewPage())
       }
     } catch (error) {
       if (error instanceof FirebaseAuthException) {

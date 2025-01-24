@@ -24,9 +24,9 @@ export class GetAllTaskUseCase
   async execute(): Promise<GetAllTaskUseCaseOutput> {
     const user = await this.authRepository.getCurrentUser()
 
-    const ownerId = user.id
+    const babyId = user.id
 
-    const tasks = await this.taskRepository.findAll({ ownerId })
+    const tasks = await this.taskRepository.findAll({ babyId })
 
     return { tasks }
   }

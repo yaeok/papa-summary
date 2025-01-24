@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import DrawerButton from '@/components/Drawer/DrawerButton/DrawerButton'
+import { RoutePath } from '@/constants/RoutePath'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 
 type DrawerProps = {
@@ -41,7 +42,7 @@ export default function Drawer({ isSignIn }: DrawerProps) {
         <nav className='pl-4 pt-8'>
           <ul className='flex flex-col gap-8'>
             <li>
-              <Link href='/'>
+              <Link href={RoutePath.getLandingPage()}>
                 <span className='text-lg font-mono font-semibold border-blue-500 hover:text-blue-500 hover:border-b-2'>
                   HOME
                 </span>

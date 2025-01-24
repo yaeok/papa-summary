@@ -1,6 +1,11 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+
+import { RoutePath } from '@/constants/RoutePath'
+import { Status } from '@/constants/Status'
+import { CreateUserAndBabyInfoUseCase } from '@/usecase/CreateUserAndBabyInfoUseCase/CreateUserAndBabyInfoUseCase'
 
 type UserInfoFormType = {
   username: string
@@ -10,7 +15,8 @@ type UserInfoFormType = {
 }
 
 const Page = () => {
-  const today = new Date().toLocaleString().split('T')[0]
+  const router = useRouter()
+  const today = new Date().toISOString().split('T')[0]
   const {
     register,
     handleSubmit,
@@ -24,15 +30,25 @@ const Page = () => {
     },
   })
 
-  const onSubmit = handleSubmit(async (data: UserInfoFormType) => {})
+  const onSubmit = handleSubmit(async (data: UserInfoFormType) => {
+    const usecase = new CreateUserAndBabyInfoUseCase()
+    const result = await usecase.execute({
+      name: data.username,
+      parentType: parseInt(data.parentType),
+      babyName: data.babyName,
+      babyBirthday: data.babyBirthDate,
+    })
+
+    if (result.result) router.push(RoutePath.getTaskPage())
+  })
 
   return (
     <div className='px-2 py-4 justify-center items-center flex'>
-      <div className='w-full lg:w-1/4 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
+      <div className='w-full lg:w-1/4 bg-gray-50 rounded-lg px-8 py-4 shadow-md flex flex-col items-center gap-4'>
         <form onSubmit={onSubmit} className='w-full space-y-4'>
           <section className='flex flex-col gap-2'>
             <h1 className='text-xl font-semibold'>ユーザ情報</h1>
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-2'>
               <div className='flex flex-col gap-2'>
                 <label htmlFor='username'>
                   ユーザ名<span className='text-red-500'>*</span>
@@ -63,8 +79,8 @@ const Page = () => {
                   className='border-2 border-gray-300 rounded-md p-2'
                 >
                   <option value=''>選択してください</option>
-                  <option value='dad'>パパ</option>
-                  <option value='mom'>ママ</option>
+                  <option value={Status.getParentTypeFather()}>パパ</option>
+                  <option value={Status.getParentTypeMother()}>ママ</option>
                 </select>
                 {errors.parentType && (
                   <span className='pl-2 text-red-500 text-xs'>
@@ -74,7 +90,7 @@ const Page = () => {
               </div>
             </div>
             <h1 className='text-xl font-semibold'>ベイビー情報</h1>
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-2'>
               <div className='flex flex-col gap-2'>
                 <label htmlFor='babyName'>
                   呼び名<span className='text-red-500'>*</span>
@@ -98,9 +114,22 @@ const Page = () => {
                 <input
                   type='date'
                   id='babyBirthDate'
-                  {...register('babyBirthDate')}
+                  {...register('babyBirthDate', {
+                    validate: (value) => {
+                      const today = new Date().toISOString().split('T')[0]
+                      if (value < today) {
+                        return '未来の日付を入力してください'
+                      }
+                      return true
+                    },
+                  })}
                   className='border-2 border-gray-300 rounded-md p-2'
                 />
+                {errors.babyBirthDate && (
+                  <span className='pl-2 text-red-500 text-xs'>
+                    {errors.babyBirthDate.message}
+                  </span>
+                )}
               </div>
             </div>
           </section>
