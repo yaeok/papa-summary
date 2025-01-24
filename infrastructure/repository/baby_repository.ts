@@ -9,18 +9,53 @@ export class BabyRepository {
     this.service = new FirestoreBabyService()
   }
 
-  async create(args: { name: string; birthDate: Date }): Promise<Baby> {
-    const baby = new Baby({
-      id: '',
-      name: args.name,
-      birthDate: args.birthDate,
-      createdAt: new Date(),
-    })
+  async create(args: { name: string; birthDate: Date }): Promise<string> {
+    try {
+      const baby = new Baby({
+        id: '',
+        name: args.name,
+        birthDate: args.birthDate,
+      })
 
-    const result = await this.service.create({ baby })
+      const response = await this.service.create({ baby })
 
-    const response = Baby.fromBabyDTO(result)
+      return response
+    } catch (error) {
+      console.error(error)
+      throw new Error('Failed to create baby')
+    }
+  }
 
-    return response
+  async findById(args: { id: string }): Promise<Baby> {
+    try {
+      const baby = await this.service.findById(args)
+
+      const response = Baby.fromBabyDTO(baby)
+
+      return response
+    } catch (error) {
+      console.error(error)
+      throw new Error('Failed to find baby')
+    }
+  }
+
+  async updateById(args: {
+    id: string
+    name: string
+    birthDate: Date
+  }): Promise<void> {
+    try {
+      const baby = new Baby({
+        id: args.id,
+        name: args.name,
+        birthDate: args.birthDate,
+      })
+      const response = await this.service.updateById({ baby })
+
+      return response
+    } catch (error) {
+      console.error(error)
+      throw new Error('Failed to update baby')
+    }
   }
 }

@@ -27,18 +27,19 @@ export class BabyDTO {
     return new BabyDTO({
       id: id,
       name: data.name,
-      birthDate: data.birthDate?.toDate() ?? null,
+      birthDate: data.birthDate ? data.birthDate.toDate() : null,
       createdAt: data.createdAt.toDate(),
-      updatedAt: data.updatedAt?.toDate() ?? null,
+      updatedAt: data.updatedAt ? data.updatedAt.toDate() : null,
     })
   }
 
-  static fromBaby(baby: Baby, updatedAt?: Date): BabyDTO {
+  static fromBaby(args: { baby: Baby; updatedAt?: Date }): BabyDTO {
+    const { baby, updatedAt } = args
     return new BabyDTO({
       id: baby.id,
       name: baby.name,
-      birthDate: baby.birthDate,
-      createdAt: baby.createdAt,
+      birthDate: baby.birthDate ? new Date(baby.birthDate) : null,
+      createdAt: new Date(),
       updatedAt: updatedAt ?? null,
     })
   }

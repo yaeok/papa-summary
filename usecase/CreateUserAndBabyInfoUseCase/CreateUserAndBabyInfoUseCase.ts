@@ -49,14 +49,16 @@ export class CreateUserAndBabyInfoUseCase
         parentType,
       })
 
-      const responseBaby = await this.babyRepository.create({
+      const birthDate = new Date(babyBirthday)
+
+      const babyId = await this.babyRepository.create({
         name: babyName,
-        birthDate: new Date(babyBirthday),
+        birthDate: birthDate,
       })
 
       await this.parentRepository.create({
         userId: user.id,
-        babyId: responseBaby.id,
+        babyId: babyId,
       })
       return { result: true }
     } catch (error) {

@@ -43,12 +43,12 @@ export class TaskDTO {
       title: data.name,
       content: data.content,
       startDate: data.startDate.toDate(),
-      endDate: data.endDate?.toDate() ?? null,
-      timing: 0,
+      endDate: data.endDate !== null ? data.endDate.toDate() : null,
+      timing: data.timing,
       babyId: data.babyId,
-      completedAt: data.completedAt?.toDate() ?? null,
+      completedAt: data.completedAt !== null ? data.completedAt.toDate() : null,
       createdAt: data.createdAt.toDate(),
-      updatedAt: data.updatedAt?.toDate() ?? null,
+      updatedAt: data.updatedAt !== null ? data.updatedAt.toDate() : null,
     })
   }
 

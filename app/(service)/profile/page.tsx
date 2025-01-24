@@ -1,4 +1,4 @@
-import BabyInfoSection from './_components/BabyInfo/BabyInfoSection'
+import BabySection from './_components/Baby/BabySection'
 import CategoriesSection from './_components/Categories/CategoriesSection'
 // import FinanceSection from './_components/Finance/FinanceSection'
 import ProfileSection from './_components/Profile/ProfileSection'
@@ -10,7 +10,7 @@ const Page = () => {
 
       <div className='w-full border-b-2 border-gray-800' />
 
-      <BabyInfoSection />
+      <BabySection />
 
       <div className='w-full border-b-2 border-gray-800' />
 

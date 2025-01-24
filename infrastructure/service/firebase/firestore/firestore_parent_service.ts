@@ -12,6 +12,8 @@ export class FirestoreParentService {
 
     await addDoc(ref, document)
 
+    console.log('Document written with ID: ', document)
+
     return ParentDTO.fromDocumentData(document)
   }
 

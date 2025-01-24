@@ -34,29 +34,32 @@ export class FirestoreTaskService {
     content: string
     startDate: Date
     endDate: Date | null
+    timing: number
     babyId: string
   }): Promise<TaskDTO> {
-    const { name, content, startDate, endDate, babyId } = args
+    const { name, content, startDate, endDate, timing, babyId } = args
 
     const ref = collection(db, this.path)
 
-    const document = TaskDTO.fromTask({
+    const response = TaskDTO.fromTask({
       id: '',
       title: name,
       content: content,
       startDate: startDate,
       endDate: endDate,
-      timing: 0,
+      timing: timing,
       babyId: babyId,
       completedAt: null,
       createdAt: new Date(),
-    }).toDocumentData()
+    })
+
+    const document = response.toDocumentData()
 
     const docRef = await addDoc(ref, document)
 
     await updateDoc(docRef, { id: docRef.id })
 
-    const response = TaskDTO.fromDocumentData(document, docRef.id)
+    response.id = docRef.id
 
     return response
   }

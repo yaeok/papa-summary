@@ -32,7 +32,7 @@ export class ProductRepository {
     name: string
     price: number
     content: string
-    ownerId: string
+    babyId: string
   }): Promise<Product> {
     const result = await this.service.create(args)
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { Label } from '@/constants/Label'
 import { Status } from '@/constants/Status'
 import { Task } from '@/domains/Task'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetAllTaskUseCase } from '@/usecase/GetAllTaskUseCase/GetAllTaskUseCase'
 
 import AddTaskButton from './_components/AddTask/AddTaskButton'
@@ -12,13 +13,14 @@ import { useTaskContext } from './_hooks/TaskProvider'
 
 const Page = () => {
   const taskContext = useTaskContext()
+  const currentUser = useAuthContext().currentUser
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true)
       const usecase = new GetAllTaskUseCase()
-      const response = await usecase.execute()
+      const response = await usecase.execute({ babyId: currentUser!.babyId })
       taskContext.setTasks(response.tasks)
       setLoading(false)
     }

@@ -24,6 +24,7 @@ export class TaskRepository {
     content: string
     startDate: Date
     endDate: Date | null
+    timing: number
     babyId: string
   }): Promise<Task> {
     const result = await this.service.create(args)

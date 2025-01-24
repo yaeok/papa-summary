@@ -29,7 +29,7 @@ export class FirestoreProductService {
         name: data.name,
         price: data.price,
         content: data.content,
-        ownerId: data.ownerId,
+        babyId: data.babyId,
         createdAt: data.createdAt.toDate(),
         updatedAt: data.updatedAt?.toDate() ?? null,
       })
@@ -42,9 +42,9 @@ export class FirestoreProductService {
     name: string
     price: number
     content: string
-    ownerId: string
+    babyId: string
   }): Promise<ProductOutput> {
-    const { name, price, content, ownerId } = args
+    const { name, price, content, babyId } = args
 
     const ref = collection(db, this.path)
 
@@ -52,7 +52,7 @@ export class FirestoreProductService {
       name: name,
       price: price,
       content: content,
-      ownerId: ownerId,
+      babyId: babyId,
       createdAt: new Date(),
       updatedAt: null,
     }
@@ -66,7 +66,7 @@ export class FirestoreProductService {
       name: name,
       price: price,
       content: content,
-      ownerId: ownerId,
+      babyId: babyId,
       createdAt: document.createdAt,
       updatedAt: document.updatedAt,
     })
