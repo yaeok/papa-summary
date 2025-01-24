@@ -45,7 +45,8 @@ export class AuthRepository {
       id: response.uid,
       name: '',
       email: response.email!,
-      parentType: '',
+      parentType: 0,
+      babyId: '',
       createdAt: new Date(),
     })
 
