@@ -26,11 +26,11 @@ export class UserRepository {
     await this.service.create(args)
   }
 
-  async updateFromNameParentType(args: {
+  async updateNameParentType(args: {
     id: string
     name: string
     parentType: number
   }): Promise<void> {
-    await this.service.updateFromNameParentType(args)
+    await this.service.updateNameParentType(args)
   }
 }

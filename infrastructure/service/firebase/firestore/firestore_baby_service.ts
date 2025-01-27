@@ -51,13 +51,16 @@ export class FirestoreBabyService {
   async updateById(args: { baby: Baby }): Promise<void> {
     const { baby } = args
 
+    // collection pathの宣言
     const ref = doc(db, this.path, baby.id)
 
+    // BabyDTOに変換してdocument dataに変換
     const document = BabyDTO.fromBaby({
       baby,
       updatedAt: new Date(),
     }).toDocumentData()
 
+    // documentの更新
     await setDoc(ref, document, { merge: true })
   }
 }

@@ -19,9 +19,10 @@ const UpdateBabyForm = ({
   babyInfo,
   setBabyInfo,
 }: UpdateBabyFormProps) => {
-  const initialDate = babyInfo.birthDate
-    ? new Date(babyInfo.birthDate).toISOString().split('T')[0]
-    : new Date().toISOString().split('T')[0]
+  const initialDate =
+    babyInfo && babyInfo.birthDate
+      ? new Date(babyInfo.birthDate).toISOString().split('T')[0]
+      : new Date().toISOString().split('T')[0]
   const {
     register,
     handleSubmit,
@@ -29,7 +30,7 @@ const UpdateBabyForm = ({
   } = useForm<UpdateBabyFormType>({
     mode: 'onChange',
     defaultValues: {
-      name: babyInfo.name,
+      name: babyInfo ? babyInfo.name : '',
       birthDate: initialDate,
     },
   })

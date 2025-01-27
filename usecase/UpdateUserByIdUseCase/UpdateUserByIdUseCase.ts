@@ -27,7 +27,7 @@ export class UpdateUserByIdUseCase
   ): Promise<UpdateUserByIdUseCaseOutput> {
     const { userId, name, parentType } = input
 
-    await this.userRepository.updateFromNameParentType({
+    await this.userRepository.updateNameParentType({
       id: userId,
       name,
       parentType,
