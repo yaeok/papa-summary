@@ -18,7 +18,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
 
     if (currentUser.currentUser != null && currentUser.isEmailVerified) {
       // 認証情報有かつメール認証済
-      if (currentUser.currentUser?.babyId != null) {
+      if (currentUser.currentUser.babyId != null) {
         // ベビー情報有
         router.replace(RoutePath.getTaskPage())
       }

@@ -6,14 +6,28 @@ import { RoutePath } from '@/constants/RoutePath'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 
 import Drawer from './Drawer/Drawer'
+import { SignOutUseCase } from '@/usecase/SignOutUseCase/SignOutUseCase'
+import { useRouter } from 'next/navigation'
 
 type HeaderProps = {
   isSignIn?: boolean
 }
 
 export default function Header({ isSignIn }: HeaderProps) {
+  const router = useRouter()
   const currentUser = useAuthContext()
-  const handleLogout = async () => {}
+  const handleLogout = async () => {
+    try {
+      const usecase = new SignOutUseCase()
+      const result = await usecase.execute()
+
+      if (result.result) {
+        router.push(RoutePath.getLandingPage())
+      }
+    } catch {
+      console.log('ログアウトに失敗しました')
+    }
+  }
   return (
     <header className='top-0 left-0 w-full px-4 lg:px-16 py-4 bg-white shadow-md sticky z-10'>
       <div className='max-w-screen-lg mx-auto flex flex-row justify-between items-center'>
