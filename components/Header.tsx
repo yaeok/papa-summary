@@ -1,9 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { RoutePath } from '@/constants/RoutePath'
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
+import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
+import { SignOutUseCase } from '@/usecase/SignOutUseCase/SignOutUseCase'
 
 import Drawer from './Drawer/Drawer'
 
@@ -12,8 +16,25 @@ type HeaderProps = {
 }
 
 export default function Header({ isSignIn }: HeaderProps) {
+  const router = useRouter()
   const currentUser = useAuthContext()
-  const handleLogout = async () => {}
+  const handleLogout = async () => {
+    try {
+      const usecase = new SignOutUseCase()
+      const response = await usecase.execute()
+
+      if (response.result) {
+        alert('ログアウトしました')
+        router.push(RoutePath.getLandingPage())
+      }
+    } catch (error) {
+      if (error instanceof FirebaseAuthException) {
+        throw new FirebaseAuthException(error.message, error.code)
+      } else {
+        throw new SystemErrorException()
+      }
+    }
+  }
   return (
     <header className='top-0 left-0 w-full px-4 lg:px-16 py-4 bg-white shadow-md sticky z-10'>
       <div className='max-w-screen-lg mx-auto flex flex-row justify-between items-center'>

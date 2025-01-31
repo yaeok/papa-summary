@@ -2,11 +2,9 @@ import { UserDTO } from '@/infrastructure/data/UserDTO'
 import {
   collection,
   doc,
-  DocumentData,
   getDocs,
   query,
   setDoc,
-  updateDoc,
   where,
 } from '@firebase/firestore'
 
@@ -58,7 +56,7 @@ export class FirestoreUserService {
     await setDoc(ref, document)
   }
 
-  async updateFromNameParentType(args: {
+  async updateNameParentType(args: {
     id: string
     name: string
     parentType: number
