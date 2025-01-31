@@ -16,8 +16,8 @@ type HeaderProps = {
 }
 
 export default function Header({ isSignIn }: HeaderProps) {
-  const currentUser = useAuthContext()
   const router = useRouter()
+  const currentUser = useAuthContext()
   const handleLogout = async () => {
     try {
       const usecase = new SignOutUseCase()
