@@ -10,9 +10,11 @@ export default function RootLayout({
 }>) {
   return (
     <CurrentUserProvider>
-      <Header />
-      <Main>{children}</Main>
-      <NavBar />
+      <div className='w-full h-screen'>
+        <Header />
+        <Main>{children}</Main>
+        <NavBar />
+      </div>
     </CurrentUserProvider>
   )
 }
