@@ -43,7 +43,7 @@ export class CreateUserAndBabyInfoUseCase
 
       const user = await this.authRepository.getCurrentUser()
 
-      await this.userRepository.updateFromNameParentType({
+      await this.userRepository.updateNameParentType({
         id: user.id,
         name,
         parentType,
