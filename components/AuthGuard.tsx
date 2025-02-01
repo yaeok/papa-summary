@@ -5,6 +5,7 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import { RoutePath } from '@/constants/RoutePath'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
+import FullScreenLoading from './Loading/FullScreenLoading'
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const currentUser = useAuthContext()
@@ -17,11 +18,6 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     }
 
     if (currentUser.currentUser != null && currentUser.isEmailVerified) {
-      // 認証情報有かつメール認証済
-      if (currentUser.currentUser.babyId != null) {
-        // ベビー情報有
-        router.replace(RoutePath.getTaskPage())
-      }
       setTimeout(() => {
         setLoading(false)
       }, 2000)
@@ -41,5 +37,5 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
     }
   }, [currentUser, router])
 
-  return <div>{loading ? <div>読み込み中...</div> : children}</div>
+  return <div>{loading ? <FullScreenLoading /> : children}</div>
 }
