@@ -10,6 +10,7 @@ import { GetAllTaskUseCase } from '@/usecase/GetAllTaskUseCase/GetAllTaskUseCase
 
 import AddTaskButton from './_components/AddTask/AddTaskButton'
 import { useTaskContext } from './_hooks/TaskProvider'
+import Loading from '@/components/Loading/Loading'
 
 const Page = () => {
   const taskContext = useTaskContext()
@@ -61,7 +62,7 @@ const Page = () => {
     <div className='space-y-4'>
       <div className='flex flex-row justify-between items-center'>
         <h1 className='text-lg'>やることリスト</h1>
-        <div className='flex flex-row gap-2'>
+        <div className='flex flex-row gap-4'>
           <select
             name='task-select'
             id='task-select'
@@ -88,7 +89,7 @@ const Page = () => {
 
       {(() => {
         if (loading) {
-          return <div>読み込み中...</div>
+          return <Loading />
         } else {
           return (
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>

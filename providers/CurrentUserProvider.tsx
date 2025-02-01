@@ -13,6 +13,7 @@ import { User } from '@/domains/User'
 import { ParentRepository } from '@/infrastructure/repository/parent_repository'
 import { UserRepository } from '@/infrastructure/repository/user_repository'
 import { auth } from '@/infrastructure/service/firebase/config/firebaseConfig'
+import FullScreenLoading from '@/components/Loading/FullScreenLoading'
 
 type AuthContextType = {
   currentUser: User | null
@@ -67,7 +68,7 @@ export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
         setCurrentUser,
       }}
     >
-      {loading ? <p>ろーでぃんぐ</p> : children}
+      {loading ? <FullScreenLoading /> : children}
     </AuthContext.Provider>
   )
 }

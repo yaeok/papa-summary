@@ -1,3 +1,4 @@
+import AuthGuard from '@/components/AuthGuard'
 import Header from '@/components/Header'
 import Main from '@/components/Main'
 import NavBar from '@/components/NavBar'
@@ -10,11 +11,13 @@ export default function RootLayout({
 }>) {
   return (
     <CurrentUserProvider>
-      <div className='w-full h-screen'>
-        <Header />
-        <Main>{children}</Main>
-        <NavBar />
-      </div>
+      <AuthGuard>
+        <div className='w-full h-screen'>
+          <Header />
+          <Main>{children}</Main>
+          <NavBar />
+        </div>
+      </AuthGuard>
     </CurrentUserProvider>
   )
 }

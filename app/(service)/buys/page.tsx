@@ -7,6 +7,7 @@ import { Product } from '@/domains/Product'
 import AddProductButton from './_components/AddProduct/AddProductButton'
 import { useProductContext } from './_hooks/ProductProvider'
 import { GetAllProductUseCase } from '@/usecase/GetAllProductUseCase/GetAllProductUseCase'
+import Loading from '@/components/Loading/Loading'
 
 const Page = () => {
   const productContext = useProductContext()
@@ -30,7 +31,7 @@ const Page = () => {
       </div>
       {(() => {
         if (loading) {
-          return <div>読み込み中...</div>
+          return <Loading />
         } else {
           return (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2'>
