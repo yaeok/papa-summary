@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import { Baby } from '@/domains/Baby'
+import { Baby } from '@/domains/entities/baby'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetBabyByIdUseCase } from '@/usecase/GetBabyByIdUseCase/GetBabyByIdUseCase'
 

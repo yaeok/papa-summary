@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react'
 
+import Loading from '@/components/Loading/Loading'
 import { Label } from '@/constants/Label'
 import { Status } from '@/constants/Status'
-import { Task } from '@/domains/Task'
+import { Task } from '@/domains/entities/task'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetAllTaskUseCase } from '@/usecase/GetAllTaskUseCase/GetAllTaskUseCase'
 
 import AddTaskButton from './_components/AddTask/AddTaskButton'
 import { useTaskContext } from './_hooks/TaskProvider'
-import Loading from '@/components/Loading/Loading'
 
 const Page = () => {
   const taskContext = useTaskContext()

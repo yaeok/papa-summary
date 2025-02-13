@@ -1,4 +1,4 @@
-import { Baby } from '@/domains/Baby'
+import { Baby } from '@/domains/entities/baby'
 import { BabyRepository } from '@/infrastructure/repository/baby_repository'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'

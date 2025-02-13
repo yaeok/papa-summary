@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import { Category } from '@/domains/Category'
+import { Category } from '@/domains/entities/category'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetAllCategoryUseCase } from '@/usecase/GetAllCategoryUseCase/GetAllCategoryUseCase'
 

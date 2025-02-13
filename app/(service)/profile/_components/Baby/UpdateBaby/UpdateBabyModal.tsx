@@ -1,7 +1,7 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-import { Baby } from '@/domains/Baby'
+import { Baby } from '@/domains/entities/baby'
 
 import UpdateBabyForm from './UpdateBabyForm'
 

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from 'react'
 
-import { Product } from '@/domains/Product'
+import { Product } from '@/domains/entities/product'
 
 type ProductContextType = {
   products: Product[]

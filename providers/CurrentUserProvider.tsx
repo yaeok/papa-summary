@@ -9,11 +9,11 @@ import React, {
   useState,
 } from 'react'
 
-import { User } from '@/domains/User'
+import FullScreenLoading from '@/components/Loading/FullScreenLoading'
+import { User } from '@/domains/entities/user'
 import { ParentRepository } from '@/infrastructure/repository/parent_repository'
 import { UserRepository } from '@/infrastructure/repository/user_repository'
 import { auth } from '@/infrastructure/service/firebase/config/firebaseConfig'
-import FullScreenLoading from '@/components/Loading/FullScreenLoading'
 
 type AuthContextType = {
   currentUser: User | null

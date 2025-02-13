@@ -1,7 +1,8 @@
-import { Product } from '@/domains/Product'
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
-import { ProductRepository } from '@/infrastructure/repository/product_repository'
+import { Product } from '@/domains/entities/product'
 import { AuthRepository } from '@/infrastructure/repository/auth_repository'
+import { ProductRepository } from '@/infrastructure/repository/product_repository'
+
+import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
 
 interface GetAllProductUseCaseInput extends UseCaseInput {}
 

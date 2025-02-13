@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from 'react'
 
-import { Task } from '@/domains/Task'
+import { Task } from '@/domains/entities/task'
 
 type TaskContextType = {
   tasks: Task[]

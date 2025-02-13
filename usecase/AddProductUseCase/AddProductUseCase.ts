@@ -1,4 +1,4 @@
-import { Product } from '@/domains/Product'
+import { Product } from '@/domains/entities/product'
 import { ProductRepository } from '@/infrastructure/repository/product_repository'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'

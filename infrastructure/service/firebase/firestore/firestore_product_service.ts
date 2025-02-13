@@ -1,7 +1,11 @@
-import { ProductOutput } from '@/infrastructure/data/ProductOutput'
+import { Product } from '@/domains/entities/product'
+import { ProductRepository } from '@/domains/repositories/product_repository'
+import { ProductDB } from '@/infrastructure/data/product'
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import {
   addDoc,
   collection,
+  DocumentData,
   getDocs,
   query,
   updateDoc,
@@ -10,67 +14,71 @@ import {
 
 import { db } from '../config/firebaseConfig'
 
-export class FirestoreProductService {
+export class FirestoreProductService implements ProductRepository {
   private path = 'products'
 
-  async findAll(args: { ownerId: string }): Promise<ProductOutput[]> {
-    const { ownerId } = args
+  async findAll(args: { createdBy: string }): Promise<ProductDB[]> {
+    try {
+      const { createdBy } = args
+      const ref = collection(db, this.path)
 
-    const ref = collection(db, this.path)
+      const q = query(ref, where('createdBy', '==', createdBy))
 
-    const q = query(ref, where('ownerId', '==', ownerId))
+      const snapshot = await getDocs(q)
 
-    const snapshot = await getDocs(q)
-
-    const response = snapshot.docs.map((doc) => {
-      const data = doc.data()
-      return new ProductOutput({
-        id: doc.id,
-        name: data.name,
-        price: data.price,
-        content: data.content,
-        babyId: data.babyId,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt?.toDate() ?? null,
+      const response = snapshot.docs.map((doc) => {
+        const data = doc.data()
+        return this.convertDocumentDataToData(data)
       })
-    })
 
-    return response
+      return response
+    } catch {
+      throw new SystemErrorException('買うもの取得に失敗しました')
+    }
   }
 
-  async create(args: {
-    name: string
-    price: number
-    content: string
-    babyId: string
-  }): Promise<ProductOutput> {
-    const { name, price, content, babyId } = args
+  async create(args: { product: Product }): Promise<ProductDB> {
+    try {
+      const { product } = args
 
-    const ref = collection(db, this.path)
+      const ref = collection(db, this.path)
 
-    const document = {
-      name: name,
-      price: price,
-      content: content,
-      babyId: babyId,
-      createdAt: new Date(),
-      updatedAt: null,
+      const document = this.convertEntityToDocumentData(product)
+
+      const docRef = await addDoc(ref, document)
+
+      await updateDoc(docRef, { id: docRef.id })
+
+      const response = this.convertDocumentDataToData(document)
+      response.setId(docRef.id)
+
+      return response
+    } catch {
+      throw new SystemErrorException('買うもの登録に失敗しました')
     }
+  }
 
-    const docRef = await addDoc(ref, document)
+  private convertEntityToDocumentData(product: Product): DocumentData {
+    return {
+      id: product.getId(),
+      name: product.getName(),
+      price: product.getPrice(),
+      content: product.getContent(),
+      babyId: product.getBabyId(),
+      createdBy: product.getCreatedBy(),
+      createdAt: product.getCreatedAt(),
+    }
+  }
 
-    await updateDoc(docRef, { id: docRef.id })
-
-    const response = new ProductOutput({
-      id: docRef.id,
-      name: name,
-      price: price,
-      content: content,
-      babyId: babyId,
-      createdAt: document.createdAt,
-      updatedAt: document.updatedAt,
-    })
-
-    return response
+  private convertDocumentDataToData(documentData: DocumentData): ProductDB {
+    const data = new ProductDB()
+    data.setId(documentData.id)
+    data.setName(documentData.name)
+    data.setPrice(documentData.price)
+    data.setContent(documentData.content)
+    data.setBabyId(documentData.babyId)
+    data.setCreatedBy(documentData.createdBy)
+    data.setCreatedAt(documentData.createdAt)
+    return data
   }
 }

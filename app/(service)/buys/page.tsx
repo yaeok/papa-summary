@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react'
 
-import { Product } from '@/domains/Product'
+import Loading from '@/components/Loading/Loading'
+import { Product } from '@/domains/entities/product'
+import { GetAllProductUseCase } from '@/usecase/GetAllProductUseCase/GetAllProductUseCase'
 
 import AddProductButton from './_components/AddProduct/AddProductButton'
 import { useProductContext } from './_hooks/ProductProvider'
-import { GetAllProductUseCase } from '@/usecase/GetAllProductUseCase/GetAllProductUseCase'
-import Loading from '@/components/Loading/Loading'
 
 const Page = () => {
   const productContext = useProductContext()

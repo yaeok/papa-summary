@@ -1,4 +1,4 @@
-import { User } from '@/domains/User'
+import { User } from '@/domains/entities/user'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { AuthRepository } from '@/infrastructure/repository/auth_repository'
 import { UserRepository } from '@/infrastructure/repository/user_repository'
