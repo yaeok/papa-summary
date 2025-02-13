@@ -3,7 +3,7 @@ import { BabyRepository } from '@/infrastructure/repository/baby_repository'
 import { ParentRepository } from '@/infrastructure/repository/parent_repository'
 import { UserRepository } from '@/infrastructure/repository/user_repository'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface CreateUserAndBabyInfoUseCaseInput extends UseCaseInput {
   name: string

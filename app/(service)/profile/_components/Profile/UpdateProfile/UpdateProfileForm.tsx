@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 
 import { Status } from '@/constants/Status'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { UpdateUserByIdUseCase } from '@/usecase/UpdateUserByIdUseCase/UpdateUserByIdUseCase'
+import { UpdateUserByIdUseCase } from '@/usecase/update_user_by_id_usecase/update_user_by_id_usecase'
 
 type UpdateProfileFormType = {
   name: string

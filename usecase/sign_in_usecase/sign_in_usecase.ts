@@ -2,16 +2,19 @@ import { SystemErrorException } from '@/infrastructure/exception/SystemErrorExce
 import { AuthRepository } from '@/infrastructure/repository/auth_repository'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
-interface SignOutUseCaseInput extends UseCaseInput {}
+interface SignInUseCaseInput extends UseCaseInput {
+  email: string
+  password: string
+}
 
-interface SignOutUseCaseOutput extends UseCaseOutput {
+interface SignInUseCaseOutput extends UseCaseOutput {
   result: boolean
 }
 
-export class SignOutUseCase
-  implements UseCase<SignOutUseCaseInput, Promise<SignOutUseCaseOutput>>
+export class SignInUseCase
+  implements UseCase<SignInUseCaseInput, Promise<SignInUseCaseOutput>>
 {
   private authRepository: AuthRepository
 
@@ -19,9 +22,13 @@ export class SignOutUseCase
     this.authRepository = new AuthRepository()
   }
 
-  async execute(): Promise<SignOutUseCaseOutput> {
+  async execute(input: SignInUseCaseInput): Promise<SignInUseCaseOutput> {
+    const { email, password } = input
     try {
-      await this.authRepository.signOut()
+      await this.authRepository.signIn({
+        email: email,
+        password: password,
+      })
 
       return { result: true }
     } catch (error) {

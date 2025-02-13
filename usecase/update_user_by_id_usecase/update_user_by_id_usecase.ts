@@ -1,6 +1,6 @@
 import { UserRepository } from '@/infrastructure/repository/user_repository'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface UpdateUserByIdUseCaseInpur extends UseCaseInput {
   userId: string

@@ -1,7 +1,7 @@
 import { Baby } from '@/domains/entities/baby'
 import { BabyRepository } from '@/infrastructure/repository/baby_repository'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface UpdateBabyByIdUseCaseInput extends UseCaseInput {
   babyId: string

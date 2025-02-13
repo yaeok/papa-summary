@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 
 import { RoutePath } from '@/constants/RoutePath'
 import { Status } from '@/constants/Status'
-import { CreateUserAndBabyInfoUseCase } from '@/usecase/CreateUserAndBabyInfoUseCase/CreateUserAndBabyInfoUseCase'
+import { CreateUserAndBabyInfoUseCase } from '@/usecase/create_user_and_baby_usecase/create_user_and_baby_usecase'
 
 type UserInfoFormType = {
   username: string

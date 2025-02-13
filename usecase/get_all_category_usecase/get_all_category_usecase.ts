@@ -1,7 +1,7 @@
 import { Category } from '@/domains/entities/category'
 import { CategoryRepository } from '@/infrastructure/repository/category_repository'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface GetAllCategoryUseCaseInput extends UseCaseInput {
   userId: string

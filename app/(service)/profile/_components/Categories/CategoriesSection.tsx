@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { Category } from '@/domains/entities/category'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { GetAllCategoryUseCase } from '@/usecase/GetAllCategoryUseCase/GetAllCategoryUseCase'
+import { GetAllCategoryUseCase } from '@/usecase/get_all_category_usecase/get_all_category_usecase'
 
 import AddCategoryButton from './AddCategory/AddCategoryButton'
 

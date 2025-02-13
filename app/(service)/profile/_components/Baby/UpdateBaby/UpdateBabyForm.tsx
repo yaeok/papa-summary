@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { Baby } from '@/domains/entities/baby'
-import { UpdateBabyByIdUseCase } from '@/usecase/UpdateBabyByIdUseCase/UpdateBabyByIdUseCase'
+import { UpdateBabyByIdUseCase } from '@/usecase/update_baby_by_id_usecase/update_baby_by_id_usecase'
 
 type UpdateBabyFormType = {
   name: string

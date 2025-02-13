@@ -2,6 +2,6 @@ export interface UseCase<UseCaseInput, UseCaseOutput> {
   execute(input: UseCaseInput): UseCaseOutput
 }
 
-export interface UseCaseInput {}
+export type UseCaseInput = object
 
-export interface UseCaseOutput {}
+export type UseCaseOutput = object

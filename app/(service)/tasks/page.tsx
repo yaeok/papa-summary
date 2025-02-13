@@ -7,7 +7,7 @@ import { Label } from '@/constants/Label'
 import { Status } from '@/constants/Status'
 import { Task } from '@/domains/entities/task'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { GetAllTaskUseCase } from '@/usecase/GetAllTaskUseCase/GetAllTaskUseCase'
+import { GetAllTaskUseCase } from '@/usecase/get_all_task_usecase/get_all_task_usecase'
 
 import AddTaskButton from './_components/AddTask/AddTaskButton'
 import { useTaskContext } from './_hooks/TaskProvider'

@@ -2,7 +2,7 @@ import { Baby } from '@/domains/entities/baby'
 import { AuthRepository } from '@/infrastructure/repository/auth_repository'
 import { BabyRepository } from '@/infrastructure/repository/baby_repository'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface GetBabyByIdUseCaseInput extends UseCaseInput {
   id: string

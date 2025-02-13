@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { AddProductUseCase } from '@/usecase/AddProductUseCase/AddProductUseCase'
+import { AddProductUseCase } from '@/usecase/add_product_usecase/add_product_usecase'
 
 import { useProductContext } from '../../_hooks/ProductProvider'
 

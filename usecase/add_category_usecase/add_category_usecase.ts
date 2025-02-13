@@ -2,7 +2,7 @@ import { Category } from '@/domains/entities/category'
 import { CategoryRepository } from '@/domains/repositories/category_repository'
 import { FirestoreCategoryService } from '@/infrastructure/service/firebase/firestore/firestore_category_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface AddCategoryUseCaseInput extends UseCaseInput {
   name: string

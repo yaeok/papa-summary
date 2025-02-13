@@ -7,7 +7,7 @@ import { RoutePath } from '@/constants/RoutePath'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { SignOutUseCase } from '@/usecase/SignOutUseCase/SignOutUseCase'
+import { SignOutUseCase } from '@/usecase/sign_out_usecase/sign_out_usecase'
 
 import Drawer from './Drawer/Drawer'
 

@@ -1,7 +1,7 @@
 import { Task } from '@/domains/entities/task'
 import { TaskRepository } from '@/infrastructure/repository/task_repository'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface AddTaskUseCaseInput extends UseCaseInput {
   title: string

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import Loading from '@/components/Loading/Loading'
 import { Product } from '@/domains/entities/product'
-import { GetAllProductUseCase } from '@/usecase/GetAllProductUseCase/GetAllProductUseCase'
+import { GetAllProductUseCase } from '@/usecase/get_all_product_usecase/get_all_product_usecase'
 
 import AddProductButton from './_components/AddProduct/AddProductButton'
 import { useProductContext } from './_hooks/ProductProvider'

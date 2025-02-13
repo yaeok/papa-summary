@@ -1,7 +1,8 @@
 import { Product } from '@/domains/entities/product'
-import { ProductRepository } from '@/infrastructure/repository/product_repository'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { ProductRepository } from '@/domains/repositories/product_repository'
+import { FirestoreProductService } from '@/infrastructure/service/firebase/firestore/firestore_product_service'
 
 interface AddProductUseCaseInput extends UseCaseInput {
   name: string
@@ -20,7 +21,7 @@ export class AddProductUseCase
   private productRepository: ProductRepository
 
   constructor() {
-    this.productRepository = new ProductRepository()
+    this.productRepository = new FirestoreProductService()
   }
 
   async execute(
