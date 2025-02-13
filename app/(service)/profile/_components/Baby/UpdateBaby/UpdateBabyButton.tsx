@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Baby } from '@/domains/Baby'
+import { Baby } from '@/domains/entities/baby'
 
 import UpdateBabyModal from './UpdateBabyModal'
 

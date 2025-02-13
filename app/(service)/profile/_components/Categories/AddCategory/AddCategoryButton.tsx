@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Category } from '@/domains/Category'
+import { Category } from '@/domains/entities/category'
 
 import AddCategoryModal from './AddCategoryModal'
 

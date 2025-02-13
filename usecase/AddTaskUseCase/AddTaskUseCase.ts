@@ -1,4 +1,4 @@
-import { Task } from '@/domains/Task'
+import { Task } from '@/domains/entities/task'
 import { TaskRepository } from '@/infrastructure/repository/task_repository'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'

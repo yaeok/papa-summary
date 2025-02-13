@@ -1,22 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { UserNotFoundException } from '@/infrastructure/exception/UserNotFoundException'
+import { AuthRepository } from '@/domains/repositories/auth_repository';
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException';
+import { UserNotFoundException } from '@/infrastructure/exception/UserNotFoundException';
 import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  signInWithEmailAndPassword,
-  User,
-  UserCredential,
-} from '@firebase/auth'
+  createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail,
+  signInWithEmailAndPassword, User, UserCredential
+} from '@firebase/auth';
 
-import { auth } from '../config/firebaseConfig'
-import {
-  FirebaseAuthException,
-  isFirebaseError,
-} from '../exception/FirebaseAuthException'
+import { auth } from '../config/firebaseConfig';
+import { FirebaseAuthException } from '../exception/FirebaseAuthException';
+import { isFirebaseError } from '../exception/types/FirebaseAuthExceptionType';
 
-export class FirebaseAuthService {
-  async signUp(args: {
+export class AuthService implements AuthRepository {
+  async signUpWithEmail(args: {
     email: string
     password: string
   }): Promise<UserCredential> {
@@ -42,7 +38,7 @@ export class FirebaseAuthService {
     }
   }
 
-  async signIn(args: {
+  async signInWithEmail(args: {
     email: string
     password: string
   }): Promise<UserCredential> {
@@ -81,7 +77,7 @@ export class FirebaseAuthService {
 
   async sendPasswordResetEmail(email: string): Promise<void> {
     try {
-      await this.sendPasswordResetEmail(email)
+      await sendPasswordResetEmail(auth, email)
     } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
@@ -100,27 +96,6 @@ export class FirebaseAuthService {
         throw new UserNotFoundException()
       } else {
         await sendEmailVerification(currentUser)
-      }
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
-        throw new FirebaseAuthException(result.message, result.code)
-      } else {
-        throw new SystemErrorException()
-      }
-    }
-  }
-
-  async getCurrentUser(): Promise<User> {
-    try {
-      const currentUser = auth.currentUser
-
-      if (!currentUser) {
-        throw new UserNotFoundException()
-      } else {
-        await currentUser.reload()
-
-        return currentUser
       }
     } catch (error: any) {
       if (isFirebaseError(error)) {

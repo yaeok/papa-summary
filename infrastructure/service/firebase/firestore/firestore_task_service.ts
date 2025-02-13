@@ -1,7 +1,11 @@
-import { TaskDTO } from '@/infrastructure/data/TaskDTO'
+import { Task } from '@/domains/entities/task'
+import { TaskRepository } from '@/domains/repositories/task_repository'
+import { TaskDB } from '@/infrastructure/data/task'
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import {
   addDoc,
   collection,
+  DocumentData,
   getDocs,
   query,
   updateDoc,
@@ -10,57 +14,97 @@ import {
 
 import { db } from '../config/firebaseConfig'
 
-export class FirestoreTaskService {
+export class FirestoreTaskService implements TaskRepository {
   private path = 'tasks'
 
-  async findAll(args: { babyId: string }): Promise<TaskDTO[]> {
-    const { babyId } = args
-    const ref = collection(db, this.path)
+  async findAll(args: { babyId: string }): Promise<TaskDB[]> {
+    try {
+      const { babyId } = args
+      const ref = collection(db, this.path)
 
-    const q = query(ref, where('babyId', '==', babyId))
+      const q = query(ref, where('babyId', '==', babyId))
 
-    const snapshot = await getDocs(q)
+      const snapshot = await getDocs(q)
 
-    const response = snapshot.docs.map((doc) => {
-      const data = doc.data()
-      return TaskDTO.fromDocumentData(data, doc.id)
-    })
+      const response = snapshot.docs.map((doc) => {
+        const data = doc.data()
+        return this.convertDocumentDataToData(data)
+      })
 
-    return response
+      return response
+    } catch {
+      throw new SystemErrorException('タスク取得に失敗しました')
+    }
   }
 
-  async create(args: {
-    name: string
-    content: string
-    startDate: Date
-    endDate: Date | null
-    timing: number
-    babyId: string
-  }): Promise<TaskDTO> {
-    const { name, content, startDate, endDate, timing, babyId } = args
+  async findById(args: { id: string }): Promise<TaskDB> {
+    try {
+      const { id } = args
+      const ref = collection(db, this.path)
 
-    const ref = collection(db, this.path)
+      const q = query(ref, where('id', '==', id))
 
-    const response = TaskDTO.fromTask({
-      id: '',
-      title: name,
-      content: content,
-      startDate: startDate,
-      endDate: endDate,
-      timing: timing,
-      babyId: babyId,
-      completedAt: null,
-      createdAt: new Date(),
-    })
+      const snapshot = await getDocs(q)
 
-    const document = response.toDocumentData()
+      const response = snapshot.docs.map((doc) => {
+        const data = doc.data()
+        return this.convertDocumentDataToData(data)
+      })
 
-    const docRef = await addDoc(ref, document)
+      return response[0]
+    } catch {
+      throw new SystemErrorException('タスク取得に失敗しました')
+    }
+  }
 
-    await updateDoc(docRef, { id: docRef.id })
+  async create(args: { task: Task }): Promise<TaskDB> {
+    try {
+      const { task } = args
+      const ref = collection(db, this.path)
 
-    response.id = docRef.id
+      const document = this.convertEntityToDocumentData(task)
 
-    return response
+      const docRef = await addDoc(ref, document)
+
+      await updateDoc(docRef, { id: docRef.id })
+
+      const response = this.convertDocumentDataToData(document)
+      response.setId(docRef.id)
+
+      return response
+    } catch {
+      throw new SystemErrorException('タスク登録に失敗しました')
+    }
+  }
+
+  private convertEntityToDocumentData(task: Task): DocumentData {
+    return {
+      id: task.getId(),
+      title: task.getTitle(),
+      content: task.getContent(),
+      startDate: task.getStartDate(),
+      endDate: task.getEndDate(),
+      babyId: task.getBabyId(),
+      timing: task.getTiming(),
+      completedAt: task.getCompletedAt(),
+      createdBy: task.getCreatedBy(),
+      createdAt: task.getCreatedAt(),
+    }
+  }
+
+  private convertDocumentDataToData(documentData: DocumentData): TaskDB {
+    const data = new TaskDB()
+    data.setId(documentData.id)
+    data.setTitle(documentData.title)
+    data.setContent(documentData.content)
+    data.setStartDate(documentData.startDate)
+    data.setEndDate(documentData.endDate)
+    data.setBabyId(documentData.babyId)
+    data.setTiming(documentData.timing)
+    data.setCompletedAt(documentData.completedAt)
+    data.setCreatedBy(documentData.createdBy)
+    data.setCreatedAt(documentData.createdAt)
+
+    return data
   }
 }

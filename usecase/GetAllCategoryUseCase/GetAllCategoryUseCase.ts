@@ -1,4 +1,4 @@
-import { Category } from '@/domains/Category'
+import { Category } from '@/domains/entities/category'
 import { CategoryRepository } from '@/infrastructure/repository/category_repository'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'

@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
 
-import { Category } from '@/domains/Category'
+import { Category } from '@/domains/entities/category'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { AddCategoryUseCase } from '@/usecase/AddCategoryUseCase/AddCategoryUseCase'
+import { AddCategoryUseCase } from '@/usecase/add_category_usecase/add_category_usecase'
 
 type AddCategoryFormType = {
   name: string

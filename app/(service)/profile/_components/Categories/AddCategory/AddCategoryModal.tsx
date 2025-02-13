@@ -1,7 +1,7 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-import { Category } from '@/domains/Category'
+import { Category } from '@/domains/entities/category'
 
 import AddCategoryForm from './AddCategoryForm'
 
