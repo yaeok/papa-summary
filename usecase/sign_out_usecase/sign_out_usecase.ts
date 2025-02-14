@@ -3,6 +3,7 @@ import { AuthRepository } from '@/infrastructure/repository/auth_repository'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { isFirebaseError } from '@/infrastructure/service/firebase/exception/types/FirebaseAuthExceptionType'
 
 interface SignOutUseCaseInput extends UseCaseInput {}
 
@@ -24,8 +25,8 @@ export class SignOutUseCase
       await this.authRepository.signOut()
 
       return { result: true }
-    } catch (error) {
-      if (error instanceof FirebaseAuthException) {
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
         throw new FirebaseAuthException(error.message, error.code)
       } else {
         throw new SystemErrorException()

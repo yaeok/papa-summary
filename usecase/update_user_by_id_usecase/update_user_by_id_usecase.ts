@@ -1,6 +1,6 @@
-import { UserRepository } from '@/infrastructure/repository/user_repository'
-
+import { UserRepository } from '@/domains/repositories/user_repository'
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
 
 interface UpdateUserByIdUseCaseInpur extends UseCaseInput {
   userId: string
@@ -19,7 +19,7 @@ export class UpdateUserByIdUseCase
   private userRepository: UserRepository
 
   constructor() {
-    this.userRepository = new UserRepository()
+    this.userRepository = new FirestoreUserService()
   }
 
   async execute(

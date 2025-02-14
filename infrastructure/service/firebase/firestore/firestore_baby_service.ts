@@ -48,7 +48,7 @@ export class FirestoreBabyService implements BabyRepository {
    * @param args.id id
    * @returns BabyDTO | null
    */
-  async findById(args: { id: string }): Promise<BabyDB | null> {
+  async findById(args: { id: string }): Promise<BabyDB> {
     try {
       const { id } = args
       const ref = collection(db, this.path)
@@ -61,7 +61,7 @@ export class FirestoreBabyService implements BabyRepository {
 
       // データがない場合はnullを返す
       if (snapshot.empty) {
-        return null
+        throw new SystemErrorException('データが存在しません')
       }
 
       // データを取得

@@ -1,8 +1,9 @@
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { AuthRepository } from '@/infrastructure/repository/auth_repository'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
+import { AuthRepository } from '@/domains/repositories/auth_repository'
 
 interface ResendEmailVerifyUseCaseInput extends UseCaseInput {}
 
@@ -20,7 +21,7 @@ export class ResendEmailVerifyUseCase
   private authRepository: AuthRepository
 
   constructor() {
-    this.authRepository = new AuthRepository()
+    this.authRepository = new AuthService()
   }
 
   async execute(): Promise<ResendEmailVerifyUseCaseOutput> {

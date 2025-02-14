@@ -1,8 +1,8 @@
 import { Baby } from '@/domains/entities/baby'
-import { AuthRepository } from '@/infrastructure/repository/auth_repository'
-import { BabyRepository } from '@/infrastructure/repository/baby_repository'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { BabyRepository } from '@/domains/repositories/baby_repository'
+import { FirestoreBabyService } from '@/infrastructure/service/firebase/firestore/firestore_baby_service'
 
 interface GetBabyByIdUseCaseInput extends UseCaseInput {
   id: string
@@ -19,7 +19,7 @@ export class GetBabyByIdUseCase
   private babyRepository: BabyRepository
 
   constructor() {
-    this.babyRepository = new BabyRepository()
+    this.babyRepository = new FirestoreBabyService()
   }
 
   async execute(
@@ -27,7 +27,12 @@ export class GetBabyByIdUseCase
   ): Promise<GetBabyByIdUseCaseOutput> {
     const { id } = input
     try {
-      const baby = await this.babyRepository.findById({ id })
+      const response = await this.babyRepository.findById({ id })
+
+      const baby = new Baby()
+      baby.setId(response.getId())
+      baby.setName(response.getName())
+      baby.setBirthDate(response.getBirthDate())
 
       return { baby }
     } catch (error) {
