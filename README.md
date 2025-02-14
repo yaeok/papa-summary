@@ -59,47 +59,47 @@
 
 - `app`フォルダ
 
-  画面、画面の状態管理、画面の固有のコンポーネントを定義する
+  - 画面、画面の状態管理、画面の固有のコンポーネントを定義する
 
 - `components`フォルダ
 
-  ヘッダーやメイン、ナビゲーションなど共通コンポーネントを定義する
+  - ヘッダーやメイン、ナビゲーションなど共通コンポーネントを定義する
 
 - `domain`フォルダ
 
-  `entities`とそれに対応する`repositories`を定義する。
+  - `entities`とそれに対応する`repositories`を定義する。
 
-  `entities`はアプリ内で使用するエンティティを定義する。
+  - `entities`はアプリ内で使用するエンティティを定義する。
 
-  `repositories`はそれにエンティティに対応するリポジトリに加え、認証周りや中間テーブルなど例外的なリポジトリもここで定義する。(interface として定義)
+  - `repositories`はそれにエンティティに対応するリポジトリに加え、認証周りや中間テーブルなど例外的なリポジトリもここで定義する。(interface として定義)
 
 - `constants`フォルダ
 
-  アプリ内で使用する定数を定義する。
+  - アプリ内で使用する定数を定義する。
 
 - `infrastracture`フォルダ
 
-  データベースとのやりとりする処理を定義する。
+  - データベースとのやりとりする処理を定義する。
 
-  `data`フォルダは、データベースのエンティティを定義する。
+  - `data`フォルダは、データベースのエンティティを定義する。
 
-  `exception`フォルダは、認証情報がない場合など、外部の影響を受けない例外処理を定義する。
+  - `exception`フォルダは、認証情報がない場合など、外部の影響を受けない例外処理を定義する。
 
-  `service`フォルダは firebase や supabase といった外部サービスを定義する。
+  - `service`フォルダは firebase や supabase といった外部サービスを定義する。
 
-  `service/firebase/config`フォルダは、`authentication`や`firestore`などサービスの初期化を定義する。
+  - `service/firebase/config`フォルダは、`authentication`や`firestore`などサービスの初期化を定義する。
 
-  `service/firebase/exception`フォルダは、`firebase`に依存した例外処理を定義する。
+  - `service/firebase/exception`フォルダは、`firebase`に依存した例外処理を定義する。
 
-  `service/firebase/auth`フォルダは、`firebase authentication`に関する処理を定義する。
+  - `service/firebase/auth`フォルダは、`firebase authentication`に関する処理を定義する。
 
-  `service/firebase/firestore`フォルダは、`firebase cloud_firestore`に関する処理を定義する。
+  - `service/firebase/firestore`フォルダは、`firebase cloud_firestore`に関する処理を定義する。
 
-  `auth`と`firestore`の処理は`domain/repositories`のインターフェースを具象化する。
+  - `auth`と`firestore`の処理は`domain/repositories`のインターフェースを具象化する。
 
-  `provider`フォルダは、認証情報などのアプリ全体で状態管理すべき処理を定義する。
+  - `provider`フォルダは、認証情報などのアプリ全体で状態管理すべき処理を定義する。
 
-  `usecase`フォルダは、機能ごとに定義し、UI から取得したデータを元に DB に連携する処理を定義する。
+  - `usecase`フォルダは、機能ごとに定義し、UI から取得したデータを元に DB に連携する処理を定義する。
 
 ## テーブル設計
 
