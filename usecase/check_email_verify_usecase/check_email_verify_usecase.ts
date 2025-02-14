@@ -1,5 +1,6 @@
+import { AuthRepository } from '@/domains/repositories/auth_repository'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { AuthRepository } from '@/infrastructure/repository/auth_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
@@ -7,7 +8,7 @@ import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 interface CheckEmailVerifyUseCaseInput extends UseCaseInput {}
 
 interface CheckEmailVerifyUseCaseOutput extends UseCaseOutput {
-  result: boolean
+  response: boolean
 }
 
 export class CheckEmailVerifyUseCase
@@ -20,14 +21,14 @@ export class CheckEmailVerifyUseCase
   private authRepository: AuthRepository
 
   constructor() {
-    this.authRepository = new AuthRepository()
+    this.authRepository = new AuthService()
   }
 
   async execute(): Promise<CheckEmailVerifyUseCaseOutput> {
     try {
-      const result = await this.authRepository.checkEmailVerification()
+      const response = await this.authRepository.checkEmailVerification()
 
-      return { result }
+      return { response }
     } catch (error) {
       if (error instanceof FirebaseAuthException) {
         throw new FirebaseAuthException(error.message, error.code)

@@ -30,12 +30,14 @@ const AddCategoryForm = ({ onClose, addCategories }: AddCategoryFormProps) => {
     try {
       const usecase = new AddCategoryUseCase()
 
-      const result = await usecase.execute({
-        userId: currentUser!.id,
+      if (!currentUser) return
+
+      const { response } = await usecase.execute({
         name: data.name,
+        babyId: currentUser.getBabyId(),
       })
 
-      addCategories(result.category)
+      addCategories(response)
 
       onClose()
     } catch (error) {

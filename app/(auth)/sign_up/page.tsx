@@ -38,11 +38,11 @@ const Page = () => {
   const onSubmit = handleSubmit(async (data: SignUpFormType) => {
     try {
       const usecase = new SignUpUseCase()
-      const response = await usecase.execute({
+      const { response } = await usecase.execute({
         email: data.email,
         password: data.password,
       })
-      if (response.result) {
+      if (response) {
         router.push(RoutePath.getEmailVerificationPage())
       }
     } catch (error) {

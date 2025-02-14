@@ -20,8 +20,8 @@ const UpdateBabyForm = ({
   setBabyInfo,
 }: UpdateBabyFormProps) => {
   const initialDate =
-    babyInfo && babyInfo.birthDate
-      ? new Date(babyInfo.birthDate).toISOString().split('T')[0]
+    babyInfo && babyInfo.getBirthDate()
+      ? new Date(babyInfo.getBirthDate()!).toISOString().split('T')[0]
       : new Date().toISOString().split('T')[0]
   const {
     register,
@@ -30,7 +30,7 @@ const UpdateBabyForm = ({
   } = useForm<UpdateBabyFormType>({
     mode: 'onChange',
     defaultValues: {
-      name: babyInfo ? babyInfo.name : '',
+      name: babyInfo ? babyInfo.getName() : '',
       birthDate: initialDate,
     },
   })
@@ -39,7 +39,7 @@ const UpdateBabyForm = ({
     try {
       const usecase = new UpdateBabyByIdUseCase()
       const response = await usecase.execute({
-        babyId: babyInfo.id,
+        babyId: babyInfo.getId(),
         name: data.name,
         birthDate: data.birthDate,
       })

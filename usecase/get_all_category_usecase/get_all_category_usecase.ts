@@ -1,5 +1,6 @@
 import { Category } from '@/domains/entities/category'
-import { CategoryRepository } from '@/infrastructure/repository/category_repository'
+import { CategoryRepository } from '@/domains/repositories/category_repository'
+import { FirestoreCategoryService } from '@/infrastructure/service/firebase/firestore/firestore_category_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
@@ -8,7 +9,7 @@ interface GetAllCategoryUseCaseInput extends UseCaseInput {
 }
 
 interface GetAllCategoryUseCaseOutput extends UseCaseOutput {
-  categories: Category[]
+  response: Category[]
 }
 
 export class GetAllCategoryUseCase
@@ -18,17 +19,28 @@ export class GetAllCategoryUseCase
   private categoryRepository: CategoryRepository
 
   constructor() {
-    this.categoryRepository = new CategoryRepository()
+    this.categoryRepository = new FirestoreCategoryService()
   }
 
   async execute(
     input: GetAllCategoryUseCaseInput
   ): Promise<GetAllCategoryUseCaseOutput> {
-    const { userId } = input
     try {
-      const categories = await this.categoryRepository.findByUserId({ userId })
+      const { userId } = input
 
-      return { categories }
+      const result = await this.categoryRepository.findByUserId({ userId })
+
+      const response = result.map((category) => {
+        const response = new Category()
+        response.setId(category.getId())
+        response.setName(category.getName())
+        response.setBabyId(category.getBabyId())
+        response.setCreatedBy(category.getCreatedBy())
+        response.setCreatedAt(category.getCreatedAt())
+        return response
+      })
+
+      return { response }
     } catch (error) {
       console.error(error)
       throw new Error('Failed to get categories')

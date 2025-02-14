@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { AddProductUseCase } from '@/usecase/add_product_usecase/add_product_usecase'
 
@@ -33,20 +34,32 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
   const currentUser = useAuthContext().currentUser
 
   const onSubmit = handleSubmit(async (data: AddProductFormType) => {
-    const { title, content, price } = data
+    try {
+      const { title, content, price } = data
 
-    const service = new AddProductUseCase()
+      if (!currentUser) return
 
-    const result = await service.execute({
-      name: title,
-      price,
-      content,
-      babyId: currentUser!.babyId,
-    })
+      const babyId = currentUser.getBabyId()
 
-    productContext.addProduct(result.result)
+      const usecase = new AddProductUseCase()
 
-    onClose()
+      const { response } = await usecase.execute({
+        name: title,
+        price,
+        content,
+        babyId: babyId,
+      })
+
+      productContext.addProduct(response)
+
+      onClose()
+    } catch (error: any) {
+      if (error instanceof SystemErrorException) {
+        throw new SystemErrorException(error.message)
+      } else {
+        throw new SystemErrorException()
+      }
+    }
   })
 
   return (

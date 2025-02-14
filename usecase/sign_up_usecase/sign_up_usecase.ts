@@ -1,13 +1,13 @@
 import { User } from '@/domains/entities/user'
-import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
-
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 import { AuthRepository } from '@/domains/repositories/auth_repository'
 import { UserRepository } from '@/domains/repositories/user_repository'
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
-import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
+import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { isFirebaseError } from '@/infrastructure/service/firebase/exception/types/FirebaseAuthExceptionType'
+import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
+
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface SignUpUseCaseInput extends UseCaseInput {
   email: string
@@ -15,7 +15,7 @@ interface SignUpUseCaseInput extends UseCaseInput {
 }
 
 interface SignUpUseCaseOutput extends UseCaseOutput {
-  result: boolean
+  response: boolean
 }
 
 export class SignUpUseCase
@@ -42,7 +42,7 @@ export class SignUpUseCase
 
       await this.userRepository.create({ user })
 
-      return { result: true }
+      return { response: true }
     } catch (error: any) {
       if (isFirebaseError(error)) {
         throw new FirebaseAuthException(error.message, error.code)

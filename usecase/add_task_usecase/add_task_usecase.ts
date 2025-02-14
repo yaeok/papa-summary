@@ -1,5 +1,8 @@
 import { Task } from '@/domains/entities/task'
-import { TaskRepository } from '@/infrastructure/repository/task_repository'
+import { AuthRepository } from '@/domains/repositories/auth_repository'
+import { TaskRepository } from '@/domains/repositories/task_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
+import { FirestoreTaskService } from '@/infrastructure/service/firebase/firestore/firestore_task_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
@@ -13,30 +16,48 @@ interface AddTaskUseCaseInput extends UseCaseInput {
 }
 
 interface AddTaskUseCaseOutput extends UseCaseOutput {
-  result: Task
+  response: Task
 }
 
 export class AddTaskUseCase
   implements UseCase<AddTaskUseCaseInput, Promise<AddTaskUseCaseOutput>>
 {
   private taskRepository: TaskRepository
+  private authRepository: AuthRepository
 
   constructor() {
-    this.taskRepository = new TaskRepository()
+    this.taskRepository = new FirestoreTaskService()
+    this.authRepository = new AuthService()
   }
 
   async execute(input: AddTaskUseCaseInput): Promise<AddTaskUseCaseOutput> {
     const { title, content, startDate, endDate, timing, babyId } = input
 
-    const result = await this.taskRepository.create({
-      name: title,
-      content: content,
-      startDate: startDate,
-      endDate: endDate,
-      timing: timing,
-      babyId: babyId,
-    })
+    const user = await this.authRepository.getCurrentUser()
 
-    return { result }
+    const task = new Task()
+    task.setTitle(title)
+    task.setContent(content)
+    task.setStartDate(startDate)
+    task.setEndDate(endDate)
+    task.setTiming(timing)
+    task.setBabyId(babyId)
+    task.setCreatedBy(user.uid)
+
+    const result = await this.taskRepository.create({ task })
+
+    const response = new Task()
+    response.setId(result.getId())
+    response.setTitle(result.getTitle())
+    response.setContent(result.getContent())
+    response.setStartDate(result.getStartDate())
+    response.setEndDate(result.getEndDate())
+    response.setTiming(result.getTiming())
+    response.setBabyId(result.getBabyId())
+    response.setCompletedAt(result.getCompletedAt())
+    response.setCreatedBy(result.getCreatedBy())
+    response.setCreatedAt(result.getCreatedAt())
+
+    return { response }
   }
 }

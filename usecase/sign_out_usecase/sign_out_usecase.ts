@@ -1,14 +1,15 @@
+import { AuthRepository } from '@/domains/repositories/auth_repository'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { AuthRepository } from '@/infrastructure/repository/auth_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
+import { isFirebaseError } from '@/infrastructure/service/firebase/exception/types/FirebaseAuthExceptionType'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
-import { isFirebaseError } from '@/infrastructure/service/firebase/exception/types/FirebaseAuthExceptionType'
 
 interface SignOutUseCaseInput extends UseCaseInput {}
 
 interface SignOutUseCaseOutput extends UseCaseOutput {
-  result: boolean
+  response: boolean
 }
 
 export class SignOutUseCase
@@ -17,14 +18,14 @@ export class SignOutUseCase
   private authRepository: AuthRepository
 
   constructor() {
-    this.authRepository = new AuthRepository()
+    this.authRepository = new AuthService()
   }
 
   async execute(): Promise<SignOutUseCaseOutput> {
     try {
       await this.authRepository.signOut()
 
-      return { result: true }
+      return { response: true }
     } catch (error: any) {
       if (isFirebaseError(error)) {
         throw new FirebaseAuthException(error.message, error.code)

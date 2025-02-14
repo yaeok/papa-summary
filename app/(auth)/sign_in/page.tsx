@@ -28,11 +28,11 @@ const Page = () => {
   const onSubmit = handleSubmit(async (data: SignInFormType) => {
     try {
       const usecase = new SignInUseCase()
-      const response = await usecase.execute({
+      const { response } = await usecase.execute({
         email: data.email,
         password: data.password,
       })
-      if (response.result) {
+      if (response) {
         router.push(RoutePath.getTaskPage())
       }
     } catch (error) {

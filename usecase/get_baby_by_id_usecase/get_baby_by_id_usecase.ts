@@ -1,15 +1,15 @@
 import { Baby } from '@/domains/entities/baby'
-
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 import { BabyRepository } from '@/domains/repositories/baby_repository'
 import { FirestoreBabyService } from '@/infrastructure/service/firebase/firestore/firestore_baby_service'
+
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface GetBabyByIdUseCaseInput extends UseCaseInput {
   id: string
 }
 
 interface GetBabyByIdUseCaseOutput extends UseCaseOutput {
-  baby: Baby | null
+  response: Baby | null
 }
 
 export class GetBabyByIdUseCase
@@ -27,14 +27,14 @@ export class GetBabyByIdUseCase
   ): Promise<GetBabyByIdUseCaseOutput> {
     const { id } = input
     try {
-      const response = await this.babyRepository.findById({ id })
+      const result = await this.babyRepository.findById({ id })
 
-      const baby = new Baby()
-      baby.setId(response.getId())
-      baby.setName(response.getName())
-      baby.setBirthDate(response.getBirthDate())
+      const response = new Baby()
+      response.setId(result.getId())
+      response.setName(result.getName())
+      response.setBirthDate(result.getBirthDate())
 
-      return { baby }
+      return { response }
     } catch (error) {
       console.error(error)
       throw new Error('Failed to get baby')

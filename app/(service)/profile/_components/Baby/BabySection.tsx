@@ -6,18 +6,20 @@ import { Baby } from '@/domains/entities/baby'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetBabyByIdUseCase } from '@/usecase/get_baby_by_id_usecase/get_baby_by_id_usecase'
 
-import UpdateBabyButton from './UpdateBaby/UpdateBabyButton'
+import UpdateBabyButton from './update_baby/UpdateBabyButton'
 
 const BabySection = () => {
   const [babyInfo, setBabyInfo] = useState<Baby | null>(null)
   const currentUser = useAuthContext().currentUser
   useEffect(() => {
     const fetch = async () => {
-      if (currentUser) {
-        const usecase = new GetBabyByIdUseCase()
-        const baby = await usecase.execute({ id: currentUser.babyId })
-        setBabyInfo(baby.baby)
-      }
+      if (!currentUser) return
+
+      const id = currentUser.getBabyId()
+      const usecase = new GetBabyByIdUseCase()
+      const { response } = await usecase.execute({ id })
+
+      setBabyInfo(response)
     }
     fetch()
   }, [])
@@ -28,13 +30,13 @@ const BabySection = () => {
       <div className='w-full'>
         <div className='flex flex-row justify-between'>
           <p>呼び名</p>
-          <p>{babyInfo !== null ? babyInfo.name : '未設定'}</p>
+          <p>{babyInfo !== null ? babyInfo.getName() : '未設定'}</p>
         </div>
         <div className='flex flex-row justify-between'>
           <p>予定日</p>
           <p>
-            {babyInfo?.birthDate
-              ? new Date(babyInfo?.birthDate).toLocaleDateString()
+            {babyInfo?.getBirthDate()
+              ? new Date(babyInfo?.getBirthDate()!).toLocaleDateString()
               : '未設定'}
           </p>
         </div>
