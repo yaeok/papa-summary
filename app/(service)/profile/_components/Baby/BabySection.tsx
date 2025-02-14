@@ -35,8 +35,8 @@ const BabySection = () => {
         <div className='flex flex-row justify-between'>
           <p>予定日</p>
           <p>
-            {babyInfo?.getBirthDate()
-              ? new Date(babyInfo?.getBirthDate()!).toLocaleDateString()
+            {babyInfo !== null && babyInfo.getBirthDate() !== null
+              ? new Date(babyInfo.getBirthDate()!).toLocaleDateString()
               : '未設定'}
           </p>
         </div>
