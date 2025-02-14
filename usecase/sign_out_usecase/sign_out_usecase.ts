@@ -26,7 +26,7 @@ export class SignOutUseCase
       await this.authRepository.signOut()
 
       return { response: true }
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (isFirebaseError(error)) {
         throw new FirebaseAuthException(error.message, error.code)
       } else {

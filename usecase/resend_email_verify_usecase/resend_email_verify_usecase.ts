@@ -30,7 +30,7 @@ export class ResendEmailVerifyUseCase
       await this.authRepository.sendEmailVerification()
 
       return { response: true }
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (isFirebaseError(error)) {
         throw new FirebaseAuthException(error.message, error.code)
       } else {

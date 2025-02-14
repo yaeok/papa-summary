@@ -53,7 +53,7 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
       productContext.addProduct(response)
 
       onClose()
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error instanceof SystemErrorException) {
         throw new SystemErrorException(error.message)
       } else {

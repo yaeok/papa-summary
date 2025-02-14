@@ -1,5 +1,5 @@
 /** firebaseのエラー */
-type FirebaseError = {
+export type FirebaseError = {
   code: string
   message: string
   name: string

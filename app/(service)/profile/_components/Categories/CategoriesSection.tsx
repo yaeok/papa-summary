@@ -28,7 +28,7 @@ const CategoriesSection = () => {
         const { response } = await usecase.execute({ userId })
 
         setCategories(response)
-      } catch (error: any) {
+      } catch (error: unknown) {
         if (error instanceof SystemErrorException) {
           throw new SystemErrorException(error.message)
         } else {

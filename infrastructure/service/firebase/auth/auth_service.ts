@@ -13,7 +13,10 @@ import {
 
 import { auth } from '../config/firebaseConfig'
 import { FirebaseAuthException } from '../exception/FirebaseAuthException'
-import { isFirebaseError } from '../exception/types/FirebaseAuthExceptionType'
+import {
+  FirebaseError,
+  isFirebaseError,
+} from '../exception/types/FirebaseAuthExceptionType'
 
 export class AuthService implements AuthRepository {
   async signUpWithEmail(args: {
@@ -32,9 +35,9 @@ export class AuthService implements AuthRepository {
       await this.sendEmailVerification()
 
       return userCredential
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
+    } catch (error: unknown) {
+      if (isFirebaseError(error as Error)) {
+        const result = this.handleFirebaseAuthError(error as FirebaseError)
         throw new FirebaseAuthException(result.message, result.code)
       } else {
         throw new SystemErrorException()
@@ -56,9 +59,9 @@ export class AuthService implements AuthRepository {
       )
 
       return userCredential
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
+    } catch (error: unknown) {
+      if (isFirebaseError(error as Error)) {
+        const result = this.handleFirebaseAuthError(error as FirebaseError)
         throw new FirebaseAuthException(result.message, result.code)
       } else {
         throw new SystemErrorException()
@@ -69,9 +72,9 @@ export class AuthService implements AuthRepository {
   async signOut(): Promise<void> {
     try {
       await auth.signOut()
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
+    } catch (error: unknown) {
+      if (isFirebaseError(error as Error)) {
+        const result = this.handleFirebaseAuthError(error as FirebaseError)
         throw new FirebaseAuthException(result.message, result.code)
       } else {
         throw new SystemErrorException()
@@ -82,9 +85,9 @@ export class AuthService implements AuthRepository {
   async sendPasswordResetEmail(email: string): Promise<void> {
     try {
       await sendPasswordResetEmail(auth, email)
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
+    } catch (error: unknown) {
+      if (isFirebaseError(error as Error)) {
+        const result = this.handleFirebaseAuthError(error as FirebaseError)
         throw new FirebaseAuthException(result.message, result.code)
       } else {
         throw new SystemErrorException()
@@ -101,9 +104,9 @@ export class AuthService implements AuthRepository {
       } else {
         await sendEmailVerification(currentUser)
       }
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
+    } catch (error: unknown) {
+      if (isFirebaseError(error as Error)) {
+        const result = this.handleFirebaseAuthError(error as FirebaseError)
         throw new FirebaseAuthException(result.message, result.code)
       } else {
         throw new SystemErrorException()
@@ -124,9 +127,9 @@ export class AuthService implements AuthRepository {
 
         return isEmailVerified
       }
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
+    } catch (error: unknown) {
+      if (isFirebaseError(error as Error)) {
+        const result = this.handleFirebaseAuthError(error as FirebaseError)
         throw new FirebaseAuthException(result.message, result.code)
       } else {
         throw new SystemErrorException()
@@ -145,9 +148,9 @@ export class AuthService implements AuthRepository {
 
         return currentUser
       }
-    } catch (error: any) {
-      if (isFirebaseError(error)) {
-        const result = this.handleFirebaseAuthError(error)
+    } catch (error: unknown) {
+      if (isFirebaseError(error as Error)) {
+        const result = this.handleFirebaseAuthError(error as FirebaseError)
         throw new FirebaseAuthException(result.message, result.code)
       } else {
         throw new SystemErrorException()
@@ -159,7 +162,7 @@ export class AuthService implements AuthRepository {
    * Firebaseのエラーハンドリングを行う
    * @param error エラーオブジェクト
    */
-  private handleFirebaseAuthError(error: any): {
+  private handleFirebaseAuthError(error: FirebaseError): {
     message: string
     code: string
   } {
