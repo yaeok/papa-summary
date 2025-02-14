@@ -4,7 +4,6 @@ import { UserRepository } from '@/domains/repositories/user_repository'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
-import { isFirebaseError } from '@/infrastructure/service/firebase/exception/types/FirebaseAuthExceptionType'
 import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
@@ -43,8 +42,8 @@ export class SignUpUseCase
       await this.userRepository.create({ user })
 
       return { response: true }
-    } catch (error: unknown) {
-      if (isFirebaseError(error)) {
+    } catch (error) {
+      if (error instanceof FirebaseAuthException) {
         throw new FirebaseAuthException(error.message, error.code)
       } else {
         throw new SystemErrorException()
