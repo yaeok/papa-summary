@@ -38,12 +38,12 @@ const UpdateBabyForm = ({
   const onSubmit = handleSubmit(async (data: UpdateBabyFormType) => {
     try {
       const usecase = new UpdateBabyByIdUseCase()
-      const response = await usecase.execute({
+      const { response } = await usecase.execute({
         babyId: babyInfo.getId(),
         name: data.name,
         birthDate: data.birthDate,
       })
-      setBabyInfo(response.baby)
+      setBabyInfo(response)
       onClose()
     } catch (error) {
       console.error(error)
