@@ -1,7 +1,8 @@
 import { Task } from '@/domains/entities/task'
-import { TaskRepository } from '@/infrastructure/repository/task_repository'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { TaskRepository } from '@/domains/repositories/task_repository'
+import { FirestoreTaskService } from '@/infrastructure/service/firebase/firestore/firestore_task_service'
 
 interface GetAllTaskUseCaseInput extends UseCaseInput {
   babyId: string
@@ -17,7 +18,7 @@ export class GetAllTaskUseCase
   private taskRepository: TaskRepository
 
   constructor() {
-    this.taskRepository = new TaskRepository()
+    this.taskRepository = new FirestoreTaskService()
   }
 
   async execute(
@@ -25,7 +26,22 @@ export class GetAllTaskUseCase
   ): Promise<GetAllTaskUseCaseOutput> {
     const { babyId } = input
 
-    const tasks = await this.taskRepository.findAll({ babyId })
+    const response = await this.taskRepository.findAll({ babyId })
+
+    const tasks = response.map((task) => {
+      const t = new Task()
+      t.setId(task.getId())
+      t.setTitle(task.getTitle())
+      t.setContent(task.getContent())
+      t.setStartDate(task.getStartDate())
+      t.setEndDate(task.getEndDate())
+      t.setCompletedAt(task.getCompletedAt())
+      t.setBabyId(task.getBabyId())
+      t.setCreatedBy(task.getCreatedBy())
+      t.setTiming(task.getTiming())
+      t.setCreatedAt(task.getCreatedAt())
+      return t
+    })
 
     return { tasks }
   }

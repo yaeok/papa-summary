@@ -1,10 +1,13 @@
 import { User } from '@/domains/entities/user'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { AuthRepository } from '@/infrastructure/repository/auth_repository'
-import { UserRepository } from '@/infrastructure/repository/user_repository'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { AuthRepository } from '@/domains/repositories/auth_repository'
+import { UserRepository } from '@/domains/repositories/user_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
+import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
+import { isFirebaseError } from '@/infrastructure/service/firebase/exception/types/FirebaseAuthExceptionType'
 
 interface SignUpUseCaseInput extends UseCaseInput {
   email: string
@@ -22,31 +25,26 @@ export class SignUpUseCase
   private userRepository: UserRepository
 
   constructor() {
-    this.authRepository = new AuthRepository()
-    this.userRepository = new UserRepository()
+    this.authRepository = new AuthService()
+    this.userRepository = new FirestoreUserService()
   }
 
   async execute(input: SignUpUseCaseInput): Promise<SignUpUseCaseOutput> {
     const { email, password } = input
     try {
-      const response = await this.authRepository.signUp({
+      const response = await this.authRepository.signUpWithEmail({
         email: email,
         password: password,
       })
-      const user = new User({
-        id: response,
-        email: email,
-        name: '',
-        babyId: '',
-        parentType: 0,
-        createdAt: new Date(),
-      })
+      const user = new User()
+      user.setId(response.user.uid)
+      user.setEmail(email)
 
-      await this.userRepository.create(user)
+      await this.userRepository.create({ user })
 
       return { result: true }
-    } catch (error) {
-      if (error instanceof FirebaseAuthException) {
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
         throw new FirebaseAuthException(error.message, error.code)
       } else {
         throw new SystemErrorException()

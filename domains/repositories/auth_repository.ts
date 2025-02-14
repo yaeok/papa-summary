@@ -1,4 +1,4 @@
-import { UserCredential } from '@firebase/auth'
+import { User, UserCredential } from '@firebase/auth'
 
 export interface AuthRepository {
   signUpWithEmail(args: {
@@ -14,4 +14,6 @@ export interface AuthRepository {
   sendPasswordResetEmail(email: string): Promise<void>
   sendEmailVerification(): Promise<void>
   checkEmailVerification(): Promise<boolean>
+
+  getCurrentUser(): Promise<User>
 }

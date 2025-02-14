@@ -1,7 +1,8 @@
 import { Baby } from '@/domains/entities/baby'
-import { BabyRepository } from '@/infrastructure/repository/baby_repository'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { BabyRepository } from '@/domains/repositories/baby_repository'
+import { FirestoreBabyService } from '@/infrastructure/service/firebase/firestore/firestore_baby_service'
 
 interface UpdateBabyByIdUseCaseInput extends UseCaseInput {
   babyId: string
@@ -20,7 +21,7 @@ export class UpdateBabyByIdUseCase
   private babyRepository: BabyRepository
 
   constructor() {
-    this.babyRepository = new BabyRepository()
+    this.babyRepository = new FirestoreBabyService()
   }
 
   async execute(
