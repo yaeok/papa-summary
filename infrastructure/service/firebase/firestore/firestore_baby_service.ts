@@ -105,9 +105,12 @@ export class FirestoreBabyService implements BabyRepository {
   private convertDocumentDataToData(documentData: DocumentData): BabyDB {
     const data = new BabyDB()
 
+    const birthDate =
+      documentData.birthDate !== null ? documentData.birthDate.toDate() : null
+
     data.setId(documentData.id)
     data.setName(documentData.name)
-    data.setBirthDate(documentData.birthDate)
+    data.setBirthDate(birthDate)
     data.setCreatedAt(documentData.createdAt.toDate())
     data.setUpdatedAt(documentData.updatedAt.toDate())
 

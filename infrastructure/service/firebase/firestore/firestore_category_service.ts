@@ -65,7 +65,7 @@ export class FirestoreCategoryService implements CategoryRepository {
     data.setName(documentData.name)
     data.setBabyId(documentData.babyId)
     data.setCreatedBy(documentData.createdBy)
-    data.setCreatedAt(documentData.createdAt)
+    data.setCreatedAt(documentData.createdAt.toDate())
 
     return data
   }
