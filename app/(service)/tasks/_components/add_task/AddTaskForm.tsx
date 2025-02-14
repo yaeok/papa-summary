@@ -125,8 +125,6 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
                 {...register('startDate', {
                   required: '開始日は必須です',
                   validate: (value) => {
-                    console.log('startDate', value)
-                    console.log('endDate', endDate)
                     if (endDate === '') return true
                     return (
                       new Date(value) <= new Date(endDate) ||

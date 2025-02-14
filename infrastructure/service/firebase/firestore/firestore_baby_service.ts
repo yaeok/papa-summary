@@ -10,6 +10,7 @@ import {
   getDocs,
   query,
   setDoc,
+  Timestamp,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -37,8 +38,6 @@ export class FirestoreBabyService implements BabyRepository {
     response.setId(docRef.id)
     response.setName(baby.getName())
     response.setBirthDate(baby.getBirthDate())
-    response.setCreatedAt(new Date())
-    response.setUpdatedAt(new Date())
 
     return response
   }
@@ -59,13 +58,8 @@ export class FirestoreBabyService implements BabyRepository {
       // クエリの実行
       const snapshot = await getDocs(q)
 
-      // データがない場合はnullを返す
-      if (snapshot.empty) {
-        throw new SystemErrorException('データが存在しません')
-      }
-
       // データを取得
-      const document = snapshot.docs[0].data()
+      const document = snapshot.docs.map((doc) => doc.data())[0]
 
       const response = this.convertDocumentDataToData(document)
 
@@ -106,13 +100,15 @@ export class FirestoreBabyService implements BabyRepository {
     const data = new BabyDB()
 
     const birthDate =
-      documentData.birthDate !== null ? documentData.birthDate.toDate() : null
+      documentData.birthDate !== null
+        ? (documentData.birthDate as Timestamp).toDate()
+        : null
 
     data.setId(documentData.id)
     data.setName(documentData.name)
     data.setBirthDate(birthDate)
-    data.setCreatedAt(documentData.createdAt.toDate())
-    data.setUpdatedAt(documentData.updatedAt.toDate())
+    data.setCreatedAt((documentData.createdAt as Timestamp).toDate())
+    data.setUpdatedAt((documentData.updatedAt as Timestamp).toDate())
 
     return data
   }
