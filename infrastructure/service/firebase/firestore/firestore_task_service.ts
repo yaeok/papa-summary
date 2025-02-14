@@ -93,17 +93,25 @@ export class FirestoreTaskService implements TaskRepository {
   }
 
   private convertDocumentDataToData(documentData: DocumentData): TaskDB {
+    const endDate =
+      documentData.endDate !== null ? documentData.endDate.toDate() : null
+
+    const completedAt =
+      documentData.completedAt !== null
+        ? documentData.completedAt.toDate()
+        : null
+
     const data = new TaskDB()
     data.setId(documentData.id)
     data.setTitle(documentData.title)
     data.setContent(documentData.content)
-    data.setStartDate(documentData.startDate)
-    data.setEndDate(documentData.endDate)
+    data.setStartDate(documentData.startDate.toDate())
+    data.setEndDate(endDate)
     data.setBabyId(documentData.babyId)
     data.setTiming(documentData.timing)
-    data.setCompletedAt(documentData.completedAt)
+    data.setCompletedAt(completedAt)
     data.setCreatedBy(documentData.createdBy)
-    data.setCreatedAt(documentData.createdAt)
+    data.setCreatedAt(documentData.createdAt.toDate())
 
     return data
   }
