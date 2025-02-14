@@ -8,7 +8,7 @@ export default function RootLayout({
   return (
     <>
       <Header isSignIn={true} />
-      <div className='p-2'>{children}</div>
+      <div>{children}</div>
     </>
   )
 }

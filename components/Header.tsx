@@ -56,7 +56,7 @@ export default function Header({ isSignIn }: HeaderProps) {
 
         <nav className='hidden lg:block'>
           <ul className='flex flex-row items-center gap-6'>
-            <li>
+            {/* <li>
               <Link href={RoutePath.getLandingPage()}>
                 <span className='hover:border-b-2 hover:border-blue-500 hover:text-blue-500'>
                   TOP
@@ -69,7 +69,7 @@ export default function Header({ isSignIn }: HeaderProps) {
                   CONTACT
                 </span>
               </Link>
-            </li>
+            </li> */}
             {currentUser?.currentUser ? (
               <li>
                 <button
