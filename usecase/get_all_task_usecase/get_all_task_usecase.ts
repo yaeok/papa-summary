@@ -1,15 +1,15 @@
 import { Task } from '@/domains/entities/task'
-
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 import { TaskRepository } from '@/domains/repositories/task_repository'
 import { FirestoreTaskService } from '@/infrastructure/service/firebase/firestore/firestore_task_service'
+
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface GetAllTaskUseCaseInput extends UseCaseInput {
   babyId: string
 }
 
 interface GetAllTaskUseCaseOutput extends UseCaseOutput {
-  tasks: Task[]
+  response: Task[]
 }
 
 export class GetAllTaskUseCase
@@ -26,9 +26,9 @@ export class GetAllTaskUseCase
   ): Promise<GetAllTaskUseCaseOutput> {
     const { babyId } = input
 
-    const response = await this.taskRepository.findAll({ babyId })
+    const tasks = await this.taskRepository.findAll({ babyId })
 
-    const tasks = response.map((task) => {
+    const response = tasks.map((task) => {
       const t = new Task()
       t.setId(task.getId())
       t.setTitle(task.getTitle())
@@ -43,6 +43,6 @@ export class GetAllTaskUseCase
       return t
     })
 
-    return { tasks }
+    return { response }
   }
 }

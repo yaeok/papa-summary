@@ -8,6 +8,7 @@ import {
   DocumentData,
   getDocs,
   query,
+  Timestamp,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -62,7 +63,7 @@ export class FirestoreProductService implements ProductRepository {
     return {
       id: product.getId(),
       name: product.getName(),
-      price: product.getPrice(),
+      price: parseInt(product.getPrice().toString()),
       content: product.getContent(),
       babyId: product.getBabyId(),
       createdBy: product.getCreatedBy(),
@@ -78,7 +79,7 @@ export class FirestoreProductService implements ProductRepository {
     data.setContent(documentData.content)
     data.setBabyId(documentData.babyId)
     data.setCreatedBy(documentData.createdBy)
-    data.setCreatedAt(documentData.createdAt.toDate())
+    data.setCreatedAt((documentData.createdAt as Timestamp).toDate())
     return data
   }
 }

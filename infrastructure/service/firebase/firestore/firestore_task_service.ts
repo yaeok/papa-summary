@@ -8,6 +8,7 @@ import {
   DocumentData,
   getDocs,
   query,
+  Timestamp,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -72,7 +73,7 @@ export class FirestoreTaskService implements TaskRepository {
       response.setId(docRef.id)
 
       return response
-    } catch {
+    } catch (error) {
       throw new SystemErrorException('タスク登録に失敗しました')
     }
   }
@@ -94,24 +95,26 @@ export class FirestoreTaskService implements TaskRepository {
 
   private convertDocumentDataToData(documentData: DocumentData): TaskDB {
     const endDate =
-      documentData.endDate !== null ? documentData.endDate.toDate() : null
+      documentData.endDate !== null
+        ? (documentData.endDate as Timestamp).toDate()
+        : null
 
     const completedAt =
       documentData.completedAt !== null
-        ? documentData.completedAt.toDate()
+        ? (documentData.completedAt as Timestamp).toDate()
         : null
 
     const data = new TaskDB()
     data.setId(documentData.id)
     data.setTitle(documentData.title)
     data.setContent(documentData.content)
-    data.setStartDate(documentData.startDate.toDate())
+    data.setStartDate((documentData.startDate as Timestamp).toDate())
     data.setEndDate(endDate)
     data.setBabyId(documentData.babyId)
     data.setTiming(documentData.timing)
     data.setCompletedAt(completedAt)
     data.setCreatedBy(documentData.createdBy)
-    data.setCreatedAt(documentData.createdAt.toDate())
+    data.setCreatedAt((documentData.createdAt as Timestamp).toDate())
 
     return data
   }

@@ -1,134 +1,18 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-
-import Loading from '@/components/Loading/Loading'
-import { Label } from '@/constants/Label'
-import { Status } from '@/constants/Status'
-import { Task } from '@/domains/entities/task'
-import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { GetAllTaskUseCase } from '@/usecase/get_all_task_usecase/get_all_task_usecase'
-
-import AddTaskButton from './_components/AddTask/AddTaskButton'
-import { useTaskContext } from './_hooks/TaskProvider'
+import AddTaskButton from './_components/add_task/AddTaskButton'
+import TaskGrid from './_components/grid/TaskGrid'
+import SelectMenu from './_components/select_menu/SelectMenu'
 
 const Page = () => {
-  const taskContext = useTaskContext()
-  const currentUser = useAuthContext().currentUser
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    const fetch = async () => {
-      setLoading(true)
-      if (!currentUser) return
-
-      const babyId = currentUser.getBabyId()
-      const usecase = new GetAllTaskUseCase()
-      const response = await usecase.execute({ babyId })
-      taskContext.setTasks(response.tasks)
-      setLoading(false)
-    }
-    fetch()
-  }, [])
-
-  const handleTagColorByTiming = (timing: number) => {
-    switch (timing) {
-      case Status.getTaskTimingEarly():
-        return 'bg-blue-500 text-white'
-      case Status.getTaskTimingMiddle():
-        return 'bg-yellow-500 text-white'
-      case Status.getTaskTimingLate():
-        return 'bg-red-500 text-white'
-      case Status.getTaskTimingAfter():
-        return 'bg-green-500 text-white'
-      default:
-        return 'bg-gray-500 text-white'
-    }
-  }
-
-  const handleTagNameByTiming = (timing: number) => {
-    switch (timing) {
-      case Status.getTaskTimingEarly():
-        return Label.getTaskTimingEarly()
-      case Status.getTaskTimingMiddle():
-        return Label.getTaskTimingMiddle()
-      case Status.getTaskTimingLate():
-        return Label.getTaskTimingLate()
-      case Status.getTaskTimingAfter():
-        return Label.getTaskTimingAfter()
-      default:
-        return '未設定'
-    }
-  }
-
   return (
     <div className='space-y-4'>
       <div className='flex flex-row justify-between items-center'>
         <h1 className='text-lg'>やることリスト</h1>
         <div className='flex flex-row gap-4'>
-          <select
-            name='task-select'
-            id='task-select'
-            onChange={(e) => console.log(e.target.value)}
-            className='focus:outline-none'
-          >
-            <option value={Status.getTaskTimingAll()}>全て</option>
-            <option value={Status.getTaskTimingEarly()}>
-              {Label.getTaskTimingEarly()}
-            </option>
-            <option value={Status.getTaskTimingMiddle()}>
-              {Label.getTaskTimingMiddle()}
-            </option>
-            <option value={Status.getTaskTimingLate()}>
-              {Label.getTaskTimingLate()}
-            </option>
-            <option value={Status.getTaskTimingAfter()}>
-              {Label.getTaskTimingAfter()}
-            </option>
-          </select>
+          <SelectMenu />
           <AddTaskButton />
         </div>
       </div>
-
-      {(() => {
-        if (loading) {
-          return <Loading />
-        } else {
-          return (
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-              {taskContext.tasks.map((task: Task) => (
-                <div
-                  key={task.getId()}
-                  onClick={() => console.log(task)}
-                  className='p-4 rounded-md shadow-md flex flex-col justify-between gap-4'
-                >
-                  <div className='flex flex-row justify-between items-center gap-2'>
-                    <h2 className='text-lg font-semibold flex-1'>
-                      {task.getTitle()}
-                    </h2>
-                    {
-                      <span
-                        className={`px-4 py-2 rounded-full text-xs ${handleTagColorByTiming(
-                          task.getTiming()
-                        )}`}
-                      >
-                        {handleTagNameByTiming(task.getTiming())}
-                      </span>
-                    }
-                  </div>
-                  <p className='px-2 text-sm break-words'>
-                    {task.getContent()}
-                  </p>
-                  <div className='text-end text-sm'>
-                    {task.getStartDate().toLocaleDateString()} 〜{' '}
-                    {task.getEndDate()?.toLocaleDateString()}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )
-        }
-      })()}
+      <TaskGrid />
     </div>
   )
 }
