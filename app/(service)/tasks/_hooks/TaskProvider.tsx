@@ -31,7 +31,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateTask = (task: Task) => {
     const newTasks = tasks.map((t) => {
-      if (t.id === task.id) {
+      if (t.getId() === task.getId()) {
         return task
       }
       return t
@@ -41,8 +41,10 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
 
   const sortTaskByStartDate = (): Task[] => {
     const sortTodos = tasks.sort((a, b) => {
-      if (a.startDate < b.startDate) return -1
-      if (a.startDate > b.startDate) return 1
+      const startDateA = a.getStartDate()
+      const startDateB = b.getStartDate()
+      if (startDateA < startDateB) return -1
+      if (startDateA > startDateB) return 1
       return 0
     })
     return sortTodos

@@ -37,7 +37,7 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
     },
   })
   const taskContext = useTaskContext()
-  const currentUser = useAuthContext().currentUser
+  const currentUser = useAuthContext()
 
   const startDate = watch('startDate')
   const endDate = watch('endDate')
@@ -45,18 +45,20 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
   const onSubmit = handleSubmit(async (data: AddTaskFormType) => {
     const { title, content, startDate, endDate } = data
 
+    if (!currentUser) return
+
     const service = new AddTaskUseCase()
 
-    const result = await service.execute({
+    const { response } = await service.execute({
       title,
       content,
       startDate: new Date(startDate),
       endDate: endDate === '' ? null : new Date(endDate),
       timing: parseInt(data.timing.toString()),
-      babyId: currentUser!.babyId,
+      babyId: currentUser.currentUser!.getBabyId(),
     })
 
-    taskContext.addTask(result.result)
+    taskContext.addTask(response)
 
     onClose()
   })

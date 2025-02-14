@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { Status } from '@/constants/Status'
+import { User } from '@/domains/entities/user'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { UpdateUserByIdUseCase } from '@/usecase/update_user_by_id_usecase/update_user_by_id_usecase'
 
@@ -22,24 +23,33 @@ const UpdateProfileForm = ({ onClose }: UpdateProfileFormProps) => {
   } = useForm<UpdateProfileFormType>({
     mode: 'onChange',
     defaultValues: {
-      name: authContext.currentUser!.name,
-      parentType: authContext.currentUser!.parentType,
+      name: '',
+      parentType: 0,
     },
   })
 
   const onSubmit = handleSubmit(async (data: UpdateProfileFormType) => {
     try {
+      if (!authContext.currentUser) return
+
+      const currentUser = authContext.currentUser
+
       const usecase = new UpdateUserByIdUseCase()
       await usecase.execute({
-        userId: authContext.currentUser!.id,
+        userId: currentUser.getId(),
         name: data.name,
         parentType: parseInt(data.parentType.toString()),
       })
-      authContext.setCurrentUser({
-        ...authContext.currentUser!,
-        name: data.name,
-        parentType: parseInt(data.parentType.toString()),
-      })
+
+      const user = new User()
+      user.setId(currentUser.getId())
+      user.setName(data.name)
+      user.setEmail(currentUser.getEmail())
+      user.setParentType(parseInt(data.parentType.toString()))
+      user.setBabyId(currentUser.getBabyId())
+      user.setCreatedAt(currentUser.getCreatedAt())
+
+      authContext.setCurrentUser(user)
       onClose()
     } catch (error) {
       console.error(error)

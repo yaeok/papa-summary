@@ -19,8 +19,8 @@ const CheckEmailVerifyButton = () => {
   const handleVerifyEmail = async () => {
     try {
       const usecase = new CheckEmailVerifyUseCase()
-      const result = await usecase.execute()
-      if (result.result) {
+      const { response } = await usecase.execute()
+      if (response) {
         router.push(RoutePath.getNewPage())
       }
     } catch (error) {

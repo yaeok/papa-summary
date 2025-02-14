@@ -1,5 +1,7 @@
 import { Category } from '@/domains/entities/category'
+import { AuthRepository } from '@/domains/repositories/auth_repository'
 import { CategoryRepository } from '@/domains/repositories/category_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirestoreCategoryService } from '@/infrastructure/service/firebase/firestore/firestore_category_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
@@ -7,11 +9,10 @@ import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 interface AddCategoryUseCaseInput extends UseCaseInput {
   name: string
   babyId: string
-  createdBy: string
 }
 
 interface AddCategoryUseCaseOutput extends UseCaseOutput {
-  category: Category
+  response: Category
 }
 
 export class AddCategoryUseCase
@@ -19,25 +20,29 @@ export class AddCategoryUseCase
     UseCase<AddCategoryUseCaseInput, Promise<AddCategoryUseCaseOutput>>
 {
   private categoryRepository: CategoryRepository
+  private authRepository: AuthRepository
 
   constructor() {
     this.categoryRepository = new FirestoreCategoryService()
+    this.authRepository = new AuthService()
   }
 
   async execute(
     input: AddCategoryUseCaseInput
   ): Promise<AddCategoryUseCaseOutput> {
-    const { name, babyId, createdBy } = input
+    const { name, babyId } = input
 
-    const category = new Category()
-    category.setName(name)
-    category.setBabyId(babyId)
-    category.setCreatedBy(createdBy)
+    const user = await this.authRepository.getCurrentUser()
 
-    const id = await this.categoryRepository.create({ category })
+    const response = new Category()
+    response.setName(name)
+    response.setBabyId(babyId)
+    response.setCreatedBy(user.uid)
 
-    category.setId(id)
+    const id = await this.categoryRepository.create({ category: response })
 
-    return { category }
+    response.setId(id)
+
+    return { response }
   }
 }

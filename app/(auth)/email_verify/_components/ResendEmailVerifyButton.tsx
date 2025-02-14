@@ -21,9 +21,14 @@ const ResendEmailVefiryButton = () => {
   const handleSendEmail = async () => {
     try {
       const usecase = new ResendEmailVerifyUseCase()
-      await usecase.execute()
-      setMessage('確認メールを再送信しました。')
-      handleOpen()
+      const { response } = await usecase.execute()
+      if (response) {
+        setMessage('確認メールを再送信しました。')
+        handleOpen()
+      } else {
+        setMessage('確認メールの再送信に失敗しました。')
+        handleErrorOpen()
+      }
     } catch (error) {
       if (error instanceof FirebaseAuthException) {
         setMessage(error.message)

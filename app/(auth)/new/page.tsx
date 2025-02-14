@@ -32,14 +32,14 @@ const Page = () => {
 
   const onSubmit = handleSubmit(async (data: UserInfoFormType) => {
     const usecase = new CreateUserAndBabyInfoUseCase()
-    const result = await usecase.execute({
+    const { response } = await usecase.execute({
       name: data.username,
       parentType: parseInt(data.parentType),
       babyName: data.babyName,
       babyBirthday: data.babyBirthDate,
     })
 
-    if (result.result) router.push(RoutePath.getTaskPage())
+    if (response) router.push(RoutePath.getTaskPage())
   })
 
   return (

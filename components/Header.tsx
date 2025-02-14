@@ -21,9 +21,9 @@ export default function Header({ isSignIn }: HeaderProps) {
   const handleLogout = async () => {
     try {
       const usecase = new SignOutUseCase()
-      const response = await usecase.execute()
+      const { response } = await usecase.execute()
 
-      if (response.result) {
+      if (response) {
         alert('ログアウトしました')
         router.push(RoutePath.getLandingPage())
       }

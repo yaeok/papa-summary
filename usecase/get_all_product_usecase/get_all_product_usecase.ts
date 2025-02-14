@@ -1,15 +1,15 @@
 import { Product } from '@/domains/entities/product'
+import { AuthRepository } from '@/domains/repositories/auth_repository'
+import { ProductRepository } from '@/domains/repositories/product_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
+import { FirestoreProductService } from '@/infrastructure/service/firebase/firestore/firestore_product_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
-import { ProductRepository } from '@/domains/repositories/product_repository'
-import { AuthRepository } from '@/domains/repositories/auth_repository'
-import { FirestoreProductService } from '@/infrastructure/service/firebase/firestore/firestore_product_service'
-import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 
 interface GetAllProductUseCaseInput extends UseCaseInput {}
 
 interface GetAllProductUseCaseOutput extends UseCaseOutput {
-  products: Product[]
+  response: Product[]
 }
 
 export class GetAllProductUseCase
@@ -32,9 +32,17 @@ export class GetAllProductUseCase
     const products = await this.productRepository.findAll({ createdBy })
 
     const response = products.map((product) => {
-      const 
+      const p = new Product()
+      p.setId(product.getId())
+      p.setName(product.getName())
+      p.setPrice(product.getPrice())
+      p.setContent(product.getContent())
+      p.setBabyId(product.getBabyId())
+      p.setCreatedBy(product.getCreatedBy())
+      p.setCreatedAt(product.getCreatedAt())
+      return p
     })
 
-    return { products }
+    return { response }
   }
 }

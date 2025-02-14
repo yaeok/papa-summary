@@ -1,23 +1,32 @@
 'use client'
 
-import Avatar from 'boring-avatars'
+import Avatar from 'boring-avatars';
+import { useEffect } from 'react';
 
-import { Label } from '@/constants/Label'
-import { Status } from '@/constants/Status'
-import { useAuthContext } from '@/providers/CurrentUserProvider'
+import { Label } from '@/constants/Label';
+import { Status } from '@/constants/Status';
+import { useAuthContext } from '@/providers/CurrentUserProvider';
 
-import UpdateProfileButton from './UpdateProfile/UpdateProfileButton'
+import UpdateProfileButton from './update_profile/UpdateProfileButton';
 
 const ProfileSection = () => {
   const currentUser = useAuthContext().currentUser
+
+  useEffect(() => {
+    if (!currentUser) return
+  }, [currentUser])
 
   return (
     <div className='w-full flex flex-col items-center gap-4'>
       <div className='w-full py-8 flex flex-col items-center justify-center gap-4'>
         <div className='relative w-36 h-36'>
-          <Avatar size='150px' name={currentUser?.email} variant='bauhaus' />
+          <Avatar
+            size='150px'
+            name={currentUser?.getEmail()}
+            variant='bauhaus'
+          />
           <div className='absolute bottom-0 -right-4'>
-            {currentUser?.parentType === Status.getParentTypeFather() ? (
+            {currentUser?.getParentType() === Status.getParentTypeFather() ? (
               <span className='px-4 py-1 bg-blue-400 rounded-full'>
                 {Label.getParentTypeFather()}
               </span>
@@ -31,10 +40,10 @@ const ProfileSection = () => {
         <div className='flex flex-col items-center gap-2'>
           <p className='text-sm'>ユーザ名</p>
           <div className='flex flex-row gap-2'>
-            <p>{currentUser?.name}</p>
+            <p>{currentUser?.getName()}</p>
           </div>
           <p className='text-sm'>メールアドレス</p>
-          <p>{currentUser?.email}</p>
+          <p>{currentUser?.getEmail()}</p>
         </div>
       </div>
       <UpdateProfileButton />

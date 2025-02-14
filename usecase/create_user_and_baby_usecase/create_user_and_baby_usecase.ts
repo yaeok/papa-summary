@@ -1,7 +1,13 @@
-import { AuthRepository } from '@/infrastructure/repository/auth_repository'
-import { BabyRepository } from '@/infrastructure/repository/baby_repository'
-import { ParentRepository } from '@/infrastructure/repository/parent_repository'
-import { UserRepository } from '@/infrastructure/repository/user_repository'
+import { Baby } from '@/domains/entities/baby'
+import { Parent } from '@/domains/entities/parent'
+import { AuthRepository } from '@/domains/repositories/auth_repository'
+import { BabyRepository } from '@/domains/repositories/baby_repository'
+import { ParentRepository } from '@/domains/repositories/parent_repository'
+import { UserRepository } from '@/domains/repositories/user_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
+import { FirestoreBabyService } from '@/infrastructure/service/firebase/firestore/firestore_baby_service'
+import { FirestoreParentService } from '@/infrastructure/service/firebase/firestore/firestore_parent_service'
+import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
@@ -13,7 +19,7 @@ interface CreateUserAndBabyInfoUseCaseInput extends UseCaseInput {
 }
 
 interface CreateUserAndBabyInfoUseCaseOutput extends UseCaseOutput {
-  result: boolean
+  response: boolean
 }
 
 export class CreateUserAndBabyInfoUseCase
@@ -29,10 +35,10 @@ export class CreateUserAndBabyInfoUseCase
   private parentRepository: ParentRepository
 
   constructor() {
-    this.authRepository = new AuthRepository()
-    this.userRepository = new UserRepository()
-    this.babyRepository = new BabyRepository()
-    this.parentRepository = new ParentRepository()
+    this.authRepository = new AuthService()
+    this.userRepository = new FirestoreUserService()
+    this.babyRepository = new FirestoreBabyService()
+    this.parentRepository = new FirestoreParentService()
   }
 
   async execute(
@@ -43,26 +49,30 @@ export class CreateUserAndBabyInfoUseCase
 
       const user = await this.authRepository.getCurrentUser()
 
+      const userId = user.uid
+
       await this.userRepository.updateNameParentType({
-        id: user.id,
+        id: userId,
         name,
         parentType,
       })
 
       const birthDate = new Date(babyBirthday)
 
-      const babyId = await this.babyRepository.create({
-        name: babyName,
-        birthDate: birthDate,
-      })
+      const baby = new Baby()
+      baby.setName(babyName)
+      baby.setBirthDate(birthDate)
 
-      await this.parentRepository.create({
-        userId: user.id,
-        babyId: babyId,
-      })
-      return { result: true }
+      const response = await this.babyRepository.create({ baby })
+
+      const parent = new Parent()
+      parent.setUserId(userId)
+      parent.setBabyId(response.getId())
+
+      await this.parentRepository.create({ parent })
+      return { response: true }
     } catch (error) {
-      return { result: false }
+      return { response: false }
     }
   }
 }

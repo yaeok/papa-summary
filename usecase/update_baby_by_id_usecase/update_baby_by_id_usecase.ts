@@ -1,8 +1,8 @@
 import { Baby } from '@/domains/entities/baby'
-
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 import { BabyRepository } from '@/domains/repositories/baby_repository'
 import { FirestoreBabyService } from '@/infrastructure/service/firebase/firestore/firestore_baby_service'
+
+import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 
 interface UpdateBabyByIdUseCaseInput extends UseCaseInput {
   babyId: string
@@ -11,7 +11,7 @@ interface UpdateBabyByIdUseCaseInput extends UseCaseInput {
 }
 
 interface UpdateBabyByIdUseCaseOutput extends UseCaseOutput {
-  baby: Baby
+  response: Baby
 }
 
 export class UpdateBabyByIdUseCase
@@ -27,18 +27,22 @@ export class UpdateBabyByIdUseCase
   async execute(
     input: UpdateBabyByIdUseCaseInput
   ): Promise<UpdateBabyByIdUseCaseOutput> {
-    await this.babyRepository.updateById({
-      id: input.babyId,
-      name: input.name,
-      birthDate: new Date(input.birthDate),
-    })
+    try {
+      const { babyId, name, birthDate } = input
+      await this.babyRepository.updateById({
+        id: babyId,
+        name: name,
+        birthDate: new Date(birthDate),
+      })
 
-    const baby = new Baby({
-      id: input.babyId,
-      name: input.name,
-      birthDate: new Date(input.birthDate),
-    })
+      const response = new Baby()
+      response.setId(babyId)
+      response.setName(name)
+      response.setBirthDate(new Date(birthDate))
 
-    return { baby }
+      return { response }
+    } catch {
+      throw new Error('Failed to update baby')
+    }
   }
 }

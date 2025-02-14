@@ -11,9 +11,9 @@ import React, {
 
 import FullScreenLoading from '@/components/Loading/FullScreenLoading'
 import { User } from '@/domains/entities/user'
-import { ParentRepository } from '@/infrastructure/repository/parent_repository'
-import { UserRepository } from '@/infrastructure/repository/user_repository'
 import { auth } from '@/infrastructure/service/firebase/config/firebaseConfig'
+import { FirestoreParentService } from '@/infrastructure/service/firebase/firestore/firestore_parent_service'
+import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
 
 type AuthContextType = {
   currentUser: User | null
@@ -35,18 +35,28 @@ export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userRepository = new UserRepository()
-        const response = await userRepository.findById({ id: user.uid })
-        const parentRepository = new ParentRepository()
-        const parent = await parentRepository.findByUserId({ userId: user.uid })
+    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+      if (authUser) {
+        const userRepository = new FirestoreUserService()
+        const response = await userRepository.findById({ id: authUser.uid })
+        const parentRepository = new FirestoreParentService()
+        const parent = await parentRepository.findByUserId({
+          userId: authUser.uid,
+        })
         if (parent !== null) {
-          response.babyId = parent.babyId
+          response.setBabyId(parent.getBabyId())
         }
-        setCurrentUser(response)
+        const user = new User()
+        user.setId(response.getId())
+        user.setName(response.getName())
+        user.setEmail(response.getEmail())
+        user.setParentType(response.getParentType())
+        user.setBabyId(response.getBabyId())
+        user.setCreatedAt(response.getCreatedAt())
 
-        if (user.emailVerified) {
+        setCurrentUser(user)
+
+        if (authUser.emailVerified) {
           setIsVerified(true)
         } else {
           setIsVerified(false)
