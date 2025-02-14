@@ -20,8 +20,11 @@ const Page = () => {
   useEffect(() => {
     const fetch = async () => {
       setLoading(true)
+      if (!currentUser) return
+
+      const babyId = currentUser.getBabyId()
       const usecase = new GetAllTaskUseCase()
-      const response = await usecase.execute({ babyId: currentUser!.babyId })
+      const response = await usecase.execute({ babyId })
       taskContext.setTasks(response.tasks)
       setLoading(false)
     }
@@ -95,28 +98,30 @@ const Page = () => {
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
               {taskContext.tasks.map((task: Task) => (
                 <div
-                  key={task.id}
+                  key={task.getId()}
                   onClick={() => console.log(task)}
                   className='p-4 rounded-md shadow-md flex flex-col justify-between gap-4'
                 >
                   <div className='flex flex-row justify-between items-center gap-2'>
                     <h2 className='text-lg font-semibold flex-1'>
-                      {task.title}
+                      {task.getTitle()}
                     </h2>
                     {
                       <span
                         className={`px-4 py-2 rounded-full text-xs ${handleTagColorByTiming(
-                          task.timing
+                          task.getTiming()
                         )}`}
                       >
-                        {handleTagNameByTiming(task.timing)}
+                        {handleTagNameByTiming(task.getTiming())}
                       </span>
                     }
                   </div>
-                  <p className='px-2 text-sm break-words'>{task.content}</p>
+                  <p className='px-2 text-sm break-words'>
+                    {task.getContent()}
+                  </p>
                   <div className='text-end text-sm'>
-                    {task.startDate.toLocaleDateString()} 〜{' '}
-                    {task.endDate?.toLocaleDateString()}
+                    {task.getStartDate().toLocaleDateString()} 〜{' '}
+                    {task.getEndDate()?.toLocaleDateString()}
                   </div>
                 </div>
               ))}
