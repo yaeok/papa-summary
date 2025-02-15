@@ -42,7 +42,7 @@ export default function Home() {
               height={500}
             />
             <Image
-              src='/images/papa_image_1.jpg'
+              src='/images/papa_image_2.jpg'
               alt='赤ちゃんを抱っこする父親'
               className='rounded-lg shadow-xl w-1/3 h-64 object-cover'
               width={500}
