@@ -5,6 +5,7 @@ import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { AddProductUseCase } from '@/usecase/add_product_usecase/add_product_usecase'
 
 import { useProductContext } from '../../_hooks/ProductProvider'
+import { useState } from 'react'
 
 type AddProductFormType = {
   title: string
@@ -17,6 +18,7 @@ type AddProductFormProps = {
 }
 
 const AddProductForm = ({ onClose }: AddProductFormProps) => {
+  const [onTap, setOnTap] = useState(false)
   const {
     register,
     handleSubmit,
@@ -35,6 +37,8 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
 
   const onSubmit = handleSubmit(async (data: AddProductFormType) => {
     try {
+      setOnTap(true)
+
       const { title, content, price } = data
 
       if (!currentUser) return
@@ -118,6 +122,7 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
         <section className='flex justify-center'>
           <button
             type='submit'
+            disabled={onTap}
             className='bg-blue-500 text-white rounded-full px-4 py-1 shadow-md
               hover:bg-blue-600 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
           >

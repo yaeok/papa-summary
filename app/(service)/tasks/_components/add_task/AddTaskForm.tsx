@@ -6,6 +6,7 @@ import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { AddTaskUseCase } from '@/usecase/add_task_usecase/add_task_usecase'
 
 import { useTaskContext } from '../../_hooks/TaskProvider'
+import { useState } from 'react'
 
 type AddTaskFormType = {
   title: string
@@ -20,6 +21,7 @@ type AddTaskFormProps = {
 }
 
 const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
+  const [onTap, setOnTap] = useState(false)
   const today = new Date().toISOString().split('T')[0]
   const {
     register,
@@ -43,6 +45,8 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
   const endDate = watch('endDate')
 
   const onSubmit = handleSubmit(async (data: AddTaskFormType) => {
+    setOnTap(true)
+
     const { title, content, startDate, endDate } = data
 
     if (!currentUser) return
@@ -168,6 +172,7 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
         <section className='flex justify-center'>
           <button
             type='submit'
+            disabled={onTap}
             className='bg-blue-500 text-white rounded-full px-4 py-1 shadow-md
               hover:bg-blue-600 hover:shadow-none hover:translate-y-1 hover:duration-300 transition-all'
           >

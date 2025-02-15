@@ -8,7 +8,6 @@ import {
   DocumentData,
   getDocs,
   query,
-  Timestamp,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -69,12 +68,21 @@ export class FirestoreTaskService implements TaskRepository {
 
       await updateDoc(docRef, { id: docRef.id })
 
-      const response = this.convertDocumentDataToData(document)
+      const response = new TaskDB()
       response.setId(docRef.id)
+      response.setTitle(task.getTitle())
+      response.setContent(task.getContent())
+      response.setStartDate(task.getStartDate())
+      response.setEndDate(task.getEndDate())
+      response.setBabyId(task.getBabyId())
+      response.setTiming(task.getTiming())
+      response.setCompletedAt(task.getCompletedAt())
+      response.setCreatedBy(task.getCreatedBy())
+      response.setCreatedAt(task.getCreatedAt())
 
       return response
-    } catch (error) {
-      throw new SystemErrorException('タスク登録に失敗しました')
+    } catch {
+      throw new SystemErrorException('タスク作成に失敗しました')
     }
   }
 
@@ -95,26 +103,24 @@ export class FirestoreTaskService implements TaskRepository {
 
   private convertDocumentDataToData(documentData: DocumentData): TaskDB {
     const endDate =
-      documentData.endDate !== null
-        ? (documentData.endDate as Timestamp).toDate()
-        : null
+      documentData.endDate !== null ? documentData.endDate.toDate() : null
 
     const completedAt =
       documentData.completedAt !== null
-        ? (documentData.completedAt as Timestamp).toDate()
+        ? documentData.completedAt.toDate()
         : null
 
     const data = new TaskDB()
     data.setId(documentData.id)
     data.setTitle(documentData.title)
     data.setContent(documentData.content)
-    data.setStartDate((documentData.startDate as Timestamp).toDate())
+    data.setStartDate(documentData.startDate.toDate())
     data.setEndDate(endDate)
     data.setBabyId(documentData.babyId)
     data.setTiming(documentData.timing)
     data.setCompletedAt(completedAt)
     data.setCreatedBy(documentData.createdBy)
-    data.setCreatedAt((documentData.createdAt as Timestamp).toDate())
+    data.setCreatedAt(documentData.createdAt.toDate())
 
     return data
   }

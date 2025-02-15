@@ -10,7 +10,6 @@ import {
   getDocs,
   query,
   setDoc,
-  Timestamp,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -100,15 +99,13 @@ export class FirestoreBabyService implements BabyRepository {
     const data = new BabyDB()
 
     const birthDate =
-      documentData.birthDate !== null
-        ? (documentData.birthDate as Timestamp).toDate()
-        : null
+      documentData.birthDate !== null ? documentData.birthDate.toDate() : null
 
     data.setId(documentData.id)
     data.setName(documentData.name)
     data.setBirthDate(birthDate)
-    data.setCreatedAt((documentData.createdAt as Timestamp).toDate())
-    data.setUpdatedAt((documentData.updatedAt as Timestamp).toDate())
+    data.setCreatedAt(documentData.createdAt.toDate())
+    data.setUpdatedAt(documentData.updatedAt.toDate())
 
     return data
   }

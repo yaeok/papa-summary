@@ -46,9 +46,6 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       const babyId = currentUser.getBabyId()
       const usecase = new GetAllTaskUseCase()
       const { response } = await usecase.execute({ babyId })
-      response.forEach((task) => {
-        console.log(task.getStartDate())
-      })
 
       setTasks(response)
 

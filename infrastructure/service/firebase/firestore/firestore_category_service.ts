@@ -8,7 +8,6 @@ import {
   DocumentData,
   getDocs,
   query,
-  Timestamp,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -66,7 +65,7 @@ export class FirestoreCategoryService implements CategoryRepository {
     data.setName(documentData.name)
     data.setBabyId(documentData.babyId)
     data.setCreatedBy(documentData.createdBy)
-    data.setCreatedAt((documentData.createdAt as Timestamp).toDate())
+    data.setCreatedAt(documentData.createdAt.toDate())
 
     return data
   }
