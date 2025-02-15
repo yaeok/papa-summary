@@ -6,6 +6,10 @@ import { useState } from 'react'
 import DrawerButton from '@/components/Drawer/DrawerButton/DrawerButton'
 import { RoutePath } from '@/constants/RoutePath'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
+import { SignOutUseCase } from '@/usecase/sign_out_usecase/sign_out_usecase'
+import { useRouter } from 'next/navigation'
+import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
+import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 
 type DrawerProps = {
   isSignIn?: boolean
@@ -13,6 +17,7 @@ type DrawerProps = {
 
 export default function Drawer({ isSignIn }: DrawerProps) {
   const currentUser = useAuthContext()
+  const router = useRouter()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -20,8 +25,23 @@ export default function Drawer({ isSignIn }: DrawerProps) {
     setIsOpen(!isOpen)
   }
 
-  const handleLogout = async () => {}
+  const handleLogout = async () => {
+    try {
+      const usecase = new SignOutUseCase()
+      const { response } = await usecase.execute()
 
+      if (response) {
+        alert('ログアウトしました')
+        router.push(RoutePath.getLandingPage())
+      }
+    } catch (error) {
+      if (error instanceof FirebaseAuthException) {
+        throw new FirebaseAuthException(error.message, error.code)
+      } else {
+        throw new SystemErrorException()
+      }
+    }
+  }
   return (
     <div>
       <div
