@@ -2,7 +2,7 @@ import { Task } from '@/domains/entities/task'
 import { TaskRepository } from '@/domains/repositories/task_repository'
 import { FirestoreTaskService } from '@/infrastructure/service/firebase/firestore/firestore_task_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface GetAllTaskUseCaseInput extends UseCaseInput {
   babyId: string

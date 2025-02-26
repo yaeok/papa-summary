@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { Status } from '@/constants/Status'
 import { Task } from '@/domains/entities/task'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { GetAllTaskUseCase } from '@/usecase/get_all_task_usecase/get_all_task_usecase'
+import { GetAllTaskUseCase } from '@/usecase/get_all_task_usecase'
 
 type TaskContextType = {
   addTask: (task: Task) => void

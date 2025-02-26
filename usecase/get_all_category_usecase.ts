@@ -4,7 +4,7 @@ import { CategoryRepository } from '@/domains/repositories/category_repository'
 import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirestoreCategoryService } from '@/infrastructure/service/firebase/firestore/firestore_category_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface GetAllCategoryUseCaseInput extends UseCaseInput {}
 

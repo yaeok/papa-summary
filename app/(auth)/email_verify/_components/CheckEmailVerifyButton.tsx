@@ -6,7 +6,7 @@ import { useState } from 'react'
 import ErrorMessageModal from '@/components/ErrorMessageModal'
 import { RoutePath } from '@/constants/RoutePath'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
-import { CheckEmailVerifyUseCase } from '@/usecase/check_email_verify_usecase/check_email_verify_usecase'
+import { CheckEmailVerifyUseCase } from '@/usecase/check_email_verify_usecase'
 
 const CheckEmailVerifyButton = () => {
   const router = useRouter()

@@ -10,7 +10,7 @@ import { FirestoreCategoryService } from '@/infrastructure/service/firebase/fire
 import { FirestoreProductCategoryService } from '@/infrastructure/service/firebase/firestore/firestore_product_category_service'
 import { FirestoreProductService } from '@/infrastructure/service/firebase/firestore/firestore_product_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface ProductListPageInitialDisplayUseCaseInput extends UseCaseInput {}
 

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import ErrorMessageModal from '@/components/ErrorMessageModal'
 import { RoutePath } from '@/constants/RoutePath'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
-import { SignUpUseCase } from '@/usecase/sign_up_usecase/sign_up_usecase'
+import { SignUpUseCase } from '@/usecase/sign_up_usecase'
 
 type SignUpFormType = {
   email: string

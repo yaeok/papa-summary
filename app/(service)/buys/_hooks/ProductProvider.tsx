@@ -4,8 +4,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 import { Category } from '@/domains/entities/category'
 import { Product } from '@/domains/entities/product'
-import { GetAllCategoryUseCase } from '@/usecase/get_all_category_usecase/get_all_category_usecase'
-import { ProductListPageInitialDisplayUseCase } from '@/usecase/product_list_page_initial_display_usecase/product_list_page_initial_display_usecase'
+import { GetAllCategoryUseCase } from '@/usecase/get_all_category_usecase'
+import { ProductListPageInitialDisplayUseCase } from '@/usecase/product_list_page_initial_display_usecase'
 
 type ProductContextType = {
   loading: boolean

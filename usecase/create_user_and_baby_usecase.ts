@@ -9,7 +9,7 @@ import { FirestoreBabyService } from '@/infrastructure/service/firebase/firestor
 import { FirestoreParentService } from '@/infrastructure/service/firebase/firestore/firestore_parent_service'
 import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface CreateUserAndBabyInfoUseCaseInput extends UseCaseInput {
   name: string

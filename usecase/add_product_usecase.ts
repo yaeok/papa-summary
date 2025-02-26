@@ -7,7 +7,7 @@ import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service
 import { FirestoreProductCategoryService } from '@/infrastructure/service/firebase/firestore/firestore_product_category_service'
 import { FirestoreProductService } from '@/infrastructure/service/firebase/firestore/firestore_product_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface AddProductUseCaseInput extends UseCaseInput {
   name: string

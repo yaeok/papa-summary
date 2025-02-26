@@ -5,7 +5,7 @@ import { LuCircleMinus, LuCirclePlus } from 'react-icons/lu'
 import { Category } from '@/domains/entities/category'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { AddProductUseCase } from '@/usecase/add_product_usecase/add_product_usecase'
+import { AddProductUseCase } from '@/usecase/add_product_usecase'
 
 import { useProductContext } from '../../_hooks/ProductProvider'
 

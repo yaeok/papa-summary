@@ -2,7 +2,7 @@ import { Baby } from '@/domains/entities/baby'
 import { BabyRepository } from '@/domains/repositories/baby_repository'
 import { FirestoreBabyService } from '@/infrastructure/service/firebase/firestore/firestore_baby_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface UpdateBabyByIdUseCaseInput extends UseCaseInput {
   babyId: string

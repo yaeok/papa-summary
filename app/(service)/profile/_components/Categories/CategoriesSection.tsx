@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { Category } from '@/domains/entities/category'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { GetAllCategoryUseCase } from '@/usecase/get_all_category_usecase/get_all_category_usecase'
+import { GetAllCategoryUseCase } from '@/usecase/get_all_category_usecase'
 
 import AddCategoryButton from './add_category/AddCategoryButton'
 

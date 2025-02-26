@@ -6,7 +6,7 @@ import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface SignUpUseCaseInput extends UseCaseInput {
   email: string

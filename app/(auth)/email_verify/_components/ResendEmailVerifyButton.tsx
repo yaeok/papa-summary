@@ -5,7 +5,7 @@ import { useState } from 'react'
 import ErrorMessageModal from '@/components/ErrorMessageModal'
 import MessageModal from '@/components/MessageModal'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
-import { ResendEmailVerifyUseCase } from '@/usecase/resend_email_verify_usecase/resend_email_verify_usecase'
+import { ResendEmailVerifyUseCase } from '@/usecase/resend_email_verify_usecase'
 
 const ResendEmailVefiryButton = () => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
