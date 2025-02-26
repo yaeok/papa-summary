@@ -4,13 +4,11 @@ import { useEffect, useState } from 'react'
 
 import { Category } from '@/domains/entities/category'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
-import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetAllCategoryUseCase } from '@/usecase/get_all_category_usecase/get_all_category_usecase'
 
 import AddCategoryButton from './add_category/AddCategoryButton'
 
 const CategoriesSection = () => {
-  const currentUser = useAuthContext().currentUser
   const [categories, setCategories] = useState<Category[]>([])
 
   const addCategories = (addCategory: Category) => {
@@ -20,10 +18,6 @@ const CategoriesSection = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        if (!currentUser) return
-
-        const userId = currentUser.getId()
-
         const usecase = new GetAllCategoryUseCase()
         const { response } = await usecase.execute()
 
