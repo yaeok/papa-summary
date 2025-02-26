@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { Baby } from '@/domains/entities/baby'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { GetBabyByIdUseCase } from '@/usecase/get_baby_by_id_usecase/get_baby_by_id_usecase'
+import { GetBabyByIdUseCase } from '@/usecase/get_baby_by_id_usecase'
 
 import UpdateBabyButton from './update_baby/UpdateBabyButton'
 

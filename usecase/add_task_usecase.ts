@@ -4,7 +4,7 @@ import { TaskRepository } from '@/domains/repositories/task_repository'
 import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirestoreTaskService } from '@/infrastructure/service/firebase/firestore/firestore_task_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface AddTaskUseCaseInput extends UseCaseInput {
   title: string

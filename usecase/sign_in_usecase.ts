@@ -3,7 +3,7 @@ import { SystemErrorException } from '@/infrastructure/exception/SystemErrorExce
 import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface SignInUseCaseInput extends UseCaseInput {
   email: string

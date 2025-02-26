@@ -49,6 +49,24 @@ export class FirestoreCategoryService implements CategoryRepository {
     return response
   }
 
+  async findById(args: { id: string }): Promise<CategoryDB> {
+    const { id } = args
+    const ref = collection(db, this.path)
+
+    const q = query(ref, where('id', '==', id))
+
+    const snapshot = await getDocs(q)
+
+    const response = snapshot.docs.map((doc) => {
+      const data = doc.data() as DocumentData
+      return this.convertDocumentDataToData(data)
+    })[0]
+
+    console.log(response)
+
+    return response
+  }
+
   private convertEntityToDocumentData(category: Category): DocumentData {
     return {
       id: category.getId(),

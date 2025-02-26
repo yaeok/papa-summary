@@ -1,12 +1,12 @@
 import { Category } from '@/domains/entities/category'
+import { AuthRepository } from '@/domains/repositories/auth_repository'
 import { CategoryRepository } from '@/domains/repositories/category_repository'
+import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirestoreCategoryService } from '@/infrastructure/service/firebase/firestore/firestore_category_service'
 
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
-interface GetAllCategoryUseCaseInput extends UseCaseInput {
-  userId: string
-}
+interface GetAllCategoryUseCaseInput extends UseCaseInput {}
 
 interface GetAllCategoryUseCaseOutput extends UseCaseOutput {
   response: Category[]
@@ -16,17 +16,19 @@ export class GetAllCategoryUseCase
   implements
     UseCase<GetAllCategoryUseCaseInput, Promise<GetAllCategoryUseCaseOutput>>
 {
+  private authRepository: AuthRepository
   private categoryRepository: CategoryRepository
 
   constructor() {
+    this.authRepository = new AuthService()
     this.categoryRepository = new FirestoreCategoryService()
   }
 
-  async execute(
-    input: GetAllCategoryUseCaseInput
-  ): Promise<GetAllCategoryUseCaseOutput> {
+  async execute(): Promise<GetAllCategoryUseCaseOutput> {
     try {
-      const { userId } = input
+      const currentUser = await this.authRepository.getCurrentUser()
+
+      const userId = currentUser.uid
 
       const result = await this.categoryRepository.findByUserId({ userId })
 

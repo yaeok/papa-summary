@@ -1,16 +1,19 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { LuCircleMinus, LuCirclePlus } from 'react-icons/lu'
 
+import { Category } from '@/domains/entities/category'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { AddProductUseCase } from '@/usecase/add_product_usecase/add_product_usecase'
+import { AddProductUseCase } from '@/usecase/add_product_usecase'
 
 import { useProductContext } from '../../_hooks/ProductProvider'
-import { useState } from 'react'
 
 type AddProductFormType = {
   title: string
   price: number
   content: string
+  category: string
 }
 
 type AddProductFormProps = {
@@ -22,15 +25,18 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<AddProductFormType>({
-    mode: 'onChange',
     defaultValues: {
       title: '',
       content: '',
-      price: 0,
+      price: 1000,
     },
   })
+
+  const price = watch('price')
 
   const productContext = useProductContext()
   const currentUser = useAuthContext().currentUser
@@ -39,7 +45,7 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
     try {
       setOnTap(true)
 
-      const { title, content, price } = data
+      const { title, content, price, category } = data
 
       if (!currentUser) return
 
@@ -52,7 +58,12 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
         price,
         content,
         babyId: babyId,
+        categoryId: category,
       })
+
+      response.setCategories(
+        productContext.categories.filter((c) => c.getId() === category)
+      )
 
       productContext.addProduct(response)
 
@@ -87,17 +98,26 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
               </span>
             )}
           </div>
-          <div className='flex flex-col gap-2'>
-            <label htmlFor='price'>
-              値段<span className='text-red-500'>*</span>
-            </label>
-            <input
-              type='number'
-              {...register('price', {
-                required: '値段は必須です',
-              })}
-              className='border-2 border-gray-300 rounded-md p-2'
-            />
+          <div className='flex items-center gap-8'>
+            <label htmlFor='price'>値段</label>
+            <div className='flex justify-start items-center gap-2'>
+              <button onClick={() => setValue('price', price + 1000)}>
+                <LuCirclePlus size={25} />
+              </button>
+              <input
+                type='number'
+                {...register('price')}
+                disabled={true}
+                className='border-2 border-gray-300 rounded-md p-2'
+              />
+              <button
+                onClick={() => setValue('price', price - 1000)}
+                disabled={price <= 1000}
+                className='disabled:opacity-50'
+              >
+                <LuCircleMinus size={25} />
+              </button>
+            </div>
             {errors.price && (
               <span className='pl-2 text-xs text-red-500'>
                 {errors.price.message}
@@ -105,9 +125,21 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
             )}
           </div>
           <div className='flex flex-col gap-2'>
-            <label htmlFor='content'>
-              内容<span className='text-red-500'>*</span>
-            </label>
+            <label htmlFor='category'>カテゴリー</label>
+            <select
+              className='border-2 border-gray-300 rounded-md p-2'
+              {...register('category')}
+            >
+              <option value=''>選択してください</option>
+              {productContext.categories.map((category: Category) => (
+                <option key={category.getId()} value={category.getId()}>
+                  {category.getName()}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className='flex flex-col gap-2'>
+            <label htmlFor='content'>内容</label>
             <textarea
               {...register('content')}
               className='border-2 border-gray-300 rounded-md p-2 h-40 max-h-48'

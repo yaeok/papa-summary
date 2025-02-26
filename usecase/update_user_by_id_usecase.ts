@@ -1,6 +1,7 @@
 import { UserRepository } from '@/domains/repositories/user_repository'
-import { UseCase, UseCaseInput, UseCaseOutput } from '../use_case'
 import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
+
+import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
 interface UpdateUserByIdUseCaseInpur extends UseCaseInput {
   userId: string
