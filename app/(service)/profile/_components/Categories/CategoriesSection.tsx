@@ -25,7 +25,7 @@ const CategoriesSection = () => {
         const userId = currentUser.getId()
 
         const usecase = new GetAllCategoryUseCase()
-        const { response } = await usecase.execute({ userId })
+        const { response } = await usecase.execute()
 
         setCategories(response)
       } catch (error: unknown) {
