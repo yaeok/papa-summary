@@ -49,7 +49,7 @@ export class FirestoreCategoryService implements CategoryRepository {
     return response
   }
 
-  async findById(args: { id: string }): Promise<CategoryDB[]> {
+  async findById(args: { id: string }): Promise<CategoryDB> {
     const { id } = args
     const ref = collection(db, this.path)
 
@@ -60,7 +60,9 @@ export class FirestoreCategoryService implements CategoryRepository {
     const response = snapshot.docs.map((doc) => {
       const data = doc.data() as DocumentData
       return this.convertDocumentDataToData(data)
-    })
+    })[0]
+
+    console.log(response)
 
     return response
   }

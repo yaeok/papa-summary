@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { Category } from '@/domains/entities/category'
 import { Product } from '@/domains/entities/product'
 import { GetAllCategoryUseCase } from '@/usecase/get_all_category_usecase/get_all_category_usecase'
-import { GetAllProductUseCase } from '@/usecase/get_all_product_usecase/get_all_product_usecase'
+import { ProductListPageInitialDisplayUseCase } from '@/usecase/product_list_page_initial_display_usecase/product_list_page_initial_display_usecase'
 
 type ProductContextType = {
   loading: boolean
@@ -42,7 +42,7 @@ export const ProductProvider = ({
     }
 
     const fetchProduct = async () => {
-      const usecase = new GetAllProductUseCase()
+      const usecase = new ProductListPageInitialDisplayUseCase()
       const { response } = await usecase.execute()
       setProducts(response)
     }
