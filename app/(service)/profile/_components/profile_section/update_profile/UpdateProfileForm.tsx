@@ -22,8 +22,14 @@ export default function UpdateProfileForm({ onClose }: props) {
     formState: { errors },
   } = useForm<UpdateProfileFormType>({
     defaultValues: {
-      name: '',
-      parentType: 0,
+      name:
+        authContext.currentUser !== null
+          ? authContext.currentUser.getName()
+          : '',
+      parentType:
+        authContext.currentUser !== null
+          ? authContext.currentUser.getParentType()
+          : 0,
     },
   })
 

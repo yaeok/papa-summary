@@ -1,5 +1,3 @@
-'use client'
-
 import { useProfilePageContext } from '../../_hooks/ProfilePageProvider'
 import UpdateBabyButton from './update_baby/UpdateBabyButton'
 
