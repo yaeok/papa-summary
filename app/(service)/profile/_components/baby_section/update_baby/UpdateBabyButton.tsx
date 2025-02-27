@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import UpdateBabyModal from './UpdateBabyModal'
 
-const UpdateBabyButton = () => {
+export default function UpdateBabyButton() {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
@@ -21,5 +21,3 @@ const UpdateBabyButton = () => {
     </div>
   )
 }
-
-export default UpdateBabyButton

@@ -8,7 +8,7 @@ type props = {
   onClose: () => void
 }
 
-const AddTaskModal = ({ isOpen, onClose }: props) => {
+export default function AddTaskModal({ isOpen, onClose }: props) {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>
@@ -34,5 +34,3 @@ const AddTaskModal = ({ isOpen, onClose }: props) => {
     return null
   }
 }
-
-export default AddTaskModal

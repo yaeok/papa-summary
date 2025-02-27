@@ -13,7 +13,7 @@ type props = {
   onClose: () => void
 }
 
-const UpdateBabyForm = ({ onClose }: props) => {
+export default function UpdateBabyForm({ onClose }: props) {
   const profilePageContext = useProfilePageContext()
   const babyInfo = profilePageContext.baby
   const initialDate =
@@ -94,5 +94,3 @@ const UpdateBabyForm = ({ onClose }: props) => {
     </div>
   )
 }
-
-export default UpdateBabyForm

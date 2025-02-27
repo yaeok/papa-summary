@@ -20,7 +20,7 @@ type props = {
   onClose: () => void
 }
 
-const AddTaskForm = ({ onClose }: props) => {
+export default function AddTaskForm({ onClose }: props) {
   const [onTap, setOnTap] = useState(false)
   const today = new Date().toISOString().split('T')[0]
   const {
@@ -183,5 +183,3 @@ const AddTaskForm = ({ onClose }: props) => {
     </div>
   )
 }
-
-export default AddTaskForm

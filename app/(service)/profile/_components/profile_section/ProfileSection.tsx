@@ -1,15 +1,15 @@
 'use client'
 
-import Avatar from 'boring-avatars';
-import { useEffect } from 'react';
+import Avatar from 'boring-avatars'
+import { useEffect } from 'react'
 
-import { Label } from '@/constants/Label';
-import { Status } from '@/constants/Status';
-import { useAuthContext } from '@/providers/CurrentUserProvider';
+import { Label } from '@/constants/Label'
+import { Status } from '@/constants/Status'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
 
-import UpdateProfileButton from './update_profile/UpdateProfileButton';
+import UpdateProfileButton from './update_profile/UpdateProfileButton'
 
-const ProfileSection = () => {
+export default function ProfileSection() {
   const currentUser = useAuthContext().currentUser
 
   useEffect(() => {
@@ -50,5 +50,3 @@ const ProfileSection = () => {
     </div>
   )
 }
-
-export default ProfileSection

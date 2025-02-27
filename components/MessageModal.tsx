@@ -1,19 +1,19 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-type MessageModalProps = {
+type props = {
   isOpen: boolean
   onClose: () => void
   title: string
   message: string
 }
 
-const MessageModal = ({
+export default function MessageModal({
   isOpen,
   onClose,
   title,
   message,
-}: MessageModalProps) => {
+}: props) {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>
@@ -39,5 +39,3 @@ const MessageModal = ({
     return null
   }
 }
-
-export default MessageModal

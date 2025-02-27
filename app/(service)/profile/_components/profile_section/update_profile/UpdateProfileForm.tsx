@@ -14,7 +14,7 @@ type props = {
   onClose: () => void
 }
 
-const UpdateProfileForm = ({ onClose }: props) => {
+export default function UpdateProfileForm({ onClose }: props) {
   const authContext = useAuthContext()
   const {
     register,
@@ -110,5 +110,3 @@ const UpdateProfileForm = ({ onClose }: props) => {
     </div>
   )
 }
-
-export default UpdateProfileForm

@@ -3,7 +3,7 @@
 import { useProfilePageContext } from '../../_hooks/ProfilePageProvider'
 import UpdateBabyButton from './update_baby/UpdateBabyButton'
 
-const BabySection = () => {
+export default function BabySection() {
   const profilePageContext = useProfilePageContext()
   const babyInfo = profilePageContext.baby
   return (
@@ -43,5 +43,3 @@ const BabySection = () => {
     </div>
   )
 }
-
-export default BabySection

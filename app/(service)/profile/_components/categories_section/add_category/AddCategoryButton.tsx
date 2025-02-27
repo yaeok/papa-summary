@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import AddCategoryModal from './AddCategoryModal'
 
-const AddCategoryButton = () => {
+export default function AddCategoryButton() {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
@@ -21,5 +21,3 @@ const AddCategoryButton = () => {
     </div>
   )
 }
-
-export default AddCategoryButton

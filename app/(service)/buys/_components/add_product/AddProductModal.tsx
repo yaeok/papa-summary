@@ -3,12 +3,12 @@ import { RiCloseCircleFill } from 'react-icons/ri'
 
 import AddProductForm from './AddProductForm'
 
-type AddProductModalProps = {
+type props = {
   isOpen: boolean
   onClose: () => void
 }
 
-const AddProductModal = ({ isOpen, onClose }: AddProductModalProps) => {
+export default function AddProductModal({ isOpen, onClose }: props) {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>
@@ -34,5 +34,3 @@ const AddProductModal = ({ isOpen, onClose }: AddProductModalProps) => {
     return null
   }
 }
-
-export default AddProductModal
