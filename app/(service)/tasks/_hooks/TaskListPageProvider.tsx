@@ -7,7 +7,7 @@ import { Task } from '@/domains/entities/task'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GetAllTaskUseCase } from '@/usecase/get_all_task_usecase'
 
-type TaskContextType = {
+type TaskListPageContextType = {
   addTask: (task: Task) => void
   updateTask: (task: Task) => void
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>
@@ -18,7 +18,7 @@ type TaskContextType = {
   filteredTasks: Task[]
 }
 
-const TaskContext = createContext<TaskContextType>({
+const TaskListPageContext = createContext<TaskListPageContextType>({
   addTask: () => {},
   updateTask: () => {},
   setTasks: () => {},
@@ -29,9 +29,13 @@ const TaskContext = createContext<TaskContextType>({
   filteredTasks: [],
 })
 
-export const useTaskContext = () => useContext(TaskContext)
+export const useTaskListPageContext = () => useContext(TaskListPageContext)
 
-export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
+export const TaskListPageProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   const [tasks, setTasks] = useState<Task[]>([])
   const [timing, setTiming] = useState<number>(Status.getTaskTimingAll())
   const [loading, setLoading] = useState(true)
@@ -99,7 +103,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
         })
 
   return (
-    <TaskContext.Provider
+    <TaskListPageContext.Provider
       value={{
         addTask,
         updateTask,
@@ -112,6 +116,6 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       {children}
-    </TaskContext.Provider>
+    </TaskListPageContext.Provider>
   )
 }

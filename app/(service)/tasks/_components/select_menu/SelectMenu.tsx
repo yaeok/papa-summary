@@ -3,16 +3,16 @@
 import { Label } from '@/constants/Label'
 import { Status } from '@/constants/Status'
 
-import { useTaskContext } from '../../_hooks/TaskProvider'
+import { useTaskListPageContext } from '../../_hooks/TaskListPageProvider'
 
 export default function SelectMenu() {
-  const taskContext = useTaskContext()
+  const taskListPageContext = useTaskListPageContext()
 
   return (
     <select
       name='task-select'
       id='task-select'
-      onChange={(e) => taskContext.setTiming(Number(e.target.value))}
+      onChange={(e) => taskListPageContext.setTiming(Number(e.target.value))}
       className='focus:outline-none bg-white'
     >
       <option value={Status.getTaskTimingAll()}>全て</option>

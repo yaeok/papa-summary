@@ -1,7 +1,6 @@
-import BabySection from './_components/Baby/BabySection'
-import CategoriesSection from './_components/Categories/CategoriesSection'
-// import FinanceSection from './_components/Finance/FinanceSection'
-import ProfileSection from './_components/Profile/ProfileSection'
+import BabySection from './_components/baby_section/BabySection'
+import CategoriesSection from './_components/categories_section/CategoriesSection'
+import ProfileSection from './_components/profile_section/ProfileSection'
 
 const Page = () => {
   return (
@@ -13,10 +12,6 @@ const Page = () => {
       <BabySection />
 
       <div className='w-full border-b-2 border-gray-800' />
-
-      {/* 一旦なし */}
-      {/* <FinanceSection /> */}
-      {/* <div className='w-full border-b-2 border-gray-800' /> */}
 
       <CategoriesSection />
     </div>

@@ -12,8 +12,7 @@ import React, {
 import FullScreenLoading from '@/components/Loading/FullScreenLoading'
 import { User } from '@/domains/entities/user'
 import { auth } from '@/infrastructure/service/firebase/config/firebaseConfig'
-import { FirestoreParentService } from '@/infrastructure/service/firebase/firestore/firestore_parent_service'
-import { FirestoreUserService } from '@/infrastructure/service/firebase/firestore/firestore_user_service'
+import { GetCurrentUserUseCase } from '@/usecase/common/get_current_user_usecase'
 
 type AuthContextType = {
   currentUser: User | null
@@ -37,24 +36,10 @@ export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
-        const userRepository = new FirestoreUserService()
-        const response = await userRepository.findById({ id: authUser.uid })
-        const parentRepository = new FirestoreParentService()
-        const parent = await parentRepository.findByUserId({
-          userId: authUser.uid,
-        })
-        if (parent !== null) {
-          response.setBabyId(parent.getBabyId())
-        }
-        const user = new User()
-        user.setId(response.getId())
-        user.setName(response.getName())
-        user.setEmail(response.getEmail())
-        user.setParentType(response.getParentType())
-        user.setBabyId(response.getBabyId())
-        user.setCreatedAt(response.getCreatedAt())
+        const usecase = new GetCurrentUserUseCase()
+        const { response } = await usecase.execute()
 
-        setCurrentUser(user)
+        setCurrentUser(response)
 
         if (authUser.emailVerified) {
           setIsVerified(true)

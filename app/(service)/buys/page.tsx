@@ -4,10 +4,10 @@ import Loading from '@/components/Loading/Loading'
 import { Product } from '@/domains/entities/product'
 
 import AddProductButton from './_components/add_product/AddProductButton'
-import { useProductContext } from './_hooks/ProductProvider'
+import { useProductListPageContext } from './_hooks/ProductListPageProvider'
 
 const Page = () => {
-  const productContext = useProductContext()
+  const productListPageContext = useProductListPageContext()
   return (
     <div className='space-y-4'>
       <div className='flex flex-row justify-between'>
@@ -15,12 +15,12 @@ const Page = () => {
         <AddProductButton />
       </div>
       {(() => {
-        if (productContext.loading) {
+        if (productListPageContext.loading) {
           return <Loading />
         } else {
           return (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2'>
-              {productContext.products.map((product: Product) => (
+              {productListPageContext.products.map((product: Product) => (
                 <div
                   key={product.getId()}
                   className='p-4 aspect-square bg-white rounded-lg shadow-md flex flex-col justify-between'

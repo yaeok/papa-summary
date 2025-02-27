@@ -3,7 +3,6 @@ export class UserDB {
   private name: string
   private email: string
   private parentType: number
-  private babyId: string
   private createdAt: Date
   private updatedAt: Date
 
@@ -12,7 +11,6 @@ export class UserDB {
     this.name = ''
     this.email = ''
     this.parentType = 0
-    this.babyId = ''
     this.createdAt = new Date()
     this.updatedAt = new Date()
   }
@@ -47,14 +45,6 @@ export class UserDB {
 
   setParentType(parentType: number): void {
     this.parentType = parentType
-  }
-
-  getBabyId(): string {
-    return this.babyId
-  }
-
-  setBabyId(babyId: string): void {
-    this.babyId = babyId
   }
 
   getCreatedAt(): Date {

@@ -1,23 +1,14 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-import { Baby } from '@/domains/entities/baby'
+import AddCategoryForm from './AddCategoryForm'
 
-import UpdateBabyForm from './UpdateBabyForm'
-
-type UpdateBabyModalProps = {
+type props = {
   isOpen: boolean
   onClose: () => void
-  babyInfo: Baby
-  setBabyInfo: (baby: Baby) => void
 }
 
-const UpdateBabyModal = ({
-  isOpen,
-  onClose,
-  babyInfo,
-  setBabyInfo,
-}: UpdateBabyModalProps) => {
+const AddCategoryModal = ({ isOpen, onClose }: props) => {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>
@@ -26,7 +17,7 @@ const UpdateBabyModal = ({
           <div className='relative p-4 mx-2 bg-white flex flex-col gap-4 rounded-lg shadow-lg w-full md:w-2/5'>
             <div className='w-full flex flex-row justify-between items-center'>
               <h1 className='text-xl font-semibold text-black border-b-2 border-blue-500'>
-                赤ちゃん情報更新
+                カテゴリー登録
               </h1>
               <button onClick={onClose}>
                 <IconContext.Provider value={{ size: '2em', color: 'black' }}>
@@ -34,11 +25,7 @@ const UpdateBabyModal = ({
                 </IconContext.Provider>
               </button>
             </div>
-            <UpdateBabyForm
-              onClose={onClose}
-              babyInfo={babyInfo}
-              setBabyInfo={setBabyInfo}
-            />
+            <AddCategoryForm onClose={onClose} />
           </div>
         </div>
       </div>
@@ -48,4 +35,4 @@ const UpdateBabyModal = ({
   }
 }
 
-export default UpdateBabyModal
+export default AddCategoryModal

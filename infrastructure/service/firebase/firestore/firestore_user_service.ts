@@ -79,7 +79,6 @@ export class FirestoreUserService implements UserRepository {
       name: user.getName(),
       email: user.getEmail(),
       parentType: user.getParentType(),
-      babyId: user.getBabyId(),
       createdAt: user.getCreatedAt(),
     }
   }
@@ -90,7 +89,6 @@ export class FirestoreUserService implements UserRepository {
     data.setName(documentData.name)
     data.setEmail(documentData.email)
     data.setParentType(documentData.parentType)
-    data.setBabyId(documentData.babyId)
     data.setCreatedAt(documentData.createdAt.toDate())
 
     return data

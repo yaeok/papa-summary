@@ -6,7 +6,7 @@ import { Status } from '@/constants/Status'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { AddTaskUseCase } from '@/usecase/add_task_usecase'
 
-import { useTaskContext } from '../../_hooks/TaskProvider'
+import { useTaskListPageContext } from '../../_hooks/TaskListPageProvider'
 
 type AddTaskFormType = {
   title: string
@@ -16,11 +16,11 @@ type AddTaskFormType = {
   endDate: string
 }
 
-type AddTaskFormProps = {
+type props = {
   onClose: () => void
 }
 
-const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
+const AddTaskForm = ({ onClose }: props) => {
   const [onTap, setOnTap] = useState(false)
   const today = new Date().toISOString().split('T')[0]
   const {
@@ -38,7 +38,7 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
       endDate: '',
     },
   })
-  const taskContext = useTaskContext()
+  const taskListPageContext = useTaskListPageContext()
   const currentUser = useAuthContext()
 
   const startDate = watch('startDate')
@@ -62,7 +62,7 @@ const AddTaskForm = ({ onClose }: AddTaskFormProps) => {
       babyId: currentUser.currentUser!.getBabyId(),
     })
 
-    taskContext.addTask(response)
+    taskListPageContext.addTask(response)
 
     onClose()
   })

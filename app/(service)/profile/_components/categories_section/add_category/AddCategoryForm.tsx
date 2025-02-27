@@ -1,48 +1,38 @@
 import { useForm } from 'react-hook-form'
 
 import { Category } from '@/domains/entities/category'
-import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { AddCategoryUseCase } from '@/usecase/add_category_usecase'
+import { useCategoryContext } from '@/providers/CategoryProvider'
 
 type AddCategoryFormType = {
   name: string
 }
 
-type AddCategoryFormProps = {
+type props = {
   onClose: () => void
-  addCategories: (addCategory: Category) => void
 }
 
-const AddCategoryForm = ({ onClose, addCategories }: AddCategoryFormProps) => {
+const AddCategoryForm = ({ onClose }: props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<AddCategoryFormType>({
-    mode: 'onChange',
     defaultValues: {
       name: '',
     },
   })
-  const currentUser = useAuthContext().currentUser
+  const categoryContext = useCategoryContext()
 
   const onSubmit = handleSubmit(async (data: AddCategoryFormType) => {
-    try {
-      const usecase = new AddCategoryUseCase()
+    // 引数のカテゴリー情報をセット
+    const category = new Category()
+    category.setName(data.name)
 
-      if (!currentUser) return
+    // カテゴリー追加処理呼び出し
+    categoryContext.addCategory(category)
 
-      const { response } = await usecase.execute({
-        name: data.name,
-        babyId: currentUser.getBabyId(),
-      })
-
-      addCategories(response)
-
-      onClose()
-    } catch (error) {
-      console.error(error)
-    }
+    // モーダルを閉じる
+    onClose()
   })
 
   return (

@@ -12,17 +12,17 @@ import { FirestoreProductService } from '@/infrastructure/service/firebase/fires
 
 import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
-interface ProductListPageInitialDisplayUseCaseInput extends UseCaseInput {}
+interface InitialDisplayProductListPageUseCaseInput extends UseCaseInput {}
 
-interface ProductListPageInitialDisplayUseCaseOutput extends UseCaseOutput {
+interface InitialDisplayProductListPageUseCaseOutput extends UseCaseOutput {
   response: Product[]
 }
 
-export class ProductListPageInitialDisplayUseCase
+export class InitialDisplayProductListPageUseCase
   implements
     UseCase<
-      ProductListPageInitialDisplayUseCaseInput,
-      Promise<ProductListPageInitialDisplayUseCaseOutput>
+      InitialDisplayProductListPageUseCaseInput,
+      Promise<InitialDisplayProductListPageUseCaseOutput>
     >
 {
   private productRepository: ProductRepository
@@ -37,7 +37,7 @@ export class ProductListPageInitialDisplayUseCase
     this.authRepository = new AuthService()
   }
 
-  async execute(): Promise<ProductListPageInitialDisplayUseCaseOutput> {
+  async execute(): Promise<InitialDisplayProductListPageUseCaseOutput> {
     const user = await this.authRepository.getCurrentUser()
 
     const createdBy = user.uid

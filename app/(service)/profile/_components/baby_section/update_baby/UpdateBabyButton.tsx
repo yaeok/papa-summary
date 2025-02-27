@@ -1,15 +1,8 @@
 import { useState } from 'react'
 
-import { Baby } from '@/domains/entities/baby'
-
 import UpdateBabyModal from './UpdateBabyModal'
 
-type UpdateBabyButtonProps = {
-  babyInfo: Baby
-  setBabyInfo: (baby: Baby) => void
-}
-
-const UpdateBabyButton = ({ babyInfo, setBabyInfo }: UpdateBabyButtonProps) => {
+const UpdateBabyButton = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
@@ -24,12 +17,7 @@ const UpdateBabyButton = ({ babyInfo, setBabyInfo }: UpdateBabyButtonProps) => {
       >
         情報更新
       </button>
-      <UpdateBabyModal
-        isOpen={isOpen}
-        onClose={handleClose}
-        babyInfo={babyInfo}
-        setBabyInfo={setBabyInfo}
-      />
+      <UpdateBabyModal isOpen={isOpen} onClose={handleClose} />
     </div>
   )
 }

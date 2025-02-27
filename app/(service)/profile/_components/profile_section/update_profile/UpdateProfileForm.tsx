@@ -10,18 +10,17 @@ type UpdateProfileFormType = {
   parentType: number
 }
 
-type UpdateProfileFormProps = {
+type props = {
   onClose: () => void
 }
 
-const UpdateProfileForm = ({ onClose }: UpdateProfileFormProps) => {
+const UpdateProfileForm = ({ onClose }: props) => {
   const authContext = useAuthContext()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateProfileFormType>({
-    mode: 'onChange',
     defaultValues: {
       name: '',
       parentType: 0,
