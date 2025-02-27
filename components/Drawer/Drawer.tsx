@@ -11,11 +11,11 @@ import { FirebaseAuthException } from '@/infrastructure/service/firebase/excepti
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { SignOutUseCase } from '@/usecase/sign_out_usecase'
 
-type DrawerProps = {
+type props = {
   isSignIn?: boolean
 }
 
-export default function Drawer({ isSignIn }: DrawerProps) {
+export default function Drawer({ isSignIn }: props) {
   const currentUser = useAuthContext()
   const router = useRouter()
 

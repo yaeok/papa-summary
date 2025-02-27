@@ -17,11 +17,11 @@ type AddProductFormType = {
   category: string
 }
 
-type AddProductFormProps = {
+type props = {
   onClose: () => void
 }
 
-const AddProductForm = ({ onClose }: AddProductFormProps) => {
+export default function AddProductForm({ onClose }: props) {
   const [onTap, setOnTap] = useState(false)
   const {
     register,
@@ -167,5 +167,3 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
     </div>
   )
 }
-
-export default AddProductForm

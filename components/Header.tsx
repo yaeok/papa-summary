@@ -11,11 +11,11 @@ import { SignOutUseCase } from '@/usecase/sign_out_usecase'
 
 import Drawer from './Drawer/Drawer'
 
-type HeaderProps = {
+type props = {
   isSignIn?: boolean
 }
 
-export default function Header({ isSignIn }: HeaderProps) {
+export default function Header({ isSignIn }: props) {
   const router = useRouter()
   const currentUser = useAuthContext()
   const handleLogout = async () => {

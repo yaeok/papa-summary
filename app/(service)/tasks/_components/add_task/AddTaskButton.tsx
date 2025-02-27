@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import AddTaskModal from './AddTaskModal'
 
-const AddTaskButton = () => {
+export default function AddTaskButton() {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
@@ -23,5 +23,3 @@ const AddTaskButton = () => {
     </div>
   )
 }
-
-export default AddTaskButton

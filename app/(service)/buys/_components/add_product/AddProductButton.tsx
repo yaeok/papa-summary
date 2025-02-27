@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import AddProductModal from './AddProductModal'
 
-const AddProductButton = () => {
+export default function AddProductButton() {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
@@ -23,5 +23,3 @@ const AddProductButton = () => {
     </div>
   )
 }
-
-export default AddProductButton

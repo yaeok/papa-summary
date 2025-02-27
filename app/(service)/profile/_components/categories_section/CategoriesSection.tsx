@@ -4,7 +4,7 @@ import { useCategoryContext } from '@/providers/CategoryProvider'
 
 import AddCategoryButton from './add_category/AddCategoryButton'
 
-const CategoriesSection = () => {
+export default function CategoriesSection() {
   const categoryContext = useCategoryContext()
 
   return (
@@ -24,5 +24,3 @@ const CategoriesSection = () => {
     </div>
   )
 }
-
-export default CategoriesSection

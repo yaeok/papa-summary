@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import UpdateProfileModal from './UpdateProfileModal'
 
-const UpdateProfileButton = () => {
+export default function UpdateProfileButton() {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
@@ -21,5 +21,3 @@ const UpdateProfileButton = () => {
     </div>
   )
 }
-
-export default UpdateProfileButton

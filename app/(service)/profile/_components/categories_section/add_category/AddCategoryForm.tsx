@@ -11,7 +11,7 @@ type props = {
   onClose: () => void
 }
 
-const AddCategoryForm = ({ onClose }: props) => {
+export default function AddCategoryForm({ onClose }: props) {
   const {
     register,
     handleSubmit,
@@ -70,5 +70,3 @@ const AddCategoryForm = ({ onClose }: props) => {
     </div>
   )
 }
-
-export default AddCategoryForm
