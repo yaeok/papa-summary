@@ -1,14 +1,8 @@
 import { useState } from 'react'
 
-import { Category } from '@/domains/entities/category'
-
 import AddCategoryModal from './AddCategoryModal'
 
-type AddCategoryButtonProps = {
-  addCategories: (addCategory: Category) => void
-}
-
-const AddCategoryButton = ({ addCategories }: AddCategoryButtonProps) => {
+const AddCategoryButton = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleOpen = () => setIsOpen(true)
@@ -23,11 +17,7 @@ const AddCategoryButton = ({ addCategories }: AddCategoryButtonProps) => {
       >
         追加
       </button>
-      <AddCategoryModal
-        isOpen={isOpen}
-        onClose={handleClose}
-        addCategories={addCategories}
-      />
+      <AddCategoryModal isOpen={isOpen} onClose={handleClose} />
     </div>
   )
 }

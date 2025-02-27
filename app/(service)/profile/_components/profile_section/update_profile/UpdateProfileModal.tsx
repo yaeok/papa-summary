@@ -1,21 +1,14 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-import { Category } from '@/domains/entities/category'
+import UpdateProfileForm from './UpdateProfileForm'
 
-import AddCategoryForm from './AddCategoryForm'
-
-type AddCategoryModalProps = {
+type props = {
   isOpen: boolean
   onClose: () => void
-  addCategories: (addCategory: Category) => void
 }
 
-const AddCategoryModal = ({
-  isOpen,
-  onClose,
-  addCategories,
-}: AddCategoryModalProps) => {
+const UpdateProfileModal = ({ isOpen, onClose }: props) => {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>
@@ -24,7 +17,7 @@ const AddCategoryModal = ({
           <div className='relative p-4 mx-2 bg-white flex flex-col gap-4 rounded-lg shadow-lg w-full md:w-2/5'>
             <div className='w-full flex flex-row justify-between items-center'>
               <h1 className='text-xl font-semibold text-black border-b-2 border-blue-500'>
-                カテゴリー登録
+                ユーザ情報更新
               </h1>
               <button onClick={onClose}>
                 <IconContext.Provider value={{ size: '2em', color: 'black' }}>
@@ -32,7 +25,7 @@ const AddCategoryModal = ({
                 </IconContext.Provider>
               </button>
             </div>
-            <AddCategoryForm onClose={onClose} addCategories={addCategories} />
+            <UpdateProfileForm onClose={onClose} />
           </div>
         </div>
       </div>
@@ -42,4 +35,4 @@ const AddCategoryModal = ({
   }
 }
 
-export default AddCategoryModal
+export default UpdateProfileModal

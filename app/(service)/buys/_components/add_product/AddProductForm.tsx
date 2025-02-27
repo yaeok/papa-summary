@@ -4,10 +4,11 @@ import { LuCircleMinus, LuCirclePlus } from 'react-icons/lu'
 
 import { Category } from '@/domains/entities/category'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
+import { useCategoryContext } from '@/providers/CategoryProvider'
 import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { AddProductUseCase } from '@/usecase/add_product_usecase'
 
-import { useProductContext } from '../../_hooks/ProductProvider'
+import { useProductListPageContext } from '../../_hooks/ProductListPageProvider'
 
 type AddProductFormType = {
   title: string
@@ -38,8 +39,9 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
 
   const price = watch('price')
 
-  const productContext = useProductContext()
+  const productListPageContext = useProductListPageContext()
   const currentUser = useAuthContext().currentUser
+  const categoryContext = useCategoryContext()
 
   const onSubmit = handleSubmit(async (data: AddProductFormType) => {
     try {
@@ -62,10 +64,10 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
       })
 
       response.setCategories(
-        productContext.categories.filter((c) => c.getId() === category)
+        categoryContext.categories.filter((c) => c.getId() === category)
       )
 
-      productContext.addProduct(response)
+      productListPageContext.addProduct(response)
 
       onClose()
     } catch (error: unknown) {
@@ -131,7 +133,7 @@ const AddProductForm = ({ onClose }: AddProductFormProps) => {
               {...register('category')}
             >
               <option value=''>選択してください</option>
-              {productContext.categories.map((category: Category) => (
+              {categoryContext.categories.map((category: Category) => (
                 <option key={category.getId()} value={category.getId()}>
                   {category.getName()}
                 </option>

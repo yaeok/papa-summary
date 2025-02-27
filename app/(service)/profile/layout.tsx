@@ -1,6 +1,6 @@
 import { CategoryProvider } from '@/providers/CategoryProvider'
 
-import { ProductListPageProvider } from './_hooks/ProductListPageProvider'
+import { ProfilePageProvider } from './_hooks/ProfilePageProvider'
 
 export default function RootLayout({
   children,
@@ -8,8 +8,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ProductListPageProvider>
+    <ProfilePageProvider>
       <CategoryProvider>{children}</CategoryProvider>
-    </ProductListPageProvider>
+    </ProfilePageProvider>
   )
 }

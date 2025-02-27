@@ -3,12 +3,12 @@ import { RiCloseCircleFill } from 'react-icons/ri'
 
 import AddTaskForm from './AddTaskForm'
 
-type AddTaskModalProps = {
+type props = {
   isOpen: boolean
   onClose: () => void
 }
 
-const AddTaskModal = ({ isOpen, onClose }: AddTaskModalProps) => {
+const AddTaskModal = ({ isOpen, onClose }: props) => {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>

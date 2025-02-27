@@ -1,24 +1,21 @@
 import { useForm } from 'react-hook-form'
 
-import { Baby } from '@/domains/entities/baby'
 import { UpdateBabyByIdUseCase } from '@/usecase/update_baby_by_id_usecase'
+
+import { useProfilePageContext } from '../../../_hooks/ProfilePageProvider'
 
 type UpdateBabyFormType = {
   name: string
   birthDate: string
 }
 
-type UpdateBabyFormProps = {
+type props = {
   onClose: () => void
-  babyInfo: Baby
-  setBabyInfo: (baby: Baby) => void
 }
 
-const UpdateBabyForm = ({
-  onClose,
-  babyInfo,
-  setBabyInfo,
-}: UpdateBabyFormProps) => {
+const UpdateBabyForm = ({ onClose }: props) => {
+  const profilePageContext = useProfilePageContext()
+  const babyInfo = profilePageContext.baby
   const initialDate =
     babyInfo && babyInfo.getBirthDate()
       ? new Date(babyInfo.getBirthDate()!).toISOString().split('T')[0]
@@ -37,13 +34,15 @@ const UpdateBabyForm = ({
 
   const onSubmit = handleSubmit(async (data: UpdateBabyFormType) => {
     try {
+      if (babyInfo === null) return
+
       const usecase = new UpdateBabyByIdUseCase()
       const { response } = await usecase.execute({
         babyId: babyInfo.getId(),
         name: data.name,
         birthDate: data.birthDate,
       })
-      setBabyInfo(response)
+      profilePageContext.setBaby(response)
       onClose()
     } catch (error) {
       console.error(error)

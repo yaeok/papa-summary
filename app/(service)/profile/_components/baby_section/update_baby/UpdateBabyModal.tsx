@@ -1,14 +1,14 @@
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
-import UpdateProfileForm from './UpdateProfileForm'
+import UpdateBabyForm from './UpdateBabyForm'
 
-type UpdateProfileModalProps = {
+type props = {
   isOpen: boolean
   onClose: () => void
 }
 
-const UpdateProfileModal = ({ isOpen, onClose }: UpdateProfileModalProps) => {
+const UpdateBabyModal = ({ isOpen, onClose }: props) => {
   if (isOpen) {
     return (
       <div className='fixed inset-0 max-h-screen z-50'>
@@ -17,7 +17,7 @@ const UpdateProfileModal = ({ isOpen, onClose }: UpdateProfileModalProps) => {
           <div className='relative p-4 mx-2 bg-white flex flex-col gap-4 rounded-lg shadow-lg w-full md:w-2/5'>
             <div className='w-full flex flex-row justify-between items-center'>
               <h1 className='text-xl font-semibold text-black border-b-2 border-blue-500'>
-                ユーザ情報更新
+                赤ちゃん情報更新
               </h1>
               <button onClick={onClose}>
                 <IconContext.Provider value={{ size: '2em', color: 'black' }}>
@@ -25,7 +25,7 @@ const UpdateProfileModal = ({ isOpen, onClose }: UpdateProfileModalProps) => {
                 </IconContext.Provider>
               </button>
             </div>
-            <UpdateProfileForm onClose={onClose} />
+            <UpdateBabyForm onClose={onClose} />
           </div>
         </div>
       </div>
@@ -35,4 +35,4 @@ const UpdateProfileModal = ({ isOpen, onClose }: UpdateProfileModalProps) => {
   }
 }
 
-export default UpdateProfileModal
+export default UpdateBabyModal

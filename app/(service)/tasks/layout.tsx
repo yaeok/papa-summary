@@ -1,9 +1,9 @@
-import { TaskProvider } from './_hooks/TaskProvider'
+import { TaskListPageProvider } from './_hooks/TaskListPageProvider'
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return <TaskProvider>{children}</TaskProvider>
+  return <TaskListPageProvider>{children}</TaskListPageProvider>
 }
