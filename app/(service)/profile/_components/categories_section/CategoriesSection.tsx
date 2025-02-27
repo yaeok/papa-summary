@@ -1,5 +1,3 @@
-'use client'
-
 import { useCategoryContext } from '@/providers/CategoryProvider'
 
 import AddCategoryButton from './add_category/AddCategoryButton'
