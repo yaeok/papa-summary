@@ -12,7 +12,7 @@ import { FirestoreUserService } from '@/infrastructure/service/firebase/firestor
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../interface/use_case'
 
-interface GetCurrentUserUserCaseInput extends UseCaseInput {}
+type GetCurrentUserUserCaseInput = UseCaseInput
 
 interface GetCurrentUserUserCaseOutput extends UseCaseOutput {
   response: User

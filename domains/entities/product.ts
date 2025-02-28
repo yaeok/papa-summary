@@ -6,6 +6,7 @@ export class Product {
   private price: number
   private content: string
   private babyId: string
+  private purchasedAt: Date | null
   private categories: Category[]
   private createdBy: string
   private createdAt: Date
@@ -16,6 +17,7 @@ export class Product {
     this.price = 0
     this.content = ''
     this.babyId = ''
+    this.purchasedAt = null
     this.categories = []
     this.createdBy = ''
     this.createdAt = new Date()
@@ -59,6 +61,14 @@ export class Product {
 
   setBabyId(babyId: string): void {
     this.babyId = babyId
+  }
+
+  getPurchasedAt(): Date | null {
+    return this.purchasedAt
+  }
+
+  setPurchasedAt(purchasedAt: Date | null): void {
+    this.purchasedAt = purchasedAt
   }
 
   getCategories(): Category[] {

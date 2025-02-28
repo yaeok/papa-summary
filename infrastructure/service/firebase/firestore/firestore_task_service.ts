@@ -5,9 +5,12 @@ import { SystemErrorException } from '@/infrastructure/exception/SystemErrorExce
 import {
   addDoc,
   collection,
+  doc,
   DocumentData,
+  getDoc,
   getDocs,
   query,
+  setDoc,
   updateDoc,
   where,
 } from '@firebase/firestore'
@@ -83,6 +86,27 @@ export class FirestoreTaskService implements TaskRepository {
       return response
     } catch {
       throw new SystemErrorException('タスク作成に失敗しました')
+    }
+  }
+
+  /**
+   * updateCompletedAt - タスクの完了日時を更新する
+   * @param id タスクID
+   */
+  async updateCompletedAt(args: { id: string }): Promise<void> {
+    try {
+      const { id } = args
+      const ref = doc(db, this.path, id)
+
+      const document = await getDoc(ref)
+
+      if (!document.exists()) {
+        throw new SystemErrorException('タスクが見つかりません')
+      }
+
+      await setDoc(ref, { completedAt: new Date() })
+    } catch {
+      throw new SystemErrorException('タスク更新に失敗しました')
     }
   }
 

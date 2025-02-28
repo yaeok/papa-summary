@@ -4,6 +4,7 @@ export class ProductDB {
   private price: number
   private content: string
   private babyId: string
+  private purchasedAt: Date | null
   private createdBy: string
   private createdAt: Date
 
@@ -13,6 +14,7 @@ export class ProductDB {
     this.price = 0
     this.content = ''
     this.babyId = ''
+    this.purchasedAt = null
     this.createdBy = ''
     this.createdAt = new Date()
   }
@@ -55,6 +57,14 @@ export class ProductDB {
 
   setBabyId(babyId: string): void {
     this.babyId = babyId
+  }
+
+  getPurchasedAt(): Date | null {
+    return this.purchasedAt
+  }
+
+  setPurchasedAt(purchasedAt: Date | null): void {
+    this.purchasedAt = purchasedAt
   }
 
   getCreatedBy(): string {

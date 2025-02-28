@@ -29,16 +29,19 @@ export class UpdateBabyByIdUseCase
   ): Promise<UpdateBabyByIdUseCaseOutput> {
     try {
       const { babyId, name, birthDate } = input
+
+      const dateBirthDate = new Date(birthDate)
+
       await this.babyRepository.updateById({
         id: babyId,
         name: name,
-        birthDate: new Date(birthDate),
+        birthDate: dateBirthDate,
       })
 
       const response = new Baby()
       response.setId(babyId)
       response.setName(name)
-      response.setBirthDate(new Date(birthDate))
+      response.setBirthDate(dateBirthDate)
 
       return { response }
     } catch {

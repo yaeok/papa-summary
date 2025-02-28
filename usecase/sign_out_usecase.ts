@@ -5,7 +5,7 @@ import { FirebaseAuthException } from '@/infrastructure/service/firebase/excepti
 
 import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
-interface SignOutUseCaseInput extends UseCaseInput {}
+type SignOutUseCaseInput = UseCaseInput
 
 interface SignOutUseCaseOutput extends UseCaseOutput {
   response: boolean
