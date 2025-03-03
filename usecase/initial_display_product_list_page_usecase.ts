@@ -12,7 +12,7 @@ import { FirestoreProductService } from '@/infrastructure/service/firebase/fires
 
 import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
-interface InitialDisplayProductListPageUseCaseInput extends UseCaseInput {}
+type InitialDisplayProductListPageUseCaseInput = UseCaseInput
 
 interface InitialDisplayProductListPageUseCaseOutput extends UseCaseOutput {
   response: Product[]

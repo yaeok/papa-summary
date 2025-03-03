@@ -2,11 +2,10 @@ import { AuthRepository } from '@/domains/repositories/auth_repository'
 import { SystemErrorException } from '@/infrastructure/exception/SystemErrorException'
 import { AuthService } from '@/infrastructure/service/firebase/auth/auth_service'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
-import { isFirebaseError } from '@/infrastructure/service/firebase/exception/types/FirebaseAuthExceptionType'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
-interface ResendEmailVerifyUseCaseInput extends UseCaseInput {}
+type ResendEmailVerifyUseCaseInput = UseCaseInput
 
 interface ResendEmailVerifyUseCaseOutput extends UseCaseOutput {
   response: boolean

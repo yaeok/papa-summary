@@ -6,7 +6,7 @@ import { FirestoreCategoryService } from '@/infrastructure/service/firebase/fire
 
 import { UseCase, UseCaseInput, UseCaseOutput } from './interface/use_case'
 
-interface GetAllCategoryUseCaseInput extends UseCaseInput {}
+type GetAllCategoryUseCaseInput = UseCaseInput
 
 interface GetAllCategoryUseCaseOutput extends UseCaseOutput {
   response: Category[]

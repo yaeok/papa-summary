@@ -100,9 +100,9 @@ export default function AddProductForm({ onClose }: props) {
               </span>
             )}
           </div>
-          <div className='flex items-center gap-8'>
+          <div className='flex items-center gap-4'>
             <label htmlFor='price'>値段</label>
-            <div className='flex justify-start items-center gap-2'>
+            <div className='flex items-center gap-2'>
               <button onClick={() => setValue('price', price + 1000)}>
                 <LuCirclePlus size={25} />
               </button>
@@ -110,7 +110,7 @@ export default function AddProductForm({ onClose }: props) {
                 type='number'
                 {...register('price')}
                 disabled={true}
-                className='border-2 border-gray-300 rounded-md p-2'
+                className='w-1/2 border-2 border-gray-300 rounded-md p-2'
               />
               <button
                 onClick={() => setValue('price', price - 1000)}

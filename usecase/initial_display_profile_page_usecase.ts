@@ -10,7 +10,7 @@ import { FirestoreParentService } from '@/infrastructure/service/firebase/firest
 
 import { UseCase, UseCaseInput } from './interface/use_case'
 
-interface InitialDisplayProfilePageUseCaseInput extends UseCaseInput {}
+type InitialDisplayProfilePageUseCaseInput = UseCaseInput
 
 interface InitialDisplayProfilePageUseCaseOutput {
   response: {

@@ -4,7 +4,7 @@ import { RoutePath } from '@/constants/RoutePath'
 
 export default function NavBar() {
   return (
-    <section className='w-full fixed bottom-0 h-14 lg:h-20 z-10 bg-white py-2 lg:py-4'>
+    <section className='w-full fixed bottom-0 h-12 lg:h-16 z-10'>
       <div className='max-w-screen-lg mx-auto flex justify-center'>
         <div className='w-full max-w-screen-md flex flex-row items-center'>
           <div className='p-2' />
