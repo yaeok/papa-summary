@@ -5,10 +5,10 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import ErrorMessageModal from '@/components/ErrorMessageModal'
+import FullScreenLoading from '@/components/Loading/FullScreenLoading'
 import { RoutePath } from '@/constants/RoutePath'
 import { FirebaseAuthException } from '@/infrastructure/service/firebase/exception/FirebaseAuthException'
 import { SignUpUseCase } from '@/usecase/sign_up_usecase'
-import FullScreenLoading from '@/components/Loading/FullScreenLoading'
 
 type SignUpFormType = {
   email: string
@@ -63,8 +63,8 @@ const Page = () => {
     return <FullScreenLoading />
   } else {
     return (
-      <div className='px-2 py-20 justify-center items-center flex'>
-        <div className='w-full lg:w-1/4 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
+      <div className='px-8 py-20 justify-center items-center flex'>
+        <div className='w-full sm:w-1/2 lg:w-1/3 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
           <form onSubmit={onSubmit} className='w-full space-y-4'>
             <section className='flex flex-col gap-4'>
               <div className='flex flex-col gap-2'>
