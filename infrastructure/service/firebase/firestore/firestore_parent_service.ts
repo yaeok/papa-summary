@@ -42,7 +42,7 @@ export class FirestoreParentService implements ParentRepository {
       const snapshot = await getDocs(q)
 
       if (snapshot.empty) {
-        throw new SystemErrorException('親情報がありません')
+        return null
       }
 
       const document = snapshot.docs[0].data()
