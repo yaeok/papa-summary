@@ -15,7 +15,7 @@ import { db } from '../config/firebaseConfig'
 
 export class FirestoreParentService implements ParentRepository {
   private path = 'parents'
-  async create(args: { parent: Parent }): Promise<ParentDB> {
+  async create(args: { parent: Parent }): Promise<void> {
     try {
       const { parent } = args
       const ref = collection(db, this.path)
@@ -23,8 +23,6 @@ export class FirestoreParentService implements ParentRepository {
       const document = this.convertEntityToDocumentData(parent)
 
       await addDoc(ref, document)
-
-      return this.convertDocumentDataToData(document)
     } catch {
       throw new SystemErrorException('親情報の作成に失敗しました')
     }
