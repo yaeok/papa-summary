@@ -42,8 +42,8 @@ const Page = () => {
     }
   })
   return (
-    <div className='px-2 py-20 justify-center items-center flex'>
-      <div className='w-full lg:w-1/4 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
+    <div className='px-8 py-20 justify-center items-center flex'>
+      <div className='w-full sm:w-1/2 lg:w-1/3 bg-gray-50 rounded-lg p-8 shadow-md flex flex-col items-center gap-4'>
         <form onSubmit={onSubmit} className='w-full space-y-4'>
           <section className='flex flex-col gap-4'>
             <div className='flex flex-col gap-2'>

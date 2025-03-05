@@ -41,7 +41,7 @@ export class FirestoreUserService implements UserRepository {
     }
   }
 
-  async create(args: { user: User }): Promise<UserDB> {
+  async create(args: { user: User }): Promise<void> {
     try {
       const { user } = args
       const ref = doc(db, this.path, user.getId())
@@ -49,8 +49,6 @@ export class FirestoreUserService implements UserRepository {
       const document = this.convertEntityToDocumentData(user)
 
       await setDoc(ref, document)
-
-      return this.convertDocumentDataToData(document)
     } catch {
       throw new SystemErrorException('ユーザー登録に失敗しました')
     }
